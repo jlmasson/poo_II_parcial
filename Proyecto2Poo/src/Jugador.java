@@ -14,12 +14,12 @@ import java.util.Scanner;
 public class Jugador {
     private String nickname;
     private int puntos;
-    private int vidas;
+    private int numVidas;
     
-    public Jugador(String nombre) {
-        this.nickname = nombre;
+    public Jugador(String nickname) {
+        this.nickname = nickname;
         this.puntos = 0;
-        this.vidas = 3;
+        this.numVidas = 3;
     }
     
     
