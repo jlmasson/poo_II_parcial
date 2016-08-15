@@ -1,0 +1,39 @@
+.root {
+    -fx-background-image: url("images/background/principal.png");
+}
+
+.instrucciones {
+    
+}
+
+.puntajes {
+    
+}
+
+.boton {
+    /*-fx-text-fill: rgb(254,255,159);
+    /**-fx-text-fill: rgb(130,61,0);**/
+    -fx-text-fill: white;
+    -fx-font-family: 'Papyrus';
+    -fx-font-size: 35px;
+    -fx-font-weight: bolder;
+    -fx-text-emphasis-color: bisque;
+    -fx-color: yellow;
+    -fx-background-color: rgba(25, 0, 0, 0);
+    -fx-border: none;
+    /**-fx-border-color: rgb(49, 89, 23);**/
+    -fx-border-radius: 5;
+    -fx-padding: 3 6 6 6;
+}
+
+.boton:hover {
+    -fx-text-fill: yellow;
+}
+
+.labelPrincipal {
+    /*-fx-text-fill: rgb(130,61,0);*/
+    -fx-text-fill: red;
+    -fx-font-family: 'Papyrus';
+    -fx-font-size: 80px;
+    -fx-font-weight: bolder;
+}
