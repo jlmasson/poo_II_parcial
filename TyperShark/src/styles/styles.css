@@ -3,7 +3,7 @@
 }
 
 .mar{
-    background-image: url("../images/background/juego.gif");
+    -fx-background-image: url("../images/background/juego.gif");
 }
 
 .instrucciones {

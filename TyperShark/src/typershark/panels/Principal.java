@@ -109,7 +109,7 @@ public class Principal {
                     third = new Stage();
                     //HBox root = new HBox();
                     Button botonPrueba = new Button("Volver al Menú Principal");
-                    botonPrueba.setOnAction(new ClickHandler(stage, third));
+                    botonPrueba.setOnAction(new ClickHandler(this.stage, third));
                     Mar mar = new Mar();
                     mar.getRoot().setTop(botonPrueba);
                     Scene scene = new Scene(mar.getRoot(), 800, 600);
