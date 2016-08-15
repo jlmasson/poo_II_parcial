@@ -12,7 +12,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -39,8 +38,6 @@ public class Principal {
         this.root.getStylesheets().add("styles/styles.css");
         this.root.getStyleClass().add("root");
         this.setupButtons(principal, ds);
-        
-        
     }
     
     public VBox getRoot() {
@@ -80,6 +77,7 @@ public class Principal {
         this.salir.setEffect(dropShadow);
         
         this.jugar.setOnAction(new ClickMenu(principal, 2));
+        this.instrucciones.setOnAction(new ClickMenu(principal, 3));
         this.salir.setOnAction(new Exit());
         
         this.root.getChildren().addAll(jugar, instrucciones, puntajes, acercaDe, salir);
@@ -95,11 +93,11 @@ public class Principal {
     
     private class ClickMenu implements EventHandler<ActionEvent> {
 
-        Stage stage;
-        int numOpcion;
+        private Stage stage;
+        private int numOpcion;
 
         public ClickMenu(Stage primary, int numOpcion) {
-            stage = primary;
+            this.stage = primary;
             this.numOpcion = numOpcion;
         }
 
@@ -107,20 +105,33 @@ public class Principal {
         public void handle(ActionEvent event) {
             switch (this.numOpcion) {
                 case 2:
+                    Stage third;
+                    third = new Stage();
+                    //HBox root = new HBox();
+                    Button botonPrueba = new Button("Volver al Menú Principal");
+                    botonPrueba.setOnAction(new ClickHandler(stage, third));
+                    Mar mar = new Mar();
+                    mar.getRoot().setTop(botonPrueba);
+                    Scene scene = new Scene(mar.getRoot(), 800, 600);
+                    third.setScene(scene);
+                    third.show();
+                    break;
+                
+                case 3:
                     // Modificar esto a futuro para presentación final
                     
                     Stage second;
                     second = new Stage();
-                    HBox root = new HBox();
-                    Button botonPrueba = new Button("Boton Previo");
+                    //HBox root = new HBox();
+                    botonPrueba = new Button("Boton Previo");
                     botonPrueba.setOnAction(new ClickHandler(stage, second));
-                    root.getChildren().add(botonPrueba);
-                    Scene scene = new Scene(root, 800, 600);
-                    second.setScene(scene);
+                    Instrucciones ins = new Instrucciones();
+                    ins.getRoot().setTop(botonPrueba);
+                    Scene scen1 = new Scene(ins.getRoot(), 800, 600);
+                    second.setScene(scen1);
                     second.show();
                     break;
-                case 3:
-                    break;
+                
                 case 4:
                     break;
                 default:

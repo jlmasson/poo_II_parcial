@@ -26,8 +26,8 @@ public class ClickHandler implements EventHandler<ActionEvent>{
     
     @Override
     public void handle(ActionEvent event) {
-        actual.close();
-        principal.show();
+        this.actual.close();
+        this.principal.show();
     }
     
 }

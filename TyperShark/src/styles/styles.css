@@ -2,8 +2,12 @@
     -fx-background-image: url("../images/background/principal.jpg");
 }
 
+.mar{
+    background-image: url("../images/background/juego.gif");
+}
+
 .instrucciones {
-    
+    -fx-background-image: url("../images/background/instrucciones.jpg");
 }
 
 .puntajes {
