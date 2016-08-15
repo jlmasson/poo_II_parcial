@@ -22,9 +22,9 @@ import typershark.animals.Tiburon;
 public class TiburonesMovimiento extends Application{
     @Override
     public void start(Stage primaryStage) {
-        MarOrganizer marOrg = new MarOrganizer();
+        //MarOrganizer marOrg = new MarOrganizer();
         Scene scene;
-        scene = new Scene(marOrg.getRoot(), 200, 200);
+        //scene = new Scene(marOrg.getRoot(), 200, 200);
         primaryStage.setTitle("TyperShark!");
 
         AnimalMarino tiburon = new Tiburon(new Image("Tiburon-negro-400x240.png"), "palabra");
