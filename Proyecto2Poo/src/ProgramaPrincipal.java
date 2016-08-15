@@ -9,6 +9,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
@@ -20,9 +21,30 @@ public class ProgramaPrincipal extends Application {
     
     @Override
     public void start(Stage primaryStage) {
+<<<<<<< HEAD
         MarOrganizer marOrg = new MarOrganizer();
         Scene scene = new Scene(marOrg.getRoot(), 200, 200);
         primaryStage.setTitle("TyperShark!");
+=======
+        AnimalMarino tiburon = new Tiburon(new Image("Tiburon-negro-400x240.png"), "palabra");
+        
+        Button btn = new Button();
+        btn.setText("Say 'Hello World'");
+        btn.setOnAction(new EventHandler<ActionEvent>() {
+            
+            @Override
+            public void handle(ActionEvent event) {
+                System.out.println("Hello World!");
+            }
+        });
+        
+        StackPane root = new StackPane();
+        root.getChildren().add(tiburon.getRoot());
+        
+        Scene scene = new Scene(root, 300, 250);
+        
+        primaryStage.setTitle("Hello World!");
+>>>>>>> origin/master
         primaryStage.setScene(scene);
         primaryStage.show();
     }
