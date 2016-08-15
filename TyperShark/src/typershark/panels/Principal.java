@@ -26,6 +26,7 @@ public class Principal {
     private Button jugar;
     private Button instrucciones;
     private Button puntajes;
+    private Button acercaDe;
     private Button salir;
     private Label title;
     private VBox root;
@@ -52,7 +53,7 @@ public class Principal {
     
     private void setupTitleGame(DropShadow dropShadow) {
         this.title = new Label();
-        this.title.setText("TyperShark");
+        this.title.setText("TyperShark II");
         this.title.getStyleClass().add("labelPrincipal");
         this.title.setEffect(dropShadow);
         
@@ -63,22 +64,25 @@ public class Principal {
         this.jugar = new Button("Comenzar Partida");
         this.instrucciones = new Button("Leer instrucciones");
         this.puntajes = new Button("Mostrar mejores puntajes");
+        this.acercaDe = new Button("Acerca de");
         this.salir = new Button("Salir");
         
-        jugar.getStyleClass().add("boton");
-        instrucciones.getStyleClass().add("boton");
-        puntajes.getStyleClass().add("boton");
-        salir.getStyleClass().add("boton");
+        this.jugar.getStyleClass().add("boton");
+        this.instrucciones.getStyleClass().add("boton");
+        this.puntajes.getStyleClass().add("boton");
+        this.acercaDe.getStyleClass().add("boton");
+        this.salir.getStyleClass().add("boton");
         
-        jugar.setEffect(dropShadow);
-        instrucciones.setEffect(dropShadow);
-        puntajes.setEffect(dropShadow);
-        salir.setEffect(dropShadow);
+        this.jugar.setEffect(dropShadow);
+        this.instrucciones.setEffect(dropShadow);
+        this.puntajes.setEffect(dropShadow);
+        this.acercaDe.setEffect(dropShadow);
+        this.salir.setEffect(dropShadow);
         
-        jugar.setOnAction(new ClickMenu(principal, 2));
-        salir.setOnAction(new Exit());
+        this.jugar.setOnAction(new ClickMenu(principal, 2));
+        this.salir.setOnAction(new Exit());
         
-        this.root.getChildren().addAll(jugar, instrucciones, puntajes, salir);
+        this.root.getChildren().addAll(jugar, instrucciones, puntajes, acercaDe, salir);
     }
     
     private DropShadow setupShadow() {
@@ -101,20 +105,26 @@ public class Principal {
 
         @Override
         public void handle(ActionEvent event) {
-            if (this.numOpcion == 2) {
-                Stage second;
-                second = new Stage();
-                HBox root = new HBox();
-
-                Button botonPrueba = new Button("Boton Previo");
-                botonPrueba.setOnAction(new ClickHandler(stage, second));
-                //botonPrueba.setOnAction(new ClickHandler());
-
-                root.getChildren().add(botonPrueba);
-
-                Scene scene = new Scene(root, 800, 600);
-                second.setScene(scene);
-                second.show();
+            switch (this.numOpcion) {
+                case 2:
+                    // Modificar esto a futuro para presentación final
+                    
+                    Stage second;
+                    second = new Stage();
+                    HBox root = new HBox();
+                    Button botonPrueba = new Button("Boton Previo");
+                    botonPrueba.setOnAction(new ClickHandler(stage, second));
+                    root.getChildren().add(botonPrueba);
+                    Scene scene = new Scene(root, 800, 600);
+                    second.setScene(scene);
+                    second.show();
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+                default:
+                    break;
             }
             stage.close();
 
