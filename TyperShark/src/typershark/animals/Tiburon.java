@@ -12,7 +12,13 @@ import javafx.scene.image.Image;
  * @author Danilo Torres
  */
 public class Tiburon extends AnimalMarino {
-    public Tiburon(Image imagen, String palabra) {
-        super(imagen, palabra);
+    
+    
+    
+    public Tiburon(Image imagen, String palabra, long velocidad) {
+        super(imagen, palabra, velocidad);
+        
     }
+    
+    
 }

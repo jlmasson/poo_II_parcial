@@ -12,7 +12,7 @@ import javafx.scene.image.Image;
  * @author Danilo Torres
  */
 public class Piranha extends AnimalMarino {
-    public Piranha(Image imagen, String palabra) {
-        super(imagen, palabra);
+    public Piranha(Image imagen, String palabra, long velocidad) {
+        super(imagen, palabra, velocidad);
     }
 }
