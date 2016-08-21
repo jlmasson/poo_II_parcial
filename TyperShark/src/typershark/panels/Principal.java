@@ -5,6 +5,10 @@
  */
 package typershark.panels;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Scanner;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -30,6 +34,7 @@ public class Principal {
     private Button salir;
     private Label title;
     private VBox root;
+    private ArrayList<String> palabrasJuego;
     
     public Principal(Stage principal) {
         this.root = new VBox();
@@ -39,6 +44,8 @@ public class Principal {
         this.root.getStylesheets().add("styles/styles.css");
         this.root.getStyleClass().add("root");
         this.setupButtons(principal, ds);
+        this.setupWords();
+        System.out.println(this.palabrasJuego);
     }
     
     public VBox getRoot() {
@@ -82,6 +89,14 @@ public class Principal {
         this.salir.setOnAction(new Exit());
         
         this.root.getChildren().addAll(jugar, instrucciones, puntajes, acercaDe, salir);
+    }
+    
+    private void setupWords() {
+        try {
+            this.palabrasJuego = Principal.cargarPalabras();
+        } catch (FileNotFoundException ex) {
+            System.out.println("Carga de Palabras no exitosa");
+        }
     }
     
     private DropShadow setupShadow() {
@@ -151,6 +166,20 @@ public class Principal {
             System.exit(0);
         }
         
+    }
+    
+    private static ArrayList<String> cargarPalabras() throws FileNotFoundException {
+        ArrayList<String> palabras = new ArrayList<>();
+        File archivo = new File("src/words/words.txt");
+        try (Scanner sc = new Scanner(archivo)) {
+            sc.useDelimiter("\n");
+            while(sc.hasNext()) {
+                String linea = sc.nextLine();
+                linea = linea.trim();
+                palabras.add(linea);
+            }
+        }
+        return palabras;
     }
     
 }
