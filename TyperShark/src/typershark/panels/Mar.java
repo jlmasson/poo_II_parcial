@@ -18,6 +18,7 @@ import static javafx.scene.input.DataFormat.URL;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.AudioClip;
@@ -38,43 +39,33 @@ public class Mar {
     private BorderPane root;
     private Button previo;
     private Label puntos;
+    private ImageView imagenPuntos;
+    private Label numVidas;
+    private ImageView imagenVida;
     private Buceador buceador;
+    private HBox panelSuperior;
     
-    private AnimalMarino animal1;    //codigo  nuevo
+    
+    private AnimalMarino animal1;   
     private AnimalMarino animal2;
     private AnimalMarino animal3;
+    
     
     private Jugador jugador;
     
     private LinkedList<AnimalMarino> animales;
     
-    private StackPane panelAn;      //codigo  nuevo
     
     private LinkedList<Thread> hilos;
     
     
     public Mar() {
-        this.root = new BorderPane();
-        this.root.getStylesheets().add("styles/styles.css");
-        this.root.getStyleClass().add("mar");
-        this.jugador = new Jugador("Nombre Pruebita");
-        this.puntos = new Label(Integer.toString(jugador.getPuntos()));
-        
+
+        this.iniciarMar();
 
         
-        buceador = new Buceador(new Image("images/components/buceador2.gif"), 40, 50);
-        this.root.setTop(puntos);
         
-        
-        Image im = new Image("images/components/tiburoncin2.png");
-        
-        
-        animal1 = new Tiburon(im, "holi", 200);//codigo  nuevo
-        animal2 = new Tiburon (im, "chaoo", 300);
-        animal3 = new Tiburon (im, "pythonlover", 400);
-        this.animales = new LinkedList<>();
-        root.addEventHandler(KeyEvent.KEY_PRESSED, new KeyHandler(root) );
-        this.setupAnimals();
+
         /**
         animales = new LinkedList<>();
         animales.add(animal1);
@@ -114,8 +105,6 @@ public class Mar {
         hilos.add(t3);
         
         **/
-        
-        
         
     }
 
@@ -201,19 +190,10 @@ public class Mar {
                         if(animales.isEmpty()){
                             Mar.this.setupAnimals();
                         }
-                        
-                        
-                        
                     }
-
-
-
                 }
             }
             
-                
-
-
             //String tecla = event.getText();
           
             /**
@@ -262,15 +242,16 @@ public class Mar {
     }
     
     public void setupAnimals() {
-        
-         animales.add( new Tiburon(new Image("images/components/tiburoncin2.png"), "holi", 200));
+        this.animales = new LinkedList<>();
+        animales.add( new Tiburon(new Image("images/components/tiburoncin2.png"), "holi", 200));
         animales.add(new Tiburon (new Image("images/components/tiburoncin2.png"), "nuevo", 300));
         animales.add( new Tiburon (new Image("images/components/tiburoncin2.png"), "pythonlover", 400));
+
+        
         
         this.root.getChildren().addAll(animales.get(0).getRoot(), animales.get(1).getRoot(), animales.get(2).getRoot());//codigo  nuevo
         
-        buceador.getImagenView().setLayoutX(40);
-        buceador.getImagenView().setLayoutY(100);
+
         
         
         
@@ -287,6 +268,54 @@ public class Mar {
         t2.start();
         Thread t3 = new Thread(animales.get(2));
         t3.start();
+    }
+    
+    public void iniciarMar(){
+        this.root = new BorderPane();
+        this.jugador = new Jugador("Nombre Pruebita");
+        this.root.getStylesheets().add("styles/styles.css");
+        this.root.getStyleClass().add("mar");
+        this.puntos = new Label(Integer.toString(jugador.getPuntos()));
+        this.imagenVida = new ImageView(new Image("images/components/corazonVidas.png"));
+        this.imagenPuntos = new ImageView(new Image("images/components/tesoro.png"));
+        this.numVidas = new Label("3");
+        
+        
+        this.root.getChildren().addAll(this.imagenVida, this.numVidas, this.imagenPuntos, this.puntos);
+        this.imagenVida.setLayoutX(10);
+        this.imagenVida.setLayoutY(5);
+        
+        this.numVidas.setLayoutX(200);
+        this.numVidas.setLayoutY(5);
+                
+        this.imagenPuntos.setLayoutX(400);
+        this.imagenPuntos.setLayoutY(5);
+                        
+        this.puntos.setLayoutX(550);
+        this.puntos.setLayoutY(5); 
+        
+        
+        
+        
+        //Buceador
+        this.buceador = new Buceador();
+        this.root.getChildren().add(this.buceador.getImagenBuceador());
+        buceador.getImagenBuceador().setLayoutX(40);
+        buceador.getImagenBuceador().setLayoutY(100);
+        
+
+        
+        //Panel superior
+
+        
+        
+        Image im = new Image("images/components/tiburoncin2.png");
+        animal1 = new Tiburon(im, "holi", 200);//codigo  nuevo
+        animal2 = new Tiburon (im, "chaoo", 300);
+        animal3 = new Tiburon (im, "pythonlover", 400);
+
+        root.addEventHandler(KeyEvent.KEY_PRESSED, new KeyHandler(root) );
+        this.setupAnimals();
         
         
         

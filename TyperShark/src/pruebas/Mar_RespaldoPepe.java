@@ -71,10 +71,10 @@ public class Mar_RespaldoPepe {
         
         
         panelAn = animal1.getRoot();
-        this.root.getChildren().addAll(panelAn, animal2.getRoot(), animal3.getRoot(), buceador.getImagenView());//codigo  nuevo
+        this.root.getChildren().addAll(panelAn, animal2.getRoot(), animal3.getRoot(), buceador.getImagenBuceador());//codigo  nuevo
         
-        buceador.getImagenView().setLayoutX(40);
-        buceador.getImagenView().setLayoutY(100);
+        buceador.getImagenBuceador().setLayoutX(40);
+        buceador.getImagenBuceador().setLayoutY(100);
         root.addEventHandler(KeyEvent.KEY_PRESSED, new KeyHandler(root) );
         
         
