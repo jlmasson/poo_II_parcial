@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package typershark.panels;
+package pruebas;
 
+import typershark.panels.*;
 import java.util.LinkedList;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -27,7 +28,7 @@ import typershark.people.Buceador;
  *
  * @author Jose Masson
  */
-public class Mar {
+public class Mar_RespaldoPepe {
     private BorderPane root;
     private Button previo;
     
@@ -45,7 +46,7 @@ public class Mar {
     private LinkedList<Thread> hilos;
     
     
-    public Mar() {
+    public Mar_RespaldoPepe(Stage previo) {
         this.root = new BorderPane();
         this.root.getStylesheets().add("styles/styles.css");
         this.root.getStyleClass().add("mar");
