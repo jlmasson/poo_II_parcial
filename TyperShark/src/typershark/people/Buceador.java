@@ -13,15 +13,16 @@ import javafx.scene.image.ImageView;
  * @author Galo Castillo
  */
 public class Buceador {
-    private Image imagen;
     private ImageView imagenView;
     
     
-    public Buceador(double posX, double posY){
-        this.imagen = new Image("buceador.gif");
-        this.imagenView = new ImageView(this.imagen);
-        this.imagenView.setLayoutX(posX);
-        this.imagenView.setLayoutY(posY);
+    public Buceador(Image im, double posX, double posY){
         
+        this.imagenView = new ImageView(im);
+        
+    }
+    
+    public ImageView getImagenView(){
+        return this.imagenView;
     }
 }
