@@ -9,6 +9,7 @@ package typershark.panels;
 import java.util.LinkedList;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -23,6 +24,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.AudioClip;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import typershark.animals.AnimalMarino;
@@ -38,12 +40,11 @@ import typershark.people.Jugador;
 public class Mar {
     private BorderPane root;
     private Button previo;
-    private Label puntos;
+    private Text puntos;
     private ImageView imagenPuntos;
-    private Label numVidas;
+    private Text numVidas;
     private ImageView imagenVida;
     private Buceador buceador;
-    private HBox panelSuperior;
     
     
     private AnimalMarino animal1;   
@@ -275,24 +276,42 @@ public class Mar {
         this.jugador = new Jugador("Nombre Pruebita");
         this.root.getStylesheets().add("styles/styles.css");
         this.root.getStyleClass().add("mar");
-        this.puntos = new Label(Integer.toString(jugador.getPuntos()));
+        this.puntos = new Text(Integer.toString(jugador.getPuntos()));
+        this.puntos.setFont(new Font("Times New Roman", 30));
         this.imagenVida = new ImageView(new Image("images/components/corazonVidas.png"));
         this.imagenPuntos = new ImageView(new Image("images/components/tesoro.png"));
-        this.numVidas = new Label("3");
+        this.numVidas = new Text("3");
+        this.numVidas.setFont(new Font("Times New Roman", 30));
         
         
-        this.root.getChildren().addAll(this.imagenVida, this.numVidas, this.imagenPuntos, this.puntos);
+        HBox panelSuperior = new HBox();
+        HBox panelDer = new HBox();
+        HBox panelIzq = new HBox();
+        panelIzq.getChildren().addAll(this.imagenVida, this.numVidas);
+        panelDer.getChildren().addAll(this.imagenPuntos, this.puntos);
+        
+        this.puntos.setLayoutY(30);
+        
+        
+        panelSuperior.getChildren().addAll(panelIzq, panelDer);
+        this.root.setTop(panelSuperior);
+        panelSuperior.setAlignment(Pos.BOTTOM_CENTER);
+        panelSuperior.setSpacing(350);
+        
+        
+        //this.root.getChildren().addAll(this.imagenVida, this.numVidas, this.imagenPuntos, this.puntos);
+        //this.root.getChildren().add(panelSuperior);
         this.imagenVida.setLayoutX(10);
         this.imagenVida.setLayoutY(5);
         
         this.numVidas.setLayoutX(200);
-        this.numVidas.setLayoutY(5);
+        this.numVidas.setLayoutY(30);
                 
         this.imagenPuntos.setLayoutX(400);
         this.imagenPuntos.setLayoutY(5);
                         
         this.puntos.setLayoutX(550);
-        this.puntos.setLayoutY(5); 
+        this.puntos.setLayoutY(30); 
         
         
         
@@ -300,7 +319,7 @@ public class Mar {
         //Buceador
         this.buceador = new Buceador();
         this.root.getChildren().add(this.buceador.getImagenBuceador());
-        buceador.getImagenBuceador().setLayoutX(40);
+        buceador.getImagenBuceador().setLayoutX(0);
         buceador.getImagenBuceador().setLayoutY(100);
         
 
