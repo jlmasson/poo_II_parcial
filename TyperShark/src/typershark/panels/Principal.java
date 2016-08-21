@@ -18,6 +18,7 @@ import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import typershark.handlers.ClickHandler;
 import typershark.handlers.ClickHandlerMar;
@@ -142,6 +143,16 @@ public class Principal {
                     //HBox root = new HBox();
                     botonPrueba = new Button("Boton Previo");
                     botonPrueba.setOnAction(new ClickHandler(stage, second));
+                    Label instrucciones = new Label("El buceador acumula puntos a medida que desciende y por cada animal marino que desaparece.\n" +
+                                            "Inicialmente dispone de 3 vidas, pero puede ganar vidas extra acumulando puntos. Al llegar al fondo\n" +
+                                            "del mar se puede acumular mas puntaje tipeando la mayor cantidad de palabras posible. Con\n" +
+                                            "suficiente puntaje acumulado el buceador no solo gana una vida, también puede utilizar parte de su\n" +
+                                            "puntaje para eliminar a todos los animales marinos en la cercanía, presionando unicamente la tecla\n" +
+                                            "ENTER.\n" +
+                                            "El juego termina cuando el buceador pierde sus tres vidas. A medida que acumula puntaje el jugador\n" +
+                                            "va avanzando a un siguiente nivel, en el cual los animales marinos aumentan su rapidez.");
+                    instrucciones.setFont(new Font("Papyrus", 18));
+                    instrucciones.setTextFill(Color.WHITE);
                     Instrucciones ins = new Instrucciones();
                     ins.getRoot().setTop(botonPrueba);
                     Scene scen1 = new Scene(ins.getRoot(), 800, 600);
