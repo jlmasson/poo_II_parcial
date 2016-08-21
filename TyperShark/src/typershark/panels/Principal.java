@@ -5,10 +5,6 @@
  */
 package typershark.panels;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.Scanner;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -18,7 +14,6 @@ import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import typershark.handlers.ClickHandler;
 import typershark.handlers.ClickHandlerMar;
@@ -35,7 +30,6 @@ public class Principal {
     private Button salir;
     private Label title;
     private VBox root;
-    private ArrayList<String> palabrasJuego;
     
     public Principal(Stage principal) {
         this.root = new VBox();
@@ -45,8 +39,6 @@ public class Principal {
         this.root.getStylesheets().add("styles/styles.css");
         this.root.getStyleClass().add("root");
         this.setupButtons(principal, ds);
-        this.setupWords();
-        System.out.println(this.palabrasJuego);
     }
     
     public VBox getRoot() {
@@ -92,14 +84,6 @@ public class Principal {
         this.root.getChildren().addAll(jugar, instrucciones, puntajes, acercaDe, salir);
     }
     
-    private void setupWords() {
-        try {
-            this.palabrasJuego = Principal.cargarPalabras();
-        } catch (FileNotFoundException ex) {
-            System.out.println("Carga de Palabras no exitosa");
-        }
-    }
-    
     private DropShadow setupShadow() {
         DropShadow ds = new DropShadow();
         ds.setOffsetY(5.0f);
@@ -125,7 +109,7 @@ public class Principal {
                     Stage third;
                     third = new Stage();
                     //HBox root = new HBox();
-                    Button botonPrueba = new Button("<- Volver al Menú Principal");
+                    Button botonPrueba = new Button("Volver al Menú Principal");
                    
                     Mar mar = new Mar();
                     botonPrueba.setOnAction(new ClickHandlerMar(this.stage, third, mar));
@@ -143,16 +127,6 @@ public class Principal {
                     //HBox root = new HBox();
                     botonPrueba = new Button("Boton Previo");
                     botonPrueba.setOnAction(new ClickHandler(stage, second));
-                    Label instrucciones = new Label("El buceador acumula puntos a medida que desciende y por cada animal marino que desaparece.\n" +
-                                            "Inicialmente dispone de 3 vidas, pero puede ganar vidas extra acumulando puntos. Al llegar al fondo\n" +
-                                            "del mar se puede acumular mas puntaje tipeando la mayor cantidad de palabras posible. Con\n" +
-                                            "suficiente puntaje acumulado el buceador no solo gana una vida, también puede utilizar parte de su\n" +
-                                            "puntaje para eliminar a todos los animales marinos en la cercanía, presionando unicamente la tecla\n" +
-                                            "ENTER.\n" +
-                                            "El juego termina cuando el buceador pierde sus tres vidas. A medida que acumula puntaje el jugador\n" +
-                                            "va avanzando a un siguiente nivel, en el cual los animales marinos aumentan su rapidez.");
-                    instrucciones.setFont(new Font("Papyrus", 18));
-                    instrucciones.setTextFill(Color.WHITE);
                     Instrucciones ins = new Instrucciones();
                     ins.getRoot().setTop(botonPrueba);
                     Scene scen1 = new Scene(ins.getRoot(), 800, 600);
@@ -177,20 +151,6 @@ public class Principal {
             System.exit(0);
         }
         
-    }
-    
-    private static ArrayList<String> cargarPalabras() throws FileNotFoundException {
-        ArrayList<String> palabras = new ArrayList<>();
-        File archivo = new File("src/words/words.txt");
-        try (Scanner sc = new Scanner(archivo)) {
-            sc.useDelimiter("\n");
-            while(sc.hasNext()) {
-                String linea = sc.nextLine();
-                linea = linea.trim();
-                palabras.add(linea);
-            }
-        }
-        return palabras;
     }
     
 }
