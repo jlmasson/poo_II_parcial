@@ -113,7 +113,7 @@ public class Principal {
                    
                     Mar mar = new Mar();
                     botonPrueba.setOnAction(new ClickHandlerMar(this.stage, third, mar));
-                    mar.getRoot().setTop(botonPrueba);
+                    mar.getRoot().setBottom(botonPrueba);
                     Scene scene = new Scene(mar.getRoot(), 800, 600);
                     third.setScene(scene);
                     third.show();

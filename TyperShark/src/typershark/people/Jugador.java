@@ -17,8 +17,42 @@ public class Jugador {
     
     public Jugador(String nickname) {
         this.nickname = nickname;
-        this.puntos = 0;
+        this.puntos = 3000;
         this.numVidas = 3;
         this.ataquesDePiranhas = 0;
     }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public int getPuntos() {
+        return puntos;
+    }
+
+    public void setPuntos(int puntos) {
+        this.puntos = puntos;
+    }
+
+    public int getNumVidas() {
+        return numVidas;
+    }
+
+    public void setNumVidas(int numVidas) {
+        this.numVidas = numVidas;
+    }
+
+    public int getAtaquesDePiranhas() {
+        return ataquesDePiranhas;
+    }
+
+    public void setAtaquesDePiranhas(int ataquesDePiranhas) {
+        this.ataquesDePiranhas = ataquesDePiranhas;
+    }
+    
+    
 }

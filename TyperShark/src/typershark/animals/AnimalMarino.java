@@ -18,6 +18,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import typershark.people.Jugador;
 
 /**
  *
@@ -68,15 +69,21 @@ public abstract class AnimalMarino implements Runnable {
 
     public void run() {
         try {
-            while (vivo) {
-                Platform.runLater(new Runnable() {
+            while (vivo && pane.getLayoutX() > 0) {
+                //synchronized(this);
+                synchronized(this) {
+                    Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
                         pane.setLayoutX(pane.getLayoutX() - 10);
                     }
                 });
                 Thread.sleep(velocidad);
+                }
+                
+                
             }
+            
         } catch (InterruptedException ex) {
         }
     }
@@ -106,5 +113,7 @@ public abstract class AnimalMarino implements Runnable {
             this.velocidad = this.velocidad - v;
         }
     }
+    
+    public abstract void aumentarPuntos(Jugador jugador);
 
 }
