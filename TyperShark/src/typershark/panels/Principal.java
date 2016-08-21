@@ -16,6 +16,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import typershark.handlers.ClickHandler;
+import typershark.handlers.ClickHandlerMar;
 
 /**
  *
@@ -109,8 +110,9 @@ public class Principal {
                     third = new Stage();
                     //HBox root = new HBox();
                     Button botonPrueba = new Button("Volver al Menú Principal");
-                    botonPrueba.setOnAction(new ClickHandler(this.stage, third));
-                    Mar mar = new Mar();
+                   
+                    Mar mar = new Mar(this.stage);
+                    botonPrueba.setOnAction(new ClickHandlerMar(this.stage, third, mar));
                     mar.getRoot().setTop(botonPrueba);
                     Scene scene = new Scene(mar.getRoot(), 800, 600);
                     third.setScene(scene);

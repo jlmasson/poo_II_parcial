@@ -27,7 +27,7 @@ public class TiburonesMovimiento extends Application{
         //scene = new Scene(marOrg.getRoot(), 200, 200);
         primaryStage.setTitle("TyperShark!");
 
-        AnimalMarino tiburon = new Tiburon(new Image("Tiburon-negro-400x240.png"), "palabra");
+        //AnimalMarino tiburon = new Tiburon(new Image("Tiburon-negro-400x240.png"), "palabra");
 
         //Button btn = new Button();
         
@@ -37,6 +37,7 @@ public class TiburonesMovimiento extends Application{
             System.out.println("Hello World!");
         });**/
 
+        /**
         StackPane root = new StackPane();
         root.getChildren().add(tiburon.getRoot());
 
@@ -45,7 +46,7 @@ public class TiburonesMovimiento extends Application{
         primaryStage.setTitle("Hello World!");
 
         primaryStage.setScene(scene);
-        primaryStage.show();
+        primaryStage.show();**/
     }
     /**
      * @param args the command line arguments

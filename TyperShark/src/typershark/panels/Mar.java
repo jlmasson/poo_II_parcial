@@ -18,6 +18,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import typershark.animals.AnimalMarino;
 import typershark.animals.Tiburon;
 import typershark.people.Buceador;
@@ -44,7 +45,7 @@ public class Mar {
     private LinkedList<Thread> hilos;
     
     
-    public Mar() {
+    public Mar(Stage previo) {
         this.root = new BorderPane();
         this.root.getStylesheets().add("styles/styles.css");
         this.root.getStyleClass().add("mar");
@@ -58,7 +59,7 @@ public class Mar {
         Image im = new Image("images/components/tiburoncin2.png");
         
         
-        animal1 = new  Tiburon(im, "holi", 200);//codigo  nuevo
+        animal1 = new Tiburon(im, "holi", 200);//codigo  nuevo
         animal2 = new Tiburon (im, "chaoo", 300);
         animal3 = new Tiburon (im, "pythonlover", 400);
         
@@ -183,6 +184,12 @@ public class Mar {
         **/
         }
         
+    }
+    
+    public void finalizarPrograma() {
+        this.animales.stream().forEach((a) -> {
+            a.setAlive(false);
+        });
     }
     
     
