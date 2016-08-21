@@ -124,7 +124,7 @@ public class Principal {
                     Stage third;
                     third = new Stage();
                     //HBox root = new HBox();
-                    Button botonPrueba = new Button("Volver al Menú Principal");
+                    Button botonPrueba = new Button("<- Volver al Menú Principal");
                    
                     Mar mar = new Mar();
                     botonPrueba.setOnAction(new ClickHandlerMar(this.stage, third, mar));
