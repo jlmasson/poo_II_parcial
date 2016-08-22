@@ -67,6 +67,8 @@ public class Mar {
     
     
     private LinkedList<Thread> hilos;
+    
+    
     private Integer countDownPoder = ConstantesPuntos.PUNTOS_PODER;
     
     public Mar() {
@@ -347,17 +349,27 @@ public class Mar {
     
     public void setupAnimals() {
         this.animales = new LinkedList<>();
-        animales.add( new Tiburon(new Image("images/components/tiburoncin2.png"), "holi", 200));
-        animales.add(new Tiburon (new Image("images/components/tiburoncin2.png"), "nuevo", 300));
-        animales.add( new Tiburon (new Image("images/components/tiburoncin2.png"), "pythonlover", 400));
-
+        this.hilos = new LinkedList<>();
+        int posXInicial = 600;
+        int posYInicial = 150;
         
+        for(int i = 0; i < 3; i++){
+            this.animales.add(new Tiburon(new Image("images/components/tiburoncin2.png"), "pala", 200));
+            this.root.getChildren().add(this.animales.get(i).getRoot());
+            
+            this.animales.get(i).getRoot().setLayoutX(posXInicial);
+            this.animales.get(i).getRoot().setLayoutY(posYInicial);
+            posYInicial += 100;
+            
+            this.hilos.add(new Thread(this.animales.get(i)));
+            
+        }
         
-        this.root.getChildren().addAll(animales.get(0).getRoot(), animales.get(1).getRoot(), animales.get(2).getRoot());//codigo  nuevo
+        for (Thread t: this.hilos) {
+            t.start();
+        }
         
-
-        
-        
+        /**
         
         animales.get(0).getRoot().setLayoutX(700);//codigo  nuevo
         animales.get(0).getRoot().setLayoutY(150);//codigo  nuevo
@@ -371,7 +383,7 @@ public class Mar {
         Thread t2 = new Thread(animales.get(1));
         t2.start();
         Thread t3 = new Thread(animales.get(2));
-        t3.start();
+        t3.start();**/
     }
     
     public void iniciarMar(){
