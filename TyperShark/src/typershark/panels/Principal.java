@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -19,6 +20,8 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import javafx.stage.WindowEvent;
 import typershark.handlers.ClickHandler;
 import typershark.handlers.ClickHandlerMar;
 
@@ -119,7 +122,12 @@ public class Principal {
                     botonPrueba.setOnAction(new ClickHandlerMar(this.stage, third, mar));
                     mar.getRoot().setBottom(botonPrueba);
                     Scene scene = new Scene(mar.getRoot(), 800, 600);
+                    third.initStyle(StageStyle.UNDECORATED);
                     third.setScene(scene);
+                    third.setOnCloseRequest((WindowEvent t) -> {
+                        Platform.exit();
+                        System.exit(0);
+            });
                     third.show();
                     break;
                 

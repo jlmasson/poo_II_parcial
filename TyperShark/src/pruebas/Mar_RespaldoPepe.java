@@ -29,6 +29,8 @@ import typershark.people.Buceador;
  * @author Jose Masson
  */
 public class Mar_RespaldoPepe {
+    
+    /**
     private BorderPane root;
     private Button previo;
     
@@ -183,15 +185,16 @@ public class Mar_RespaldoPepe {
         });
         
         **/
-        }
+        //}
         
-    }
+    //}
     
+    /**
     public void finalizarPrograma() {
         this.animales.stream().forEach((a) -> {
             a.setAlive(false);
         });
-    }
+    }**/
     
     
     
