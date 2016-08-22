@@ -150,7 +150,7 @@ public class Mar {
                 Timeline timeline = new Timeline();
                 timeline.setCycleCount(Timeline.INDEFINITE);
                 timeline.getKeyFrames().add(new KeyFrame(Duration.seconds(0.001),
-                          new PuntosEvent(timeline, puntosDisminuir, -1)));
+                          new DisminuirPuntosEvent(timeline)));
                 timeline.playFromStart();
                 //Mar.this.jugador.setPuntos(Mar.this.jugador.getPuntos() - ConstantesPuntos.PUNTOS_PODER);
                 //Mar.this.puntos.setText(Integer.toString(Mar.this.jugador.getPuntos()));
@@ -202,7 +202,7 @@ public class Mar {
                         Timeline timeline = new Timeline();
                         timeline.setCycleCount(Timeline.INDEFINITE);
                         timeline.getKeyFrames().add(new KeyFrame(Duration.seconds(0.001),
-                                  new PuntosEvent(timeline, diferencia, 1)));
+                                  new AumentarPuntosEvent(timeline, diferencia)));
                         timeline.playFromStart();
                         
                         Mar.this.puntos.setText(Integer.toString(jugador.getPuntos()));
@@ -261,7 +261,7 @@ public class Mar {
         
     }
     
-    /**
+    
     private class AumentarPuntosEvent implements EventHandler {
 
             private final Timeline timeline;
@@ -303,7 +303,7 @@ public class Mar {
                     Mar.this.countDownPoder = ConstantesPuntos.PUNTOS_PODER;
                 }
             }
-        } **/
+        }
     
     private void reproducirSonido(String tipo) {
         
