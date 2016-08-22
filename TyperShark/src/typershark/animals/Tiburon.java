@@ -6,6 +6,7 @@
 package typershark.animals;
 
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import typershark.constantes.ConstantesPuntos;
 import typershark.people.Jugador;
 
@@ -15,10 +16,12 @@ import typershark.people.Jugador;
  */
 public class Tiburon extends AnimalMarino {
     
-    public Tiburon(Image imagen, String palabra, long velocidad) {
-        super(imagen, palabra, velocidad);
+    public Tiburon(String palabra, long velocidad) {
+        super("images/components/tiburonBlanco400x400.png", palabra, velocidad);
         
     }
+    
+    
 
     @Override
     public void aumentarPuntos(Jugador jugador) {

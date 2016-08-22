@@ -7,6 +7,7 @@ package typershark.panels;
 
 
 import java.util.LinkedList;
+import java.util.Random;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.collections.ObservableList;
@@ -34,7 +35,10 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import typershark.animals.AnimalMarino;
+import typershark.animals.Piranha;
 import typershark.animals.Tiburon;
+import typershark.animals.TiburonNegro;
+import typershark.constantes.Constantes;
 import typershark.constantes.ConstantesPuntos;
 import typershark.people.Buceador;
 import typershark.people.Jugador;
@@ -169,7 +173,7 @@ public class Mar {
                 if(!marcado){
                     for(int i = 0 ; i < animales.size() && !marcado; i++){
                         if (animales.get(i).isAlive()) {
-                            if(Character.toString(animales.get(i).getPalabra().getText().charAt(0)).equals(event.getText())){
+                            if(Character.toString(animales.get(i).getpPalabraEnPantalla().getText().charAt(0)).equals(event.getText())){
                                 indexActual = i;
                                 elegido = animales.get(indexActual);
                                 marcado = true;
@@ -242,7 +246,6 @@ public class Mar {
         
         **/
         }
-        
     }
     
     private class PuntosEvent implements EventHandler {
@@ -352,14 +355,27 @@ public class Mar {
         this.hilos = new LinkedList<>();
         int posXInicial = 600;
         int posYInicial = 150;
+        Random r = new Random();
+        
         
         for(int i = 0; i < 3; i++){
-            this.animales.add(new Tiburon(new Image("images/components/tiburoncin2.png"), "pala", 200));
+            int aleatorio = r.nextInt(3) + 1;
+            switch(aleatorio){
+                case 1:
+                    this.animales.add(new Tiburon("pala", 200));
+                    break;
+                case 2:
+                    this.animales.add(new TiburonNegro("pala", 200));
+                    break;
+                case 3:
+                    this.animales.add(new Piranha("pala", 200));
+                    break;
+            }
             this.root.getChildren().add(this.animales.get(i).getRoot());
             
             this.animales.get(i).getRoot().setLayoutX(posXInicial);
             this.animales.get(i).getRoot().setLayoutY(posYInicial);
-            posYInicial += 100;
+            posYInicial += 150;
             
             this.hilos.add(new Thread(this.animales.get(i)));
             
@@ -438,37 +454,33 @@ public class Mar {
         this.nivel.setLayoutX(375);
         this.nivel.setLayoutY(30);
         
-        
-        
-        
-        
-        
-        
-        
-        
-        
+
         
         //Buceador
         this.buceador = new Buceador();
         this.root.getChildren().add(this.buceador.getImagenBuceador());
         buceador.getImagenBuceador().setLayoutX(0);
-        buceador.getImagenBuceador().setLayoutY(100);
+        buceador.getImagenBuceador().setLayoutY(Constantes.POS_Y_INICIAL_BUCEADOR);
         
 
         
         //Panel superior
 
-        
-        
-        Image im = new Image("images/components/tiburoncin2.png");
-        animal1 = new Tiburon(im, "holi", 200);//codigo  nuevo
-        animal2 = new Tiburon (im, "chaoo", 300);
-        animal3 = new Tiburon (im, "pythonlover", 400);
 
         root.addEventHandler(KeyEvent.KEY_PRESSED, new KeyHandler(root) );
         this.setupAnimals();
         
         
+        
+        
+    }
+    
+    public void setSiguienteNivel(){
+        
+        
+        
+        this.numNivel += 1;
+        buceador.getImagenBuceador().setLayoutY(Constantes.POS_Y_INICIAL_BUCEADOR);
         
         
     }

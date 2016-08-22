@@ -28,22 +28,20 @@ public abstract class AnimalMarino implements Runnable {
 
     private StackPane pane;
     private ImageView imagen;
-    private Text palabra;
+    private Text palabraEnPantalla;
     private long velocidad;
     private TextFlow text;
-    private Text palabraTipeada;
     private boolean vivo;
 
-    public AnimalMarino(Image imagen, String palabra, long velocidad) {
+    public AnimalMarino(String ruta, String palabra, long velocidad) {
 
         Pane p = new Pane();
-        this.imagen = new ImageView(imagen);
-        this.palabra = new Text(palabra);
-        this.palabra.setFont(new Font(200));
-        this.palabra = new Text(palabra);
-        this.palabra.setFill(Color.WHITE);
-        this.palabra.setFont(new Font(30));
-
+        this.palabraEnPantalla = new Text(palabra);
+        this.palabraEnPantalla.setFont(new Font(200));
+        this.palabraEnPantalla = new Text(palabra);
+        this.palabraEnPantalla.setFill(Color.WHITE);
+        this.palabraEnPantalla.setFont(new Font(30));
+        this.imagen = new ImageView(new Image(ruta));
         vivo = true;
 
         text = new TextFlow();
@@ -59,7 +57,7 @@ public abstract class AnimalMarino implements Runnable {
 
         this.pane = new StackPane();
         p.getChildren().addAll(this.text);
-        this.palabra.setLayoutX(20);
+        this.palabraEnPantalla.setLayoutX(20);
         pane.getChildren().addAll(this.imagen, p);
     }
 
@@ -91,9 +89,13 @@ public abstract class AnimalMarino implements Runnable {
     public ImageView getImagen() {//codigo  nuevo
         return this.imagen;//codigo  nuevo
     }
+    
+    public void setImagen(Image imagen) {
+        this.imagen = new ImageView(imagen);
+    }
 
-    public Text getPalabra() {
-        return this.palabra;
+    public Text getpPalabraEnPantalla() {
+        return this.palabraEnPantalla;
     }
 
     public TextFlow getFlow() {
@@ -112,6 +114,10 @@ public abstract class AnimalMarino implements Runnable {
         if (this.velocidad - v > 0) {
             this.velocidad = this.velocidad - v;
         }
+    }
+    
+    public void setPalabraEnPantalla(String palabra){
+        
     }
     
     public abstract void aumentarPuntos(Jugador jugador);

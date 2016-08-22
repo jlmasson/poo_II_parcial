@@ -14,8 +14,9 @@ import typershark.people.Jugador;
  * @author Danilo Torres
  */
 public class Piranha extends AnimalMarino {
-    public Piranha(Image imagen, String palabra, long velocidad) {
-        super(imagen, palabra, velocidad);
+    public Piranha(String palabra, long velocidad) {
+        super("images/components/piranha.png", palabra, velocidad);
+        
     }
 
     @Override
