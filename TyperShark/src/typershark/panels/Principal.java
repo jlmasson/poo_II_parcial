@@ -47,7 +47,7 @@ public class Principal {
     private ArrayList<String> palabrasJuego;
     
     public Principal(Stage principal) {
-        this.playSound("game_menu.mp3", true);
+        Principal.playSound("game_menu.mp3", true);
         this.root = new VBox();
         this.root.setAlignment(Pos.CENTER);
         DropShadow ds = this.setupShadow();

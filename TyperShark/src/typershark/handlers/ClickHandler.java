@@ -28,7 +28,7 @@ public class ClickHandler implements EventHandler<ActionEvent>{
     @Override
     public void handle(ActionEvent event) {
         Principal.playSound("button_sound.mp3", false);
-        this.actual.close();
+        this.actual.hide();
         this.principal.show();
     }
     
