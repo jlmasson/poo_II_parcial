@@ -5,6 +5,10 @@
  */
 package typershark.panels;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Scanner;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -30,6 +34,7 @@ public class Principal {
     private Button salir;
     private Label title;
     private VBox root;
+    private ArrayList<String> palabrasJuego;
     
     public Principal(Stage principal) {
         this.root = new VBox();
@@ -110,7 +115,6 @@ public class Principal {
                     third = new Stage();
                     //HBox root = new HBox();
                     Button botonPrueba = new Button("Volver al Menú Principal");
-                   
                     Mar mar = new Mar();
                     botonPrueba.setOnAction(new ClickHandlerMar(this.stage, third, mar));
                     mar.getRoot().setBottom(botonPrueba);
@@ -151,6 +155,20 @@ public class Principal {
             System.exit(0);
         }
         
+    }
+    
+    private static ArrayList<String> cargarPalabras() throws FileNotFoundException {
+        ArrayList<String> palabras = new ArrayList<>();
+        File archivo = new File("src/words/words.txt");
+        try (Scanner sc = new Scanner(archivo)) {
+            sc.useDelimiter("\n");
+            while(sc.hasNext()) {
+                String linea = sc.nextLine();
+                linea = linea.trim();
+                palabras.add(linea);
+            }
+        }
+        return palabras;
     }
     
 }
