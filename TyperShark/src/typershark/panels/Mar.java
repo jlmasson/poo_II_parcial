@@ -6,6 +6,8 @@
 package typershark.panels;
 
 
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
 import javafx.animation.KeyFrame;
@@ -64,6 +66,7 @@ public class Mar {
     private AnimalMarino animal2;
     private AnimalMarino animal3;
     
+    private ArrayList<String> palabrasJuego;
     
     private Jugador jugador;
     
@@ -77,6 +80,14 @@ public class Mar {
     
     public Mar() {
 
+        palabrasJuego = new ArrayList<>();
+        palabrasJuego.add("Hola");
+        palabrasJuego.add("Chao");
+   
+        try{
+            palabrasJuego = Principal.cargarPalabras();
+        }catch(FileNotFoundException ex){}
+        
         this.iniciarMar();
 
         
@@ -217,13 +228,23 @@ public class Mar {
                         timeline.playFromStart();
                         
                         Mar.this.puntos.setText(Integer.toString(jugador.getPuntos()));
-                        elegido.setAlive(false);
                         count = 0;
                         //elegido.getRoot().setVisible(false);
-                        Mar.this.root.getChildren().remove(elegido.getRoot());
-                        if (!animales.isEmpty())
-                            animales.remove(elegido);
-                        
+                        if(elegido instanceof TiburonNegro &&
+                                ((TiburonNegro)elegido).getPalabras().size() > 1){
+                            
+                                elegido.getRoot().getChildren().remove(elegido.getPanelMedio());
+                                ((TiburonNegro)elegido).getPalabras().remove(0);
+                                String siguientePalabra = ((TiburonNegro)elegido).getPalabras().get(0);
+                                ((TiburonNegro)elegido).setTextoEnPantalla(siguientePalabra);
+                            
+                        }
+                        else{
+                            elegido.setAlive(false);
+                            Mar.this.root.getChildren().remove(elegido.getRoot());
+                            if (!animales.isEmpty())
+                                animales.remove(elegido);
+                        }
                         indexActual = -1;
                         marcado = false;
                         if(animales.isEmpty()){
@@ -362,13 +383,14 @@ public class Mar {
             int aleatorio = r.nextInt(3) + 1;
             switch(aleatorio){
                 case 1:
-                    this.animales.add(new Tiburon("pala", 200));
+                    this.animales.add(new Tiburon(palabrasJuego, 200));
                     break;
                 case 2:
-                    this.animales.add(new TiburonNegro("pala", 200));
+                    
+                    this.animales.add(new TiburonNegro(palabrasJuego, 200));
                     break;
                 case 3:
-                    this.animales.add(new Piranha("pala", 200));
+                    this.animales.add(new Piranha(palabrasJuego, 120));
                     break;
             }
             this.root.getChildren().add(this.animales.get(i).getRoot());
@@ -476,7 +498,6 @@ public class Mar {
     }
     
     public void setSiguienteNivel(){
-        
         
         
         this.numNivel += 1;

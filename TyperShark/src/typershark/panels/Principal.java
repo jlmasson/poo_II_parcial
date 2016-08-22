@@ -208,9 +208,9 @@ public class Principal {
         
     }
     
-    private static ArrayList<String> cargarPalabras() throws FileNotFoundException {
+    public static ArrayList<String> cargarPalabras() throws FileNotFoundException {
         ArrayList<String> palabras = new ArrayList<>();
-        File archivo = new File("src/palabras/words.txt");
+        File archivo = new File("src/words/words.txt");
         try (Scanner sc = new Scanner(archivo)) {
             sc.useDelimiter("\n");
             while(sc.hasNext()) {

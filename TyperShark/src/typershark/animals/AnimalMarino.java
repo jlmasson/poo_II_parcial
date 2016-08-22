@@ -5,6 +5,7 @@
  */
 package typershark.animals;
 
+import java.util.ArrayList;
 import javafx.application.Platform;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -27,38 +28,26 @@ import typershark.people.Jugador;
 public abstract class AnimalMarino implements Runnable {
 
     private StackPane pane;
+    private Pane panelMedio;
     private ImageView imagen;
     private Text palabraEnPantalla;
     private long velocidad;
     private TextFlow text;
     private boolean vivo;
 
-    public AnimalMarino(String ruta, String palabra, long velocidad) {
+    public AnimalMarino(String ruta, ArrayList<String> palabrasJuego, long velocidad) {
 
-        Pane p = new Pane();
-        this.palabraEnPantalla = new Text(palabra);
-        this.palabraEnPantalla.setFont(new Font(200));
-        this.palabraEnPantalla = new Text(palabra);
-        this.palabraEnPantalla.setFill(Color.WHITE);
-        this.palabraEnPantalla.setFont(new Font(30));
+        
+
         this.imagen = new ImageView(new Image(ruta));
         vivo = true;
-
-        text = new TextFlow();
-        for (Character c : palabra.toLowerCase().toCharArray()) {
-            Text e = new Text(c.toString());
-            e.setFont(new Font(30));
-            e.setFill(Color.BLUE);
-            text.getChildren().add(e);
-
-        }
 
         this.velocidad = velocidad;
 
         this.pane = new StackPane();
-        p.getChildren().addAll(this.text);
-        this.palabraEnPantalla.setLayoutX(20);
-        pane.getChildren().addAll(this.imagen, p);
+
+
+        pane.getChildren().add(this.imagen);
     }
 
     public StackPane getRoot() {
@@ -116,8 +105,30 @@ public abstract class AnimalMarino implements Runnable {
         }
     }
     
-    public void setPalabraEnPantalla(String palabra){
+    public void setTextoEnPantalla(String palabra){
+        this.palabraEnPantalla = new Text(palabra);
+        this.palabraEnPantalla.setFont(new Font(200));
+        this.palabraEnPantalla = new Text(palabra);
+        this.palabraEnPantalla.setFill(Color.WHITE);
+        this.palabraEnPantalla.setFont(new Font(30));
+        text = new TextFlow();
+        for (Character c : palabra.toLowerCase().toCharArray()) {
+            Text e = new Text(c.toString());
+            e.setFont(new Font(30));
+            e.setFill(Color.BLUE);
+            text.getChildren().add(e);
+        }
+        panelMedio = new Pane();
+        panelMedio.getChildren().add(this.text);
+        this.text.setLayoutX(90);
+        pane.getChildren().add(panelMedio);
+        //pane.getChildren().add(this.text);
         
+        
+    }
+    
+    public Pane getPanelMedio (){
+        return this.panelMedio;
     }
     
     public abstract void aumentarPuntos(Jugador jugador);
