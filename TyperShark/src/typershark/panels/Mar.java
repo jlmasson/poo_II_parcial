@@ -7,7 +7,11 @@ package typershark.panels;
 
 
 import java.util.LinkedList;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -27,6 +31,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import typershark.animals.AnimalMarino;
 import typershark.animals.Tiburon;
 import typershark.constantes.ConstantesPuntos;
@@ -58,7 +63,7 @@ public class Mar {
     
     
     private LinkedList<Thread> hilos;
-    
+    private Integer countDownPoder = ConstantesPuntos.PUNTOS_PODER;
     
     public Mar() {
 
@@ -134,10 +139,17 @@ public class Mar {
             if (event.getCode() == KeyCode.ENTER && jugador.getPuntos() >= ConstantesPuntos.PUNTOS_PODER && !KeyHandler.this.marcado) {
                 System.out.println(Mar.this.jugador.getPuntos());
                 Mar.this.finalizarPrograma();
+                Integer puntosDisminuir = ConstantesPuntos.PUNTOS_PODER;
+                //Integer timeSeconds = ConstantesPuntos.PUNTOS_PODER;
                 //Mar.this.desaparecerTiburones();
                 Mar.this.removerAnimales();
-                Mar.this.jugador.setPuntos(Mar.this.jugador.getPuntos() - ConstantesPuntos.PUNTOS_PODER);
-                Mar.this.puntos.setText(Integer.toString(Mar.this.jugador.getPuntos()));
+                Timeline timeline = new Timeline();
+                timeline.setCycleCount(Timeline.INDEFINITE);
+                timeline.getKeyFrames().add(new KeyFrame(Duration.seconds(0.001),
+                          new PuntosEvent(timeline, puntosDisminuir, -1)));
+                timeline.playFromStart();
+                //Mar.this.jugador.setPuntos(Mar.this.jugador.getPuntos() - ConstantesPuntos.PUNTOS_PODER);
+                //Mar.this.puntos.setText(Integer.toString(Mar.this.jugador.getPuntos()));
                 Mar.this.animales.clear();
                 Mar.this.setupAnimals();
             } else {
@@ -177,7 +189,18 @@ public class Mar {
                             elegido.aumentarVelocidad(55);
                         }
                     } if (count == lista.size()) {
+                        Integer puntosAnteriores = Mar.this.jugador.getPuntos();
                         elegido.aumentarPuntos(jugador);
+                        Integer puntosActuales = Mar.this.jugador.getPuntos();
+                        Integer diferencia = puntosActuales - puntosAnteriores;
+                        Mar.this.jugador.setPuntos(Mar.this.jugador.getPuntos() - diferencia);
+                        
+                        Timeline timeline = new Timeline();
+                        timeline.setCycleCount(Timeline.INDEFINITE);
+                        timeline.getKeyFrames().add(new KeyFrame(Duration.seconds(0.001),
+                                  new PuntosEvent(timeline, diferencia, 1)));
+                        timeline.playFromStart();
+                        
                         Mar.this.puntos.setText(Integer.toString(jugador.getPuntos()));
                         elegido.setAlive(false);
                         count = 0;
@@ -210,6 +233,73 @@ public class Mar {
         }
         
     }
+    
+    private class PuntosEvent implements EventHandler {
+        private final Timeline timeline;
+        private Integer puntos;
+        private Integer multiplicador;
+        
+        public PuntosEvent(Timeline timeline, Integer puntos, Integer multiplicador) {
+            this.timeline = timeline;
+            this.puntos = puntos;
+            this.multiplicador = multiplicador;
+        }
+
+        @Override
+        public void handle(Event event) {
+            this.puntos--;
+            Mar.this.jugador.setPuntos(Mar.this.jugador.getPuntos() + (multiplicador)*1);
+            Mar.this.puntos.setText(Integer.toString(Mar.this.jugador.getPuntos()));
+            if (this.puntos <= 0) {
+                this.timeline.stop();
+            }
+        }
+        
+    }
+    
+    /**
+    private class AumentarPuntosEvent implements EventHandler {
+
+            private final Timeline timeline;
+            private Integer puntos;
+
+            public AumentarPuntosEvent(Timeline timeline, Integer puntos) {
+                this.timeline = timeline;
+                this.puntos = puntos;
+            }
+
+            @Override
+            public void handle(Event event) {
+                this.puntos--;
+                Mar.this.jugador.setPuntos(Mar.this.jugador.getPuntos() + 1);
+                Mar.this.puntos.setText(Integer.toString(Mar.this.jugador.getPuntos()));
+                if (this.puntos <= 0) {
+                    timeline.stop();
+                }
+            }
+    }
+    
+    private class DisminuirPuntosEvent implements EventHandler {
+
+            private final Timeline timeline;
+
+            public DisminuirPuntosEvent(Timeline timeline) {
+                this.timeline = timeline;
+            }
+
+            @Override
+            public void handle(Event event) {
+                Mar.this.countDownPoder--;
+                Mar.this.jugador.setPuntos(Mar.this.jugador.getPuntos() - 1);
+                // update timerLabel
+                Mar.this.puntos.setText(
+                        Integer.toString(Mar.this.jugador.getPuntos()));
+                if (Mar.this.countDownPoder <= 0) {
+                    timeline.stop();
+                    Mar.this.countDownPoder = ConstantesPuntos.PUNTOS_PODER;
+                }
+            }
+        } **/
     
     private void reproducirSonido(String tipo) {
         
@@ -340,7 +430,5 @@ public class Mar {
         
         
     }
-    
-    
     
 }
