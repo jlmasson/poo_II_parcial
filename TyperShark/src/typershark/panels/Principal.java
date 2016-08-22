@@ -87,6 +87,7 @@ public class Principal {
         
         this.jugar.setOnAction(new ClickMenu(principal, 2));
         this.instrucciones.setOnAction(new ClickMenu(principal, 3));
+        this.puntajes.setOnAction(new ClickMenu(principal, 4));
         this.salir.setOnAction(new Exit());
         
         this.root.getChildren().addAll(jugar, instrucciones, puntajes, acercaDe, salir);
@@ -147,6 +148,15 @@ public class Principal {
                     break;
                 
                 case 4:
+                    Stage fourth = new Stage();
+                    //HBox root = new HBox();
+                    botonPrueba = new Button("Boton Previo");
+                    botonPrueba.setOnAction(new ClickHandler(stage, fourth));
+                    Puntajes punt = new Puntajes();
+                    punt.getRoot().setTop(botonPrueba);
+                    Scene scene2 = new Scene(punt.getRoot(), 800, 600);
+                    fourth.setScene(scene2);
+                    fourth.show();
                     break;
                 default:
                     break;

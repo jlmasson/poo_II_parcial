@@ -9,7 +9,7 @@ package typershark.people;
  *
  * @author Danilo Torres
  */
-public class Jugador {
+public class Jugador implements Comparable<Jugador>{
     private String nickname;
     private int puntos;
     private int numVidas;
@@ -22,6 +22,11 @@ public class Jugador {
         this.ataquesDePiranhas = 0;
     }
 
+    public Jugador(String nickname, int puntos) {
+        this.nickname = nickname;
+        this.puntos = puntos;
+    }
+    
     public String getNickname() {
         return nickname;
     }
@@ -53,6 +58,20 @@ public class Jugador {
     public void setAtaquesDePiranhas(int ataquesDePiranhas) {
         this.ataquesDePiranhas = ataquesDePiranhas;
     }
+
+    @Override
+    public int compareTo(Jugador o) {
+        if (this.puntos > o.puntos) {
+            return -1;
+        } else if (this.puntos == o.puntos) {
+            return 0;
+        }
+        else {
+            return 1;
+        }
+    }
+    
+    
     
     
 }

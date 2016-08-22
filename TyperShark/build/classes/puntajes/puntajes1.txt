@@ -1,0 +1,4 @@
+Galito|1500
+Pepito|5840
+Juanito|5882
+
