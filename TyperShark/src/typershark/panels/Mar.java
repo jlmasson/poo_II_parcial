@@ -24,6 +24,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.AudioClip;
@@ -49,6 +50,9 @@ public class Mar {
     private ImageView imagenPuntos;
     private Text numVidas;
     private ImageView imagenVida;
+    private Text nivel;
+    private int numNivel;
+    
     private Buceador buceador;
     
     
@@ -347,11 +351,11 @@ public class Mar {
         
         
         animales.get(0).getRoot().setLayoutX(700);//codigo  nuevo
-        animales.get(0).getRoot().setLayoutY(50);//codigo  nuevo
+        animales.get(0).getRoot().setLayoutY(150);//codigo  nuevo
         animales.get(1).getRoot().setLayoutX(700);
-        animales.get(1).getRoot().setLayoutY(200);
+        animales.get(1).getRoot().setLayoutY(350);
         animales.get(2).getRoot().setLayoutX(700);
-        animales.get(2).getRoot().setLayoutY(350);
+        animales.get(2).getRoot().setLayoutY(500);
         
         Thread t = new Thread(animales.get(0));
         t.start();
@@ -366,27 +370,32 @@ public class Mar {
         this.jugador = new Jugador("Nombre Pruebita");
         this.root.getStylesheets().add("styles/styles.css");
         this.root.getStyleClass().add("mar");
+        
+        this.numNivel = 1;
         this.puntos = new Text(Integer.toString(jugador.getPuntos()));
         this.puntos.setFont(new Font("Times New Roman", 30));
         this.imagenVida = new ImageView(new Image("images/components/corazonVidas.png"));
         this.imagenPuntos = new ImageView(new Image("images/components/tesoro.png"));
         this.numVidas = new Text("3");
         this.numVidas.setFont(new Font("Times New Roman", 30));
+        this.nivel = new Text("Nivel  " + this.numNivel);
+        this.nivel.setFont(new Font("Times New Roman", 20));
         
         
         HBox panelSuperior = new HBox();
-        HBox panelDer = new HBox();
-        HBox panelIzq = new HBox();
-        panelIzq.getChildren().addAll(this.imagenVida, this.numVidas);
+        Pane panelDer = new Pane();
+        Pane panelIzq = new Pane();
+        Pane panelCentral = new Pane();
+        panelIzq.getChildren().addAll(this.imagenVida, this.numVidas, this.nivel);
         panelDer.getChildren().addAll(this.imagenPuntos, this.puntos);
         
-        this.puntos.setLayoutY(30);
         
         
-        panelSuperior.getChildren().addAll(panelIzq, panelDer);
+        panelSuperior.getChildren().addAll(panelIzq, panelCentral, panelDer);
         this.root.setTop(panelSuperior);
+        
         panelSuperior.setAlignment(Pos.BOTTOM_CENTER);
-        panelSuperior.setSpacing(350);
+        panelSuperior.setSpacing(200);
         
         
         //this.root.getChildren().addAll(this.imagenVida, this.numVidas, this.imagenPuntos, this.puntos);
@@ -394,14 +403,24 @@ public class Mar {
         this.imagenVida.setLayoutX(10);
         this.imagenVida.setLayoutY(5);
         
-        this.numVidas.setLayoutX(200);
-        this.numVidas.setLayoutY(30);
+        this.numVidas.setLayoutX(80);
+        this.numVidas.setLayoutY(45);
                 
-        this.imagenPuntos.setLayoutX(400);
-        this.imagenPuntos.setLayoutY(5);
+        this.imagenPuntos.setLayoutX(-75);
+        this.imagenPuntos.setLayoutY(10);
                         
-        this.puntos.setLayoutX(550);
-        this.puntos.setLayoutY(30); 
+        this.puntos.setLayoutX(0);
+        this.puntos.setLayoutY(50); 
+        
+        this.nivel.setLayoutX(375);
+        this.nivel.setLayoutY(30);
+        
+        
+        
+        
+        
+        
+        
         
         
         
