@@ -128,6 +128,7 @@ public class Mar {
     
     private class KeyHandler implements EventHandler<KeyEvent> {
         Node root;
+        int countEnter = 0;
         int count = 0;
         int countPoder = 0;
         int indexActual = -1;
@@ -141,21 +142,25 @@ public class Mar {
         public void handle(KeyEvent event) {
             
             if (event.getCode() == KeyCode.ENTER && jugador.getPuntos() >= ConstantesPuntos.PUNTOS_PODER && !KeyHandler.this.marcado) {
+                countEnter++;
                 System.out.println(Mar.this.jugador.getPuntos());
                 Mar.this.finalizarPrograma();
                 Integer puntosDisminuir = ConstantesPuntos.PUNTOS_PODER;
                 //Integer timeSeconds = ConstantesPuntos.PUNTOS_PODER;
                 //Mar.this.desaparecerTiburones();
                 Mar.this.removerAnimales();
-                Timeline timeline = new Timeline();
-                timeline.setCycleCount(Timeline.INDEFINITE);
-                timeline.getKeyFrames().add(new KeyFrame(Duration.seconds(0.001),
-                          new DisminuirPuntosEvent(timeline)));
-                timeline.playFromStart();
-                //Mar.this.jugador.setPuntos(Mar.this.jugador.getPuntos() - ConstantesPuntos.PUNTOS_PODER);
-                //Mar.this.puntos.setText(Integer.toString(Mar.this.jugador.getPuntos()));
-                Mar.this.animales.clear();
-                Mar.this.setupAnimals();
+                if (countEnter == 1) {
+                    Timeline timeline = new Timeline();
+                    timeline.setCycleCount(Timeline.INDEFINITE);
+                    timeline.getKeyFrames().add(new KeyFrame(Duration.seconds(0.001),
+                              new PuntosEvent(timeline, puntosDisminuir, -1)));
+                    timeline.playFromStart();
+                    //Mar.this.jugador.setPuntos(Mar.this.jugador.getPuntos() - ConstantesPuntos.PUNTOS_PODER);
+                    //Mar.this.puntos.setText(Integer.toString(Mar.this.jugador.getPuntos()));
+                    Mar.this.animales.clear();
+                    Mar.this.setupAnimals();
+                    countEnter = 0;
+                }
             } else {
                 //int indexActual = -1;
                 
@@ -242,11 +247,15 @@ public class Mar {
         private final Timeline timeline;
         private Integer puntos;
         private Integer multiplicador;
+        private int auxiliarJugador;
+        private int auxiliar;
         
         public PuntosEvent(Timeline timeline, Integer puntos, Integer multiplicador) {
             this.timeline = timeline;
             this.puntos = puntos;
             this.multiplicador = multiplicador;
+            this.auxiliarJugador = Mar.this.jugador.getPuntos();
+            this.auxiliar = puntos;
         }
 
         @Override
@@ -254,7 +263,7 @@ public class Mar {
             this.puntos--;
             Mar.this.jugador.setPuntos(Mar.this.jugador.getPuntos() + (multiplicador)*1);
             Mar.this.puntos.setText(Integer.toString(Mar.this.jugador.getPuntos()));
-            if (this.puntos <= 0) {
+            if (this.puntos == 0 && Mar.this.jugador.getPuntos() == this.auxiliarJugador + (multiplicador*this.auxiliar)) {
                 this.timeline.stop();
             }
         }
@@ -449,5 +458,4 @@ public class Mar {
         
         
     }
-    
 }
