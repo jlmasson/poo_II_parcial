@@ -5,6 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.stage.Stage;
 import typershark.panels.Mar;
+import typershark.panels.Principal;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -29,6 +30,7 @@ public class ClickHandlerMar implements EventHandler<ActionEvent>{
     
     @Override
     public void handle(ActionEvent event) {
+        Principal.playSound("button_sound.mp3", false);
         this.actual.close();
         this.mar.finalizarPrograma();
         this.principal.show();
