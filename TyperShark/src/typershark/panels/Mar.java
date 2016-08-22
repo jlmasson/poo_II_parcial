@@ -382,11 +382,13 @@ public class Mar {
         
         this.numNivel = 1;
         this.puntos = new Text(Integer.toString(jugador.getPuntos()));
-        this.puntos.setFont(new Font("Times New Roman", 30));
+        this.puntos.setFill(Color.WHITE);
+        this.puntos.getStyleClass().add("jugadorDatos");
         this.imagenVida = new ImageView(new Image("images/components/corazonVidas.png"));
         this.imagenPuntos = new ImageView(new Image("images/components/tesoro.png"));
         this.numVidas = new Text("3");
-        this.numVidas.setFont(new Font("Times New Roman", 30));
+        this.numVidas.setFill(Color.WHITE);
+        this.numVidas.getStyleClass().add("jugadorDatos");
         this.nivel = new Text("Nivel  " + this.numNivel);
         this.nivel.setFont(new Font("Times New Roman", 20));
         

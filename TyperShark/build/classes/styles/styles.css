@@ -41,3 +41,8 @@
     -fx-font-size: 80px;
     -fx-font-weight: bolder;
 }
+
+.jugadorDatos {
+    -fx-font-family: 'Papyrus';
+    -fx-font-size: 30px;
+}
