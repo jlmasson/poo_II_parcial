@@ -227,6 +227,7 @@ public class Mar {
                                 elegido.aumentarVelocidad(55);
                             }
                         } if (count == lista.size()) {
+                            
                             Integer puntosAnteriores = Mar.this.jugador.getPuntos();
                             elegido.aumentarPuntos(jugador);
                             Integer puntosActuales = Mar.this.jugador.getPuntos();
@@ -252,6 +253,8 @@ public class Mar {
 
                             }
                             else{
+                                Principal.playSound("boom.mp3", false);
+                                elegido.setImagen(new Image("images/components/explosion.gif"));
                                 elegido.setAlive(false);
                                 Mar.this.root.getChildren().remove(elegido.getRoot());
                                 if (!animales.isEmpty())
@@ -561,6 +564,7 @@ public class Mar {
     }
     
     public void matarAnimal(AnimalMarino animal) {
+        animal.setImagen(new Image("images/components/explosion.gif"));
         this.root.getChildren().remove(animal.getRoot());
         this.animales.remove(animal);
     }

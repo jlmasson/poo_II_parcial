@@ -65,7 +65,15 @@ public abstract class AnimalMarino implements Runnable {
                 Thread.sleep(velocidad);
                 } 
             }
+            /**
+            if (!vivo && pane.getLayoutX() > 0) {
+                Platform.runLater(() -> {
+                    this.setImagen(new Image("images/components/explosion.gif"));
+
+                });
+            }**/
             if (pane.getLayoutX() <= 0 && vivo) {
+                this.setImagen(new Image("images/components/explosion.gif"));
                 synchronized(this) {
                 this.setAlive(false);
                 this.quitarVidas(mar.getJugador());
