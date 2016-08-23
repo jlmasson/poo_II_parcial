@@ -7,18 +7,15 @@ package typershark.animals;
 
 import java.util.ArrayList;
 import javafx.application.Platform;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import typershark.panels.Mar;
 import typershark.people.Jugador;
 
 /**
@@ -34,10 +31,12 @@ public abstract class AnimalMarino implements Runnable {
     private long velocidad;
     private TextFlow text;
     private boolean vivo;
+    private Mar mar;
+    private boolean marcado;
 
-    public AnimalMarino(String ruta, ArrayList<String> palabrasJuego, long velocidad) {
+    public AnimalMarino(Mar mar, String ruta, ArrayList<String> palabrasJuego, long velocidad) {
 
-        
+        this.mar = mar;
 
         this.imagen = new ImageView(new Image(ruta));
         vivo = true;
@@ -45,7 +44,7 @@ public abstract class AnimalMarino implements Runnable {
         this.velocidad = velocidad;
 
         this.pane = new StackPane();
-
+        this.marcado = false;
 
         pane.getChildren().add(this.imagen);
     }
@@ -54,21 +53,48 @@ public abstract class AnimalMarino implements Runnable {
         return this.pane;
     }
 
+    @Override
     public void run() {
         try {
             while (vivo && pane.getLayoutX() > 0) {
                 //synchronized(this);
                 synchronized(this) {
-                    Platform.runLater(new Runnable() {
-                    @Override
-                    public void run() {
+                    Platform.runLater(() -> {
                         pane.setLayoutX(pane.getLayoutX() - 10);
-                    }
-                });
+                    });
                 Thread.sleep(velocidad);
+                } 
+            }
+            if (pane.getLayoutX() <= 0 && vivo) {
+                synchronized(this) {
+                this.setAlive(false);
+                this.quitarVidas(mar.getJugador());
+                Platform.runLater(() -> {
+                    AnimalMarino.this.mar.matarAnimal(AnimalMarino.this);
+                    if (AnimalMarino.this.mar.getAnimales().isEmpty()) {
+                        AnimalMarino.this.mar.setupAnimals();
+                    }
+                    //AnimalMarino.this.mar.getNumVidas().setText(Integer.toString(AnimalMarino.this.mar.getJugador().getNumVidas()));
+                });
+                Platform.runLater(() -> {
+                    AnimalMarino.this.mar.getNumVidas().setText(Integer.toString(AnimalMarino.this.mar.getJugador().getNumVidas()));
+
+                });
                 }
+                //System.out.println(mar.getJugador().getNumVidas());
                 
-                
+                /**
+                boolean colocado = false;
+                for (int i = 0; i < mar.getRoot().getChildren().size() && !colocado; i++) {
+                    Node node = mar.getRoot().getChildren().get(i);
+                    if (node.equals(mar.getNumVidas())) {
+                        Text puntos = (Text)node;
+                        puntos.setText(Integer.toString(mar.getJugador().getNumVidas()));
+                        mar.getRoot().getChildren().set(i, puntos);
+                        colocado = true;
+                    }
+                }**/
+                //mar.getNumVidas().setText(Integer.toString(mar.getJugador().getNumVidas()));
             }
             
         } catch (InterruptedException ex) {
@@ -131,6 +157,18 @@ public abstract class AnimalMarino implements Runnable {
         return this.panelMedio;
     }
     
+    public void matarAnimal() {
+        mar.getRoot().getChildren().remove(this.pane);
+        mar.getAnimales().remove(this);
+    }
+    
+    public void setLocation(double x, double y) {
+        this.pane.setLayoutX(x);
+        this.pane.setLayoutY(y);
+    }
+    
     public abstract void aumentarPuntos(Jugador jugador);
+    
+    public abstract void quitarVidas(Jugador jugador);
 
 }
