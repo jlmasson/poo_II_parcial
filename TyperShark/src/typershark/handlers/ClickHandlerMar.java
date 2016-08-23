@@ -1,8 +1,7 @@
 package typershark.handlers;
 
-
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import typershark.panels.Mar;
 import typershark.panels.Principal;
@@ -17,7 +16,7 @@ import typershark.panels.Principal;
  *
  * @author Jose Masson
  */
-public class ClickHandlerMar implements EventHandler<ActionEvent>{
+public class ClickHandlerMar implements EventHandler<MouseEvent>{
     private Stage principal;
     private Stage actual;
     private Mar mar;
@@ -29,7 +28,7 @@ public class ClickHandlerMar implements EventHandler<ActionEvent>{
     }
     
     @Override
-    public void handle(ActionEvent event) {
+    public void handle(MouseEvent event) {
         Principal.playSound("button_sound.mp3", false);
         this.actual.hide();
         this.mar.finalizarPrograma();
