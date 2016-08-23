@@ -10,6 +10,8 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.collections.ObservableList;
@@ -254,11 +256,15 @@ public class Mar {
                             }
                             else{
                                 Principal.playSound("boom.mp3", false);
-                                elegido.setImagen(new Image("images/components/explosion.gif"));
+                                elegido.getImagen().setImage(new Image("images/components/explosion.gif"));
                                 elegido.setAlive(false);
-                                Mar.this.root.getChildren().remove(elegido.getRoot());
-                                if (!animales.isEmpty())
+                                
+                                Mar.this.matarAnimal(elegido);
+                                
+                                if (!animales.isEmpty()) {
+                                    //Mar.this.root.getChildren().remove(elegido.getRoot());
                                     animales.remove(elegido);
+                                }
                             }
                             indexActual = -1;
                             marcado = false;
@@ -564,7 +570,6 @@ public class Mar {
     }
     
     public void matarAnimal(AnimalMarino animal) {
-        animal.setImagen(new Image("images/components/explosion.gif"));
         this.root.getChildren().remove(animal.getRoot());
         this.animales.remove(animal);
     }

@@ -9,8 +9,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -20,9 +18,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
-import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
@@ -128,7 +124,7 @@ public class Principal {
 
         @Override
         public void handle(ActionEvent event) {
-            Principal.this.playSound("button_sound.mp3", false);
+            Principal.playSound("button_sound.mp3", false);
             switch (this.numOpcion) {
                 case 2:
                     Stage third;
@@ -137,6 +133,8 @@ public class Principal {
                     Button botonPrueba = new Button("Volver al Menú Principal");
                     Mar mar = new Mar();
                     botonPrueba.setOnAction(new ClickHandlerMar(this.stage, third, mar));
+                    botonPrueba.getStyleClass().add("botonRegresar");
+                    botonPrueba.setFocusTraversable(false);
                     mar.getRoot().setBottom(botonPrueba);
                     Scene scene = new Scene(mar.getRoot(), 800, 600);
                     third.initStyle(StageStyle.UNDECORATED);
@@ -199,7 +197,7 @@ public class Principal {
         @Override
         public void handle(ActionEvent event) {
             try {
-                Principal.this.playSound("button_sound.mp3", false);
+                Principal.playSound("button_sound.mp3", false);
                 Thread.sleep(50);
                 System.exit(0);
             } catch (InterruptedException ex) {
@@ -237,14 +235,5 @@ public class Principal {
             clip.setCycleCount(MediaPlayer.INDEFINITE);
         }
         clip.play();
-    }
-    
-    private class MouseOverEvent implements EventHandler<MouseEvent> {
-
-        @Override
-        public void handle(MouseEvent event) {
-            Principal.this.playSound("mouse_over.wav", false);
-        }
-        
     }
 }

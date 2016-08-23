@@ -73,7 +73,6 @@ public abstract class AnimalMarino implements Runnable {
                 });
             }**/
             if (pane.getLayoutX() <= 0 && vivo) {
-                this.setImagen(new Image("images/components/explosion.gif"));
                 synchronized(this) {
                 this.setAlive(false);
                 this.quitarVidas(mar.getJugador());
@@ -89,20 +88,6 @@ public abstract class AnimalMarino implements Runnable {
 
                 });
                 }
-                //System.out.println(mar.getJugador().getNumVidas());
-                
-                /**
-                boolean colocado = false;
-                for (int i = 0; i < mar.getRoot().getChildren().size() && !colocado; i++) {
-                    Node node = mar.getRoot().getChildren().get(i);
-                    if (node.equals(mar.getNumVidas())) {
-                        Text puntos = (Text)node;
-                        puntos.setText(Integer.toString(mar.getJugador().getNumVidas()));
-                        mar.getRoot().getChildren().set(i, puntos);
-                        colocado = true;
-                    }
-                }**/
-                //mar.getNumVidas().setText(Integer.toString(mar.getJugador().getNumVidas()));
             }
             
         } catch (InterruptedException ex) {
