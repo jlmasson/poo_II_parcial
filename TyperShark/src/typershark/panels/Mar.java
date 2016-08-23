@@ -6,12 +6,11 @@
 package typershark.panels;
 
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.collections.ObservableList;
@@ -256,15 +255,23 @@ public class Mar {
                             }
                             else{
                                 Principal.playSound("boom.mp3", false);
-                                elegido.getImagen().setImage(new Image("images/components/explosion.gif"));
+                                File file = new File("src/images/components/explosion.gif");
+                                Image image = new Image(file.toURI().toString());
+                                elegido.getImagen().setImage(image);
+                                try {
+                                    Thread.sleep(100);
+                                } catch (InterruptedException ex) {
+                                   
+                                }
                                 elegido.setAlive(false);
                                 
                                 Mar.this.matarAnimal(elegido);
                                 
+                                /**
                                 if (!animales.isEmpty()) {
                                     //Mar.this.root.getChildren().remove(elegido.getRoot());
                                     animales.remove(elegido);
-                                }
+                                }**/
                             }
                             indexActual = -1;
                             marcado = false;
@@ -571,7 +578,8 @@ public class Mar {
     
     public void matarAnimal(AnimalMarino animal) {
         this.root.getChildren().remove(animal.getRoot());
-        this.animales.remove(animal);
+        if (!this.animales.isEmpty())
+            this.animales.remove(animal);
     }
     
     public void setSiguienteNivel(){
