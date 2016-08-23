@@ -160,6 +160,7 @@ public class Mar {
             
             if (event.getCode() == KeyCode.ENTER && jugador.getPuntos() >= ConstantesPuntos.PUNTOS_PODER && !KeyHandler.this.marcado) {
                 countEnter++;
+                Principal.playSound("power.mp3", false);
                 System.out.println(Mar.this.jugador.getPuntos());
                 Mar.this.finalizarPrograma();
                 Integer puntosDisminuir = ConstantesPuntos.PUNTOS_PODER;
@@ -199,8 +200,10 @@ public class Mar {
                     //System.out.println(event.getText());
                     //animales.get(indexActual).getRoot().requestFocus();
                     //count = 0;
+                    
                     ObservableList<Node> lista = elegido.getFlow().getChildren();
                     if (count < lista.size()) {
+                        Principal.playSound("correct.mp3", false);
                         Text c = (Text) lista.get(count);
                         if (event.getText().equals(c.getText())) {
                             //Text c = (Text) lista.get(count);
@@ -212,6 +215,7 @@ public class Mar {
 
                         }
                         else {
+                            Principal.playSound("wrong.mp3", false);
                             elegido.aumentarVelocidad(55);
                         }
                     } if (count == lista.size()) {
