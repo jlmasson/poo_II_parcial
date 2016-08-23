@@ -8,8 +8,7 @@ package typershark.animals;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
-import javafx.application.Platform;
-import javafx.scene.image.Image;
+import typershark.panels.Mar;
 import typershark.people.Jugador;
 
 /**
@@ -19,8 +18,8 @@ import typershark.people.Jugador;
 public class TiburonNegro extends AnimalMarino {
     private LinkedList<String> palabras;
     
-    public TiburonNegro(ArrayList<String> palabrasJuego, long velocidad) {
-        super("images/components/tiburoncin2.png", palabrasJuego, velocidad);
+    public TiburonNegro(Mar mar, ArrayList<String> palabrasJuego, long velocidad) {
+        super(mar, "images/components/tiburoncin2.png", palabrasJuego, velocidad);
         this.palabras = new LinkedList<>();
         Random r = new Random();
         //int numPalabras = r.nextInt(2) + 2;
@@ -39,6 +38,9 @@ public class TiburonNegro extends AnimalMarino {
         
     }
     
+    public void matarAnimal() {
+        super.matarAnimal();
+    }
     
     
     
@@ -77,5 +79,12 @@ public class TiburonNegro extends AnimalMarino {
 
     public void agregarTextos() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void quitarVidas(Jugador jugador) {
+        if (this.getRoot().getLayoutX() <= 0 && !this.isAlive()) {
+            jugador.setNumVidas(jugador.getNumVidas() - 1);
+        }
     }
 }
