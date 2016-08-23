@@ -8,6 +8,7 @@ package typershark.animals;
 import java.util.ArrayList;
 import java.util.Random;
 import javafx.scene.image.Image;
+import typershark.constantes.ConstantesDesplazamientos;
 import typershark.constantes.ConstantesPuntos;
 import typershark.panels.Mar;
 import typershark.people.Jugador;
@@ -19,15 +20,12 @@ import typershark.people.Jugador;
 public class Piranha extends AnimalMarino {
     private char letra;
     
-    public Piranha(Mar mar, ArrayList<String> palabrasJuego, long velocidad) {
-        super(mar, "images/components/piranha.png",palabrasJuego, velocidad);
-        Random r = new Random();
-        //int aleatorio = r.nextInt(palabrasJuego.size());
-        
+    public Piranha(Mar mar, ArrayList<String> palabrasJuego) {
+        super(mar, "images/components/piranha.png",palabrasJuego,
+                (long) (ConstantesDesplazamientos.VELOCIDAD_INICIAL*ConstantesDesplazamientos.MULTIPLICADOR_PIRANIA));
+
         int aleatorio = (int) (Math.random()*palabrasJuego.size());
         letra = palabrasJuego.get(aleatorio).charAt(0);
-        //letra = palabrasJuego.get(aleatorio);
-        //super.setTextoEnPantalla(Character.toString(letra));
         super.setTextoEnPantalla(Character.toString(letra));
     }
 

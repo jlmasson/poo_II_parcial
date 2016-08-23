@@ -60,9 +60,9 @@ public abstract class AnimalMarino implements Runnable {
                 //synchronized(this);
                 synchronized(this) {
                     Platform.runLater(() -> {
-                        pane.setLayoutX(pane.getLayoutX() - 10);
+                        pane.setLayoutX(pane.getLayoutX() - (8 + (mar.getNumNivel())*2));
                     });
-                Thread.sleep(velocidad);
+                Thread.sleep(this.velocidad);
                 } 
             }
             /**
@@ -151,8 +151,11 @@ public abstract class AnimalMarino implements Runnable {
     }
     
     public void matarAnimal() {
+        this.setAlive(false);
         mar.getRoot().getChildren().remove(this.pane);
-        mar.getAnimales().remove(this);
+        if(mar.getAnimales().contains(this)){
+            mar.getAnimales().remove(this);
+        }
     }
     
     public void setLocation(double x, double y) {

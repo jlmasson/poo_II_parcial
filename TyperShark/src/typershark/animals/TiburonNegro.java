@@ -8,6 +8,7 @@ package typershark.animals;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
+import typershark.constantes.ConstantesDesplazamientos;
 import typershark.panels.Mar;
 import typershark.people.Jugador;
 
@@ -18,14 +19,14 @@ import typershark.people.Jugador;
 public class TiburonNegro extends AnimalMarino {
     private LinkedList<String> palabras;
     
-    public TiburonNegro(Mar mar, ArrayList<String> palabrasJuego, long velocidad) {
-        super(mar, "images/components/tiburoncin2.png", palabrasJuego, velocidad);
+    public TiburonNegro(Mar mar, ArrayList<String> palabrasJuego) {
+        super(mar, "images/components/tiburoncin2.png", palabrasJuego,
+                (long) (ConstantesDesplazamientos.VELOCIDAD_INICIAL*ConstantesDesplazamientos.MULTIPLICADOR_TIBURON));
+        
         this.palabras = new LinkedList<>();
         Random r = new Random();
-        //int numPalabras = r.nextInt(2) + 2;
         int numPalabras = (int) (Math.random()*2  +2);
         for(int i = 0; i<numPalabras; i++){
-            //int aleatorio = r.nextInt(palabrasJuego.size());
             int aleatorio = (int) (Math.random()*palabrasJuego.size());
             palabras.add(palabrasJuego.get(aleatorio));
         }

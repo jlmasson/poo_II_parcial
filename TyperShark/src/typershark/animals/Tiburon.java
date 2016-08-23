@@ -6,6 +6,7 @@
 package typershark.animals;
 
 import java.util.ArrayList;
+import typershark.constantes.ConstantesDesplazamientos;
 import typershark.constantes.ConstantesPuntos;
 import typershark.panels.Mar;
 import typershark.people.Jugador;
@@ -17,18 +18,17 @@ import typershark.people.Jugador;
 public class Tiburon extends AnimalMarino {
     private String palabra;
     
-    public Tiburon(Mar mar, ArrayList<String> palabrasJuego, long velocidad) {
-        super(mar, "images/components/tiburonBlanco400x400.png", palabrasJuego, velocidad);
+    
+    public Tiburon(Mar mar, ArrayList<String> palabrasJuego) {
+        super(mar, "images/components/tiburonBlanco400x400.png", palabrasJuego,
+                (long) (ConstantesDesplazamientos.VELOCIDAD_INICIAL*ConstantesDesplazamientos.MULTIPLICADOR_TIBURON));
 
-        
-        //int aleatorio = r.nextInt(palabrasJuego.size());
         int aleatorio = (int) (Math.random()*palabrasJuego.size());
         palabra = palabrasJuego.get(aleatorio);
         super.setTextoEnPantalla(palabra);
     }
     
     
-
     @Override
     public void aumentarPuntos(Jugador jugador) {
         jugador.setPuntos(jugador.getPuntos() + ConstantesPuntos.PUNTOS_TIBURON);

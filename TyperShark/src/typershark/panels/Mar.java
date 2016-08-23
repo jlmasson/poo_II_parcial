@@ -36,6 +36,7 @@ import typershark.animals.Piranha;
 import typershark.animals.Tiburon;
 import typershark.animals.TiburonNegro;
 import typershark.constantes.Constantes;
+import typershark.constantes.ConstantesDesplazamientos;
 import typershark.constantes.ConstantesPuntos;
 import typershark.people.Buceador;
 import typershark.people.Jugador;
@@ -44,7 +45,7 @@ import typershark.people.Jugador;
  *
  * @author Jose Masson
  */
-public class Mar {
+public class Mar{
     private BorderPane root;
     private Button previo;
     private Text puntos;
@@ -73,20 +74,16 @@ public class Mar {
     
     private Integer countDownPoder = ConstantesPuntos.PUNTOS_PODER;
     
+    
     public Mar() {
 
         palabrasJuego = new ArrayList<>();
-        palabrasJuego.add("Hola");
-        palabrasJuego.add("Chao");
    
         try{
             palabrasJuego = Principal.cargarPalabras();
         }catch(FileNotFoundException ex){}
-        
-        this.iniciarMar();
 
-        
-        
+        this.iniciarMar();
 
         /**
         animales = new LinkedList<>();
@@ -161,6 +158,8 @@ public class Mar {
     public void setNumVidas(Text numVidas) {
         this.numVidas = numVidas;
     }
+
+
     
     private class KeyHandler implements EventHandler<KeyEvent> {
         Node root;
@@ -225,7 +224,7 @@ public class Mar {
                             }
                             else {
                                 Principal.playSound("wrong.mp3", false);
-                                elegido.aumentarVelocidad(55);
+                                elegido.aumentarVelocidad(ConstantesDesplazamientos.AUMENTO_VELOCIDAD);
                             }
                         } if (count == lista.size()) {
                             
@@ -432,21 +431,21 @@ public class Mar {
             AnimalMarino animal;
             switch(aleatorio){
                 case 1:
-                    animal = new Tiburon(this, palabrasJuego, 200);
+                    animal = new Tiburon(this, palabrasJuego);
                     animal.setLocation(posXInicial, posYInicial);
                     this.animales.add(animal);
                     this.root.getChildren().add(animal.getRoot());
                     new Thread(animal).start();
                     break;
                 case 2:
-                    animal = new TiburonNegro(this, palabrasJuego, 200);
+                    animal = new TiburonNegro(this, palabrasJuego);
                     animal.setLocation(posXInicial, posYInicial);
                     this.root.getChildren().add(animal.getRoot());
                     new Thread(animal).start();
                     this.animales.add(animal);
                     break;
                 case 3:
-                    animal = new Piranha(this, palabrasJuego, 120);
+                    animal = new Piranha(this, palabrasJuego);
                     animal.setLocation(posXInicial, posYInicial);
                     this.animales.add(animal);
                     this.root.getChildren().add(animal.getRoot());
@@ -542,10 +541,10 @@ public class Mar {
         this.numVidas.setLayoutX(80);
         this.numVidas.setLayoutY(45);
                 
-        this.imagenPuntos.setLayoutX(-75);
+        this.imagenPuntos.setLayoutX(-90);
         this.imagenPuntos.setLayoutY(10);
                         
-        this.puntos.setLayoutX(0);
+        this.puntos.setLayoutX(-20);
         this.puntos.setLayoutY(50); 
         
         this.nivel.setLayoutX(375);
@@ -554,7 +553,8 @@ public class Mar {
 
         
         //Buceador
-        this.buceador = new Buceador();
+        this.buceador = new Buceador(this);
+        //this.buceador = new Buceador();
         this.root.getChildren().add(this.buceador.getImagenBuceador());
         buceador.getImagenBuceador().setLayoutX(0);
         buceador.getImagenBuceador().setLayoutY(Constantes.POS_Y_INICIAL_BUCEADOR);
@@ -566,12 +566,20 @@ public class Mar {
         this.setupAnimals();
         
         
-        
+        Thread tBuceador = new Thread(this.buceador);
+        tBuceador.start();
         
     }
     
     public void setGameOver() {
-        this.root = new BorderPane();
+        this.eliminarAnimales();
+        this.root.getChildren().remove(this.buceador.getImagenBuceador());
+        Text gameOver = new Text("GAME OVER");
+        Text mensajeGameOver = new Text("Este mensaje saldra al terminar el juego");
+        this.root.getChildren().addAll(gameOver, mensajeGameOver);
+        gameOver.setLayoutX(400);
+        gameOver.setLayoutY(250);
+        
         this.root.addEventFilter(KeyEvent.KEY_PRESSED, new KeyHandler(this.root));
         
     }
@@ -583,7 +591,29 @@ public class Mar {
     }
     
     public void setSiguienteNivel(){
+        
+        this.jugador.setNumVidas(this.jugador.getNumVidas() + 1);
+        this.numVidas.setText(Integer.toString(this.jugador.getNumVidas()));
         this.numNivel += 1;
+        this.nivel.setText(Integer.toString(this.numNivel));
         buceador.getImagenBuceador().setLayoutY(Constantes.POS_Y_INICIAL_BUCEADOR);
+        this.eliminarAnimales();
+        this.setupAnimals();
+        
     }
+    
+    public void eliminarAnimales(){
+        for(AnimalMarino animal: animales){
+            animal.setAlive(false);
+            this.root.getChildren().remove(animal.getRoot());
+        }
+        this.animales.clear();
+    }
+    
+    public int getNumNivel(){
+        return this.numNivel;
+    }
+    
+    
+    
 }
