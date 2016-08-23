@@ -13,28 +13,22 @@ import java.util.Random;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import static javafx.scene.input.DataFormat.URL;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.media.AudioClip;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 import typershark.animals.AnimalMarino;
 import typershark.animals.Piranha;
@@ -142,6 +136,30 @@ public class Mar {
     public void setRoot(BorderPane root) {
         this.root = root;
     }
+
+    public Jugador getJugador() {
+        return jugador;
+    }
+
+    public void setJugador(Jugador jugador) {
+        this.jugador = jugador;
+    }
+
+    public LinkedList<AnimalMarino> getAnimales() {
+        return animales;
+    }
+
+    public void setAnimales(LinkedList<AnimalMarino> animales) {
+        this.animales = animales;
+    }
+
+    public Text getNumVidas() {
+        return numVidas;
+    }
+
+    public void setNumVidas(Text numVidas) {
+        this.numVidas = numVidas;
+    }
     
     private class KeyHandler implements EventHandler<KeyEvent> {
         Node root;
@@ -157,105 +175,115 @@ public class Mar {
         }
         @Override
         public void handle(KeyEvent event) {
-            
-            if (event.getCode() == KeyCode.ENTER && jugador.getPuntos() >= ConstantesPuntos.PUNTOS_PODER && !KeyHandler.this.marcado) {
-                countEnter++;
-                Principal.playSound("power.mp3", false);
-                System.out.println(Mar.this.jugador.getPuntos());
-                Mar.this.finalizarPrograma();
-                Integer puntosDisminuir = ConstantesPuntos.PUNTOS_PODER;
-                //Integer timeSeconds = ConstantesPuntos.PUNTOS_PODER;
-                //Mar.this.desaparecerTiburones();
-                Mar.this.removerAnimales();
-                if (countEnter == 1) {
-                    Timeline timeline = new Timeline();
-                    timeline.setCycleCount(Timeline.INDEFINITE);
-                    timeline.getKeyFrames().add(new KeyFrame(Duration.seconds(0.001),
-                              new PuntosEvent(timeline, puntosDisminuir, -1)));
-                    timeline.playFromStart();
-                    //Mar.this.jugador.setPuntos(Mar.this.jugador.getPuntos() - ConstantesPuntos.PUNTOS_PODER);
-                    //Mar.this.puntos.setText(Integer.toString(Mar.this.jugador.getPuntos()));
-                    Mar.this.animales.clear();
-                    Mar.this.setupAnimals();
-                    countEnter = 0;
-                }
-            } else {
-                //int indexActual = -1;
-                
-                if(!marcado){
-                    for(int i = 0 ; i < animales.size() && !marcado; i++){
-                        if (animales.get(i).isAlive()) {
-                            if(Character.toString(animales.get(i).getpPalabraEnPantalla().getText().charAt(0)).equals(event.getText())){
-                                indexActual = i;
-                                elegido = animales.get(indexActual);
-                                marcado = true;
-                            }
-                        }
-
-                    }
-                }
-
-                if(marcado /* && elegido.getRoot().getLayoutX() > 0*/){
-                    //Mar.this.reproducirSonido("Correcto");
-                    //System.out.println(event.getText());
-                    //animales.get(indexActual).getRoot().requestFocus();
-                    //count = 0;
-                    
-                    ObservableList<Node> lista = elegido.getFlow().getChildren();
-                    if (count < lista.size()) {
-                        Principal.playSound("correct.mp3", false);
-                        Text c = (Text) lista.get(count);
-                        if (event.getText().equals(c.getText())) {
-                            //Text c = (Text) lista.get(count);
-                            //c.getT
-                            c.setFill(Color.WHITE);
-                            lista.set(count, c);
-                            System.out.println(count);
-                            count++;
-
-                        }
-                        else {
-                            Principal.playSound("wrong.mp3", false);
-                            elegido.aumentarVelocidad(55);
-                        }
-                    } if (count == lista.size()) {
-                        Integer puntosAnteriores = Mar.this.jugador.getPuntos();
-                        elegido.aumentarPuntos(jugador);
-                        Integer puntosActuales = Mar.this.jugador.getPuntos();
-                        Integer diferencia = puntosActuales - puntosAnteriores;
-                        Mar.this.jugador.setPuntos(Mar.this.jugador.getPuntos() - diferencia);
-                        
+            if (Mar.this.jugador.getNumVidas() > 0) {
+                if (event.getCode() == KeyCode.ENTER && jugador.getPuntos() >= ConstantesPuntos.PUNTOS_PODER && !KeyHandler.this.marcado) {
+                    countEnter++;
+                    Principal.playSound("power.mp3", false);
+                    System.out.println(Mar.this.jugador.getPuntos());
+                    Mar.this.finalizarPrograma();
+                    Integer puntosDisminuir = ConstantesPuntos.PUNTOS_PODER;
+                    //Integer timeSeconds = ConstantesPuntos.PUNTOS_PODER;
+                    //Mar.this.desaparecerTiburones();
+                    Mar.this.removerAnimales();
                         Timeline timeline = new Timeline();
                         timeline.setCycleCount(Timeline.INDEFINITE);
                         timeline.getKeyFrames().add(new KeyFrame(Duration.seconds(0.001),
-                                  new AumentarPuntosEvent(timeline, diferencia)));
+                                  new PuntosEvent(timeline, puntosDisminuir, -1)));
                         timeline.playFromStart();
-                        
-                        Mar.this.puntos.setText(Integer.toString(jugador.getPuntos()));
-                        count = 0;
-                        //elegido.getRoot().setVisible(false);
-                        if(elegido instanceof TiburonNegro &&
-                                ((TiburonNegro)elegido).getPalabras().size() > 1){
-                            
-                                elegido.getRoot().getChildren().remove(elegido.getPanelMedio());
-                                ((TiburonNegro)elegido).getPalabras().remove(0);
-                                String siguientePalabra = ((TiburonNegro)elegido).getPalabras().get(0);
-                                ((TiburonNegro)elegido).setTextoEnPantalla(siguientePalabra);
-                            
-                        }
-                        else{
-                            elegido.setAlive(false);
-                            Mar.this.root.getChildren().remove(elegido.getRoot());
-                            if (!animales.isEmpty())
-                                animales.remove(elegido);
-                        }
-                        indexActual = -1;
-                        marcado = false;
-                        if(animales.isEmpty()){
-                            Mar.this.setupAnimals();
+                        //Mar.this.jugador.setPuntos(Mar.this.jugador.getPuntos() - ConstantesPuntos.PUNTOS_PODER);
+                        //Mar.this.puntos.setText(Integer.toString(Mar.this.jugador.getPuntos()));
+                        Mar.this.animales.clear();
+                        Mar.this.setupAnimals();
+                } else {
+                    //int indexActual = -1;
+
+                    if(!marcado){
+                        for(int i = 0 ; i < animales.size() && !marcado; i++){
+                            if (animales.get(i).isAlive()) {
+                                if(Character.toString(animales.get(i).getpPalabraEnPantalla().getText().charAt(0)).equals(event.getText())){
+                                    indexActual = i;
+                                    elegido = animales.get(indexActual);
+                                    marcado = true;
+                                }
+                            }
+
                         }
                     }
+
+                    if(marcado && elegido.isAlive() && elegido.getRoot().getLayoutX() >= 0 /* && elegido.getRoot().getLayoutX() > 0*/){
+                        //Mar.this.reproducirSonido("Correcto");
+                        ObservableList<Node> lista = elegido.getFlow().getChildren();
+                        if (count < lista.size()) {
+                            Principal.playSound("correct.mp3", false);
+                            Text c = (Text) lista.get(count);
+                            if (event.getText().equals(c.getText())) {
+                                c.setFill(Color.WHITE);
+                                lista.set(count, c);
+                                count++;
+
+                            }
+                            else {
+                                Principal.playSound("wrong.mp3", false);
+                                elegido.aumentarVelocidad(55);
+                            }
+                        } if (count == lista.size()) {
+                            Integer puntosAnteriores = Mar.this.jugador.getPuntos();
+                            elegido.aumentarPuntos(jugador);
+                            Integer puntosActuales = Mar.this.jugador.getPuntos();
+                            Integer diferencia = puntosActuales - puntosAnteriores;
+                            Mar.this.jugador.setPuntos(Mar.this.jugador.getPuntos() - diferencia);
+
+                            Timeline timeline = new Timeline();
+                            timeline.setCycleCount(Timeline.INDEFINITE);
+                            timeline.getKeyFrames().add(new KeyFrame(Duration.seconds(0.001),
+                                      new AumentarPuntosEvent(timeline, diferencia)));
+                            timeline.playFromStart();
+
+                            Mar.this.puntos.setText(Integer.toString(jugador.getPuntos()));
+                            count = 0;
+                            //elegido.getRoot().setVisible(false);
+                            if(elegido instanceof TiburonNegro &&
+                                    ((TiburonNegro)elegido).getPalabras().size() > 1){
+
+                                    elegido.getRoot().getChildren().remove(elegido.getPanelMedio());
+                                    ((TiburonNegro)elegido).getPalabras().remove(0);
+                                    String siguientePalabra = ((TiburonNegro)elegido).getPalabras().get(0);
+                                    ((TiburonNegro)elegido).setTextoEnPantalla(siguientePalabra);
+
+                            }
+                            else{
+                                elegido.setAlive(false);
+                                Mar.this.root.getChildren().remove(elegido.getRoot());
+                                if (!animales.isEmpty())
+                                    animales.remove(elegido);
+                            }
+                            indexActual = -1;
+                            marcado = false;
+                            if(animales.isEmpty()){
+                                Mar.this.setupAnimals();
+                            }
+                        }
+                    }
+                    if (marcado && !elegido.isAlive()) {
+                        count = 0;
+                        marcado = false;
+                    }
+                    /**
+                    else if (marcado && !elegido.isAlive()) {
+                        elegido.quitarVidas(Mar.this.jugador);
+                        Mar.this.numVidas.setText(Integer.toString(Mar.this.jugador.getNumVidas()));
+                        Mar.this.root.getChildren().remove(elegido.getRoot());
+                            if (!animales.isEmpty())
+                                animales.remove(elegido);
+                            marcado = false;
+                            if (animales.isEmpty()) {
+                                Mar.this.setupAnimals();
+                            }
+                    }**/
                 }
+            }
+            else {
+                Mar.this.setGameOver();
             }
             
             //String tecla = event.getText();
@@ -276,9 +304,9 @@ public class Mar {
     private class PuntosEvent implements EventHandler {
         private final Timeline timeline;
         private Integer puntos;
-        private Integer multiplicador;
-        private int auxiliarJugador;
-        private int auxiliar;
+        private final Integer multiplicador;
+        private final int auxiliarJugador;
+        private final int auxiliar;
         
         public PuntosEvent(Timeline timeline, Integer puntos, Integer multiplicador) {
             this.timeline = timeline;
@@ -370,9 +398,9 @@ public class Mar {
     } **/
     
     public void removerAnimales() {
-        for (AnimalMarino p: animales) {
+        animales.stream().forEach((p) -> {
             this.root.getChildren().remove(p.getRoot());
-        }
+        });
     }
     
     public void setupAnimals() {
@@ -385,31 +413,58 @@ public class Mar {
         
         for(int i = 0; i < 3; i++){
             int aleatorio = r.nextInt(3) + 1;
+            AnimalMarino animal;
             switch(aleatorio){
                 case 1:
-                    this.animales.add(new Tiburon(palabrasJuego, 200));
+                    animal = new Tiburon(this, palabrasJuego, 200);
+                    animal.setLocation(posXInicial, posYInicial);
+                    this.animales.add(animal);
+                    this.root.getChildren().add(animal.getRoot());
+                    new Thread(animal).start();
                     break;
                 case 2:
-                    
-                    this.animales.add(new TiburonNegro(palabrasJuego, 200));
+                    animal = new TiburonNegro(this, palabrasJuego, 200);
+                    animal.setLocation(posXInicial, posYInicial);
+                    this.root.getChildren().add(animal.getRoot());
+                    new Thread(animal).start();
+                    this.animales.add(animal);
                     break;
                 case 3:
-                    this.animales.add(new Piranha(palabrasJuego, 120));
+                    animal = new Piranha(this, palabrasJuego, 120);
+                    animal.setLocation(posXInicial, posYInicial);
+                    this.animales.add(animal);
+                    this.root.getChildren().add(animal.getRoot());
+                    new Thread(animal).start();
                     break;
+                
             }
+            
+            /**
             this.root.getChildren().add(this.animales.get(i).getRoot());
             
             this.animales.get(i).getRoot().setLayoutX(posXInicial);
-            this.animales.get(i).getRoot().setLayoutY(posYInicial);
+            this.animales.get(i).getRoot().setLayoutY(posYInicial);**/
             posYInicial += 150;
             
-            this.hilos.add(new Thread(this.animales.get(i)));
+            //this.hilos.add(new Thread(this.animales.get(i)));
             
         }
-        
-        for (Thread t: this.hilos) {
+        /**
+        this.hilos.stream().forEach((t) -> {
             t.start();
-        }
+        }); /**
+        animales.get(0).getRoot().setLayoutX(700);//codigo  nuevo
+        animales.get(0).getRoot().setLayoutY(150);//codigo  nuevo
+        animales.get(1).getRoot().setLayoutX(700);
+        animales.get(1).getRoot().setLayoutY(350);
+        animales.get(2).getRoot().setLayoutX(700);
+        animales.get(2).getRoot().setLayoutY(500);
+        Thread t = new Thread(animales.get(0));
+        t.start();
+        Thread t2 = new Thread(animales.get(1));
+        t2.start();
+        Thread t3 = new Thread(animales.get(2));
+        t3.start();**/
         
         /**
         
@@ -428,7 +483,7 @@ public class Mar {
         t3.start();**/
     }
     
-    public void iniciarMar(){
+    private void iniciarMar(){
         this.root = new BorderPane();
         this.jugador = new Jugador("Nombre Pruebita");
         this.root.getStylesheets().add("styles/styles.css");
@@ -440,7 +495,7 @@ public class Mar {
         this.puntos.getStyleClass().add("jugadorDatos");
         this.imagenVida = new ImageView(new Image("images/components/corazonVidas.png"));
         this.imagenPuntos = new ImageView(new Image("images/components/tesoro.png"));
-        this.numVidas = new Text("3");
+        this.numVidas = new Text(Integer.toString(this.jugador.getNumVidas()));
         this.numVidas.setFill(Color.WHITE);
         this.numVidas.getStyleClass().add("jugadorDatos");
         this.nivel = new Text("Nivel  " + this.numNivel);
@@ -491,8 +546,6 @@ public class Mar {
 
         
         //Panel superior
-
-
         root.addEventHandler(KeyEvent.KEY_PRESSED, new KeyHandler(root) );
         this.setupAnimals();
         
@@ -501,12 +554,19 @@ public class Mar {
         
     }
     
+    public void setGameOver() {
+        this.root = new BorderPane();
+        this.root.addEventFilter(KeyEvent.KEY_PRESSED, new KeyHandler(this.root));
+        
+    }
+    
+    public void matarAnimal(AnimalMarino animal) {
+        this.root.getChildren().remove(animal.getRoot());
+        this.animales.remove(animal);
+    }
+    
     public void setSiguienteNivel(){
-        
-        
         this.numNivel += 1;
         buceador.getImagenBuceador().setLayoutY(Constantes.POS_Y_INICIAL_BUCEADOR);
-        
-        
     }
 }
