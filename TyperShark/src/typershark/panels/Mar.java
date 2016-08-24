@@ -27,6 +27,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.media.AudioClip;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -75,6 +76,9 @@ public class Mar{
     
     private Integer countDownPoder = ConstantesPuntos.PUNTOS_PODER;
     
+    
+    private TextField campoTexto;
+    private Button botonNickname;
     
     public Mar() {
 
@@ -579,7 +583,25 @@ public class Mar{
         Text mensajeGameOver = new Text("Este mensaje saldra al terminar el juego");
         this.root.getChildren().addAll(gameOver, mensajeGameOver);
         gameOver.setLayoutX(400);
-        gameOver.setLayoutY(250);
+        gameOver.setLayoutY(150);
+        
+        VBox panelNickname = new VBox();
+        campoTexto = new TextField();
+        campoTexto.setMinWidth(120);
+        campoTexto.setMinHeight(35);
+        campoTexto.setFont(new Font("Times New Roman", 30));
+        campoTexto.setDisable(false);
+        botonNickname = new Button("Ooooooooooook");
+        
+        panelNickname.setSpacing(20);
+        panelNickname.getChildren().addAll(campoTexto, botonNickname);
+        this.root.getChildren().add(panelNickname);
+        
+        panelNickname.setLayoutX(400);
+        panelNickname.setLayoutY(200);
+        
+        
+        
         
         this.root.addEventFilter(KeyEvent.KEY_PRESSED, new KeyHandler(this.root));
         
@@ -615,14 +637,10 @@ public class Mar{
         return this.numNivel;
     }
     
-    
-    
-    
-    
     public String obtenerNickname(){
-        TextField campoDeTexto = new TextField();
+
         
-        String nickname = campoDeTexto.getText();
+        String nickname = campoTexto.getText();
         
         
         return "";
