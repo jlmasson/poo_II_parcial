@@ -1,5 +1,5 @@
 /*
-* @(#)Tiburon.java 4.0 28/8/2016
+* @(#)TiburonNegro.java 4.0 28/8/2016
 *
 * Copyright (c) 2016 Galo Castillo, Jose Luis Masson & Danilo Torres.
 * Escuela Superior Politécnica del Litoral. Guayaquil, Ecuador.

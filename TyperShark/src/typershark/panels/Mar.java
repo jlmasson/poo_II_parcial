@@ -1,8 +1,11 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+* @(#)Mar.java 4.0 28/8/2016
+*
+* Copyright (c) 2016 Galo Castillo, Jose Luis Masson & Danilo Torres.
+* Escuela Superior Politécnica del Litoral. Guayaquil, Ecuador.
+* Todos los Derechos Reservados.
+*
+*/
 package typershark.panels;
 
 
@@ -32,6 +35,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.AudioClip;
 import javafx.scene.paint.Color;
@@ -50,38 +54,65 @@ import typershark.people.Buceador;
 import typershark.people.Jugador;
 
 /**
- *
- * @author Jose Masson
+ * Esta clase define objetos de tipo Buceador.
+ * @author: Galo Castillo, Jose Luis Masson, Danilo Torres
+ * @version: 4.0 28/8/2016
  */
 public class Mar{
+    /** Raiz principal del panel*/    
     private BorderPane root;
+    
+    /** Boton utilizado para regresar al menu principal*/
     private Button previo;
+    
+    /** Nodo que muestra en pantalla los puntos ganados por el jugador*/
     private Text puntos;
+    
+    /** Imagen que representa los puntos*/
     private ImageView imagenPuntos;
+    
+    /** Nodo que muestra en pantalla el numero de vidas del jugador*/
     private Text numVidas;
+    
+    /** Imagen que representa la vida del jugador*/
     private ImageView imagenVida;
+    
+    /** Nodo que muestra el numero del nivel actual*/
     private Text nivel;
+    
+    /** Numero del nivel actual*/
     private int numNivel;
     
+    /** Imagen que representa los niveles*/
+    private ImageView imagenNivel;
+    
+    /** Manejador del buceador mostrado en pantalla*/
     private Buceador buceador;
     
-    
-    private AnimalMarino animal1;   
-    private AnimalMarino animal2;
-    private AnimalMarino animal3;
-    
+    /** Lista de palabras utilizadas para asignarlas a los animales marinos*/
     private ArrayList<String> palabrasJuego;
     
+    /** Jugador encargado de llevar el curso del juego*/
     private Jugador jugador;
     
+    /** Lista de los animales mostrados en pantalla*/
     private LinkedList<AnimalMarino> animales;
     
-    
+    /** Lista de hilos que manejan los animales*/
     private LinkedList<Thread> hilos;
     
-    
+    /** Puntos necesarios para poder utilizar el poder especial*/
     private Integer countDownPoder = ConstantesPuntos.PUNTOS_PODER;
     
+    
+    /**
+     * Constructor para el objeto de tipo Mar.
+     * Crea un nuevo Mar con un jugador nuevo, nodos que representan los puntos,
+     * nivel y numero de vidas del jugador. Ademas comienza con un buceador y
+     * animales marinos vivos.
+     * @param jugador El parámetro jugador es utilizado para manejar la informacion
+     * del jugador durante la partida
+     */
     public Mar(Jugador jugador) {
 
         palabrasJuego = new ArrayList<>();
@@ -94,34 +125,63 @@ public class Mar{
         
     }
 
+    /**
+     * Método que permite obtener la raiz principal del mar.
+     * */
     public BorderPane getRoot() {
         return root;
     }
 
+    /**
+     * Método que permite cambiar la raiz principal del mar.
+     * @param root El parametro root es la nueva raiz a utilizar.
+     * */
     public void setRoot(BorderPane root) {
         this.root = root;
     }
 
+    /**
+     * Método que permite obtener el jugador del mar.
+     * */
     public Jugador getJugador() {
         return jugador;
     }
 
+    /**
+     * Método que permite cambiar al jugador del mar.
+     * */
     public void setJugador(Jugador jugador) {
         this.jugador = jugador;
     }
 
+    /**
+     * Método que permite obtener la lista de animales presentes
+     * en el mar.
+     * */
     public LinkedList<AnimalMarino> getAnimales() {
         return animales;
     }
 
+    /**
+     * Método que permite cambiar la lista de animales presentes
+     * en el mar.
+     * @param animales El parametro animales es la nueva lista de animales
+     * que estaran presentes en el mar.
+     * */
     public void setAnimales(LinkedList<AnimalMarino> animales) {
         this.animales = animales;
     }
 
+    /**
+     * Método que permite obtener el nodo del numero de vidas del jugador.
+     * */
     public Text getNumVidas() {
         return numVidas;
     }
 
+    /**
+     * Método que permite cambiar el nodo del numero de vidas del jugador.
+     * */
     public void setNumVidas(Text numVidas) {
         this.numVidas = numVidas;
     }
@@ -199,7 +259,6 @@ public class Mar{
 
                             Mar.this.puntos.setText(Integer.toString(jugador.getPuntos()));
                             count = 0;
-                            //elegido.getRoot().setVisible(false);
                             if(elegido instanceof TiburonNegro &&
                                     ((TiburonNegro)elegido).getPalabras().size() > 1){
 
@@ -222,12 +281,7 @@ public class Mar{
                                 elegido.setAlive(false);
                                 
                                 Mar.this.matarAnimal(elegido);
-                                
-                                /**
-                                if (!animales.isEmpty()) {
-                                    //Mar.this.root.getChildren().remove(elegido.getRoot());
-                                    animales.remove(elegido);
-                                }**/
+
                             }
                             indexActual = -1;
                             marcado = false;
@@ -240,18 +294,6 @@ public class Mar{
                         count = 0;
                         marcado = false;
                     }
-                    /**
-                    else if (marcado && !elegido.isAlive()) {
-                        elegido.quitarVidas(Mar.this.jugador);
-                        Mar.this.numVidas.setText(Integer.toString(Mar.this.jugador.getNumVidas()));
-                        Mar.this.root.getChildren().remove(elegido.getRoot());
-                            if (!animales.isEmpty())
-                                animales.remove(elegido);
-                            marcado = false;
-                            if (animales.isEmpty()) {
-                                Mar.this.setupAnimals();
-                            }
-                    }**/
                 }
             }
         }
@@ -328,6 +370,11 @@ public class Mar{
             }
         }
     
+    /**
+     * Método que permite reproducir audio.
+     * @param archivo El parametro archivo es un string con la ruta al archivo 
+     * de audio que se desea reproducir.
+     * */
     private void playSound(String archivo) {
         File file = new File("src/sounds/" + archivo);
         AudioClip clip = new AudioClip(file.toURI().toString());
@@ -340,13 +387,7 @@ public class Mar{
             a.setAlive(false);
         });
     }
-    
-    /**
-    public void desaparecerTiburones() {
-        for (int i = 0; i < this.animales.size(); i++) {
-            this.animales.get(i).getRoot().setVisible(false);
-        }
-    } **/
+
     
     public void removerAnimales() {
         animales.stream().forEach((p) -> {
@@ -360,8 +401,6 @@ public class Mar{
         int posXInicial = 600;
         int posYInicial = 150;
         Random r = new Random();
-        
-        
         for(int i = 0; i < 3; i++){
             int aleatorio = r.nextInt(3) + 1;
             AnimalMarino animal;
@@ -410,15 +449,18 @@ public class Mar{
         this.numVidas = new Text(Integer.toString(this.jugador.getNumVidas()));
         this.numVidas.setFill(Color.WHITE);
         this.numVidas.getStyleClass().add("jugadorDatos");
-        this.nivel = new Text("Nivel  " + this.numNivel);
+        this.nivel = new Text(Integer.toString(this.numNivel));
         this.nivel.setFont(new Font("Times New Roman", 20));
+        this.imagenNivel = new ImageView(new Image("images/components/estrellaNivel.png"));
+        StackPane pilaNivel = new StackPane();
+        pilaNivel.getChildren().addAll(imagenNivel, nivel);
         
         
         HBox panelSuperior = new HBox();
         Pane panelDer = new Pane();
         Pane panelIzq = new Pane();
         Pane panelCentral = new Pane();
-        panelIzq.getChildren().addAll(this.imagenVida, this.numVidas, this.nivel);
+        panelIzq.getChildren().addAll(this.imagenVida, this.numVidas, pilaNivel);
         panelDer.getChildren().addAll(this.imagenPuntos, this.puntos);
         
         
@@ -428,41 +470,31 @@ public class Mar{
         
         panelSuperior.setAlignment(Pos.BOTTOM_CENTER);
         panelSuperior.setSpacing(200);
-        
-        
-        //this.root.getChildren().addAll(this.imagenVida, this.numVidas, this.imagenPuntos, this.puntos);
-        //this.root.getChildren().add(panelSuperior);
+
         this.imagenVida.setLayoutX(10);
         this.imagenVida.setLayoutY(5);
         
         this.numVidas.setLayoutX(80);
         this.numVidas.setLayoutY(45);
                 
-        this.imagenPuntos.setLayoutX(-90);
+        this.imagenPuntos.setLayoutX(-100);
         this.imagenPuntos.setLayoutY(10);
                         
-        this.puntos.setLayoutX(-20);
+        this.puntos.setLayoutX(-30);
         this.puntos.setLayoutY(50); 
         
-        this.nivel.setLayoutX(375);
-        this.nivel.setLayoutY(30);
-        
-
-        
+        pilaNivel.setLayoutX(350);
+        pilaNivel.setLayoutY(5);
         //Buceador
         this.buceador = new Buceador(this);
-        //this.buceador = new Buceador();
         this.root.getChildren().add(this.buceador.getImagenBuceador());
         buceador.getImagenBuceador().setLayoutX(0);
         buceador.getImagenBuceador().setLayoutY(Constantes.POS_Y_INICIAL_BUCEADOR);
-        
 
-        
         //Panel superior
         root.addEventHandler(KeyEvent.KEY_PRESSED, new KeyHandler(root) );
         this.setupAnimals();
-        
-        
+
         Thread tBuceador = new Thread(this.buceador);
         tBuceador.start();
         

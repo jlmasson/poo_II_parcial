@@ -1,5 +1,5 @@
 /*
-* @(#)Tiburon.java 4.0 28/8/2016
+* @(#)Jugador.java 4.0 28/8/2016
 *
 * Copyright (c) 2016 Galo Castillo, Jose Luis Masson & Danilo Torres.
 * Escuela Superior Politécnica del Litoral. Guayaquil, Ecuador.
@@ -38,7 +38,7 @@ public class Jugador implements Comparable<Jugador>{
      */
     public Jugador(String nickname) {
         this.nickname = nickname;
-        this.puntos = 10000;
+        this.puntos = 0;
         this.numVidas = 3;
         this.ataquesDePiranhas = 0;
     } //Cierre del constructor
