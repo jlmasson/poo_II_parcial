@@ -1,8 +1,11 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+* @(#)Tiburon.java 4.0 28/8/2016
+*
+* Copyright (c) 2016 Galo Castillo, Jose Luis Masson & Danilo Torres.
+* Escuela Superior Politécnica del Litoral. Guayaquil, Ecuador.
+* Todos los Derechos Reservados.
+*
+*/
 package typershark.people;
 
 import javafx.application.Platform;
@@ -11,28 +14,54 @@ import javafx.scene.image.ImageView;
 import typershark.panels.Mar;
 
 /**
- *
- * @author Galo Castillo
+ * Esta clase define objetos de tipo Buceador.
+ * @author: Galo Castillo, Jose Luis Masson, Danilo Torres
+ * @version: 4.0 28/8/2016
  */
 public class Buceador implements Runnable{
+    
+    /** Imagen utilizada para mostrar los desplazamientos del buceador en el
+     escenario del mar.*/
     private ImageView imagenBuceador;
+    
+    /** Nodo raiz que contiene los elementos utilizado en el curso del juego.*/
     private Mar mar;
     
-    
+    /**
+     * Método que permite obtener la imagen utilizada para visualizar los movimientos
+     * realizados por el buceador.
+     * @return La imagen del buceador no.
+     */
     public ImageView getImagenBuceador(){
         return this.imagenBuceador;
-    }
+    } //Cierre del metodo.
     
+    /**
+     * Constructor para el objeto de tipo Buceador.
+     * Obtiene una imagen que es uilizada para visualizar al buceador en el curso
+     * del juego.
+     * @param mar El parámetro mar corresponde al panel organizador del mar en el 
+     * cual se encontrara el buceador.
+     */
     public Buceador(Mar mar){
         this.imagenBuceador = new ImageView(new Image("images/components/buceador2.gif"));
         this.mar = mar;
-    }
+    } //Cierre del consttructor
     
+    /**
+     * Constructor por defectp para el objeto de tipo Buceador.
+     * Obtiene una imagen que es uilizada para visualizar al buceador en el curso
+     * del juego.
+     */
     public Buceador(){
         this.imagenBuceador = new ImageView(new Image("images/components/buceador2.gif"));
+    } //Cierre del constructor
 
-    }
-
+    /**
+     * Método que permite obtener el movimiento independiente del buceador con respecto
+     * a las demás componentes.
+     * realizados por el buceador.
+     * /
     @Override
     public void run() {
 
