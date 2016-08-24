@@ -1,25 +1,22 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+* @(#)Constantes.java 4.0 28/8/2016
+*
+* Copyright (c) 2016 Galo Castillo, Jose Luis Masson & Danilo Torres.
+* Escuela Superior Politécnica del Litoral. Guayaquil, Ecuador.
+* Todos los Derechos Reservados.
+*
+*/
 package typershark.constantes;
 
-import javafx.scene.paint.Color;
 
 /**
- *
- * @author Jose Masson
+ * Esta clase define objetos de tipo Constantes.
+ * @author: Galo Castillo, Jose Luis Masson, Danilo Torres
+ * @version: 4.0 28/8/2016
  */
 public class Constantes {
-    
-    public static final Color COLOR_INICIAL = Color.WHITE;
-    
-    public static final Color COLOR_FINAL = Color.YELLOW;
-    
-    public static final int NIVEL_MAXIMO = 5;
-    
+    /** Constante de la posicion inicial vertical del buceador*/    
     public static final int POS_Y_INICIAL_BUCEADOR = 100;
     
     
-}
+}//Cierre de la clase

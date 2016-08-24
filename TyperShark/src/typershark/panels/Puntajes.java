@@ -1,8 +1,11 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+* @(#)Puntajes.java 4.0 24/8/2016
+*
+* Copyright (c) 2016 Galo Castillo, Jose Luis Masson & Danilo Torres.
+* Escuela Superior Politécnica del Litoral. Guayaquil, Ecuador.
+* Todos los Derechos Reservados.
+*
+*/
 package typershark.panels;
 
 import java.io.File;
@@ -24,14 +27,25 @@ import javafx.scene.text.TextAlignment;
 import typershark.people.Jugador;
 
 /**
- *
- * @author Jose Masson
+ * Esta clase define objetos de tipo Puntajes.
+ * @author: Galo Castillo, Jose Luis Masson, Danilo Torres
+ * @version: 4.0 24/8/2016
  */
 public class Puntajes {
+    /** Raiz principal del Panel*/  
     private BorderPane root;
+    
+    /** Lista utilizada para observar los puntajes en la tabla*/  
     private ObservableList<Jugador> puntajes;
+    
+    /** Tabla que contiene los puntajes*/  
     private TableView<Jugador> tabla;
     
+    /**
+     * Constructor para el objeto de tipo Puntajes.
+     * Crea un nuevo panel de Puntajes con una tabla en la cual se pueden observar
+     * de forma ordenada el hisorial de puntajes.
+     */
     public Puntajes() {
         this.root = new BorderPane();
         this.root.getStylesheets().add("styles/styles.css");
@@ -42,19 +56,32 @@ public class Puntajes {
         
     }
 
+    /**
+     * Método que permite obtener la raiz principal de Puntajes.
+     * */
     public BorderPane getRoot() {
         return root;
     }
 
+    /**
+     * Método que permite cambiar la raiz principal de Puntajes.
+     * @param root El parametro root es la nueva raiz a utilizar.
+     * */
     public void setRoot(BorderPane root) {
         this.root = root;
     }
     
+    /**
+     * Método que permite cargar de manera ordenada los puntajes.
+     * */
     private void setupPuntajes() {
         this.puntajes = this.cargarPuntajesJugadores();
         this.puntajes.sort(Jugador::compareTo);
     }
     
+    /**
+     * Método que permite obtener la raiz principal del mar.
+     * */
     private void setupTable() {
         TableColumn<Jugador, String> nameColumn = new TableColumn<>("Jugador");
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("nickname"));
