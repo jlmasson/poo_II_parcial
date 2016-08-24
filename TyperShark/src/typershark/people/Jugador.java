@@ -5,6 +5,11 @@
  */
 package typershark.people;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.LinkedList;
+import java.util.Scanner;
+
 /**
  *
  * @author Danilo Torres
@@ -17,7 +22,7 @@ public class Jugador implements Comparable<Jugador>{
     
     public Jugador(String nickname) {
         this.nickname = nickname;
-        this.puntos = 3000;
+        this.puntos = 10000;
         this.numVidas = 3;
         this.ataquesDePiranhas = 0;
     }
@@ -60,6 +65,12 @@ public class Jugador implements Comparable<Jugador>{
     }
 
     @Override
+    public boolean equals(Object o) {
+        Jugador j = (Jugador) o;
+        return (this.nickname.equals(j.nickname) && this.puntos == j.puntos);
+    }
+    
+    @Override
     public int compareTo(Jugador o) {
         if (this.puntos > o.puntos) {
             return -1;
@@ -71,6 +82,25 @@ public class Jugador implements Comparable<Jugador>{
         }
     }
     
+    public static LinkedList<Jugador> cargarJugadorXPuntos() {
+        LinkedList<Jugador> jugadores = new LinkedList<>();
+        File archivo = new File("src/puntajes/puntajes.txt");
+        if (archivo.isFile()) {
+            try {
+                Scanner sc = new Scanner(archivo);
+                sc.useDelimiter("\n");
+
+                while(sc.hasNext()) {
+                    String linea = sc.nextLine();
+                    String[] campos = linea.split("\\|");
+                    jugadores.add(new Jugador(campos[0], Integer.parseInt(campos[1])));
+                }
+            } catch (FileNotFoundException ex) {
+                System.out.println("Archivo no encontrado.");
+            }
+        }
+        return jugadores;
+    }
     
     
     

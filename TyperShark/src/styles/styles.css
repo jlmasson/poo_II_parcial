@@ -25,6 +25,26 @@
     -fx-background-image: url("../images/background/acercaDe.png");
 }
 
+.gameOver {
+    -fx-font-family: 'Papyrus';
+    -fx-font-size: 40px;
+    -fx-font-weight: bolder;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.6), 3, 0.5, -2, 3);
+}
+
+.nickname {
+    -fx-font-family: 'Papyrus';
+    -fx-font-size: 35px;
+    -fx-font-weight: bolder;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.6), 3, 0.5, -2, 3);
+}
+
+.puntosObt {
+    -fx-font-family: 'Papyrus';
+    -fx-font-size: 30px;
+    -fx-font-weight: bolder;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.6), 3, 0.5, -2, 3);
+}
 .boton {
     /*-fx-text-fill: rgb(254,255,159);
     /**-fx-text-fill: rgb(130,61,0);**/

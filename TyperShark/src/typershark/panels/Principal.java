@@ -8,13 +8,17 @@ package typershark.panels;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.Scanner;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
@@ -27,6 +31,7 @@ import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 import typershark.handlers.ClickHandler;
 import typershark.handlers.ClickHandlerMar;
+import typershark.people.Jugador;
 
 /**
  *
@@ -119,19 +124,44 @@ public class Principal {
         public void handle(MouseEvent event) {
             Principal.playSound("button_sound.mp3", false);
             switch (this.numOpcion) {
-                case 1:
-                    Stage game;
-                    game = new Stage();
-                    Mar mar = new Mar();
-                    mar.getRoot().setBottom(Principal.this.setupBotonPrevio(this.stage, game, mar));
-                    Scene gameScene = new Scene(mar.getRoot(), 800, 600);
-                    game.initStyle(StageStyle.UNDECORATED);
-                    game.setScene(gameScene);
-                    game.setOnCloseRequest((WindowEvent t) -> {
-                        Platform.exit();
-                        System.exit(0);
-            });
-                    game.show();
+                case 1: 
+                    TextInputDialog dialog = new TextInputDialog();
+                    
+                    dialog.setTitle("Bienvenido a TyperShark 2.0");
+                    dialog.setHeaderText("Nickname");
+                    dialog.setContentText("Ingresa tu nickname:");
+
+                    Optional<String> result = dialog.showAndWait();
+                    
+                    while (result.isPresent() && result.get().trim().isEmpty()) {
+                        Alert alert = new Alert(AlertType.ERROR);
+                        alert.setTitle("Ingreso no válido");
+                        alert.setHeaderText("Nickname no válido");
+                        alert.setContentText("No se permiten nicknames vacíos");
+                        alert.showAndWait();
+                        result = dialog.showAndWait();
+                    }
+                    
+                    if (result.isPresent()){
+                        Jugador jugador;
+                        jugador = new Jugador(result.get());
+                        Stage game;
+                        game = new Stage();
+                        Mar mar = new Mar(jugador);
+                        mar.getRoot().setBottom(Principal.this.setupBotonPrevio(this.stage, game, mar));
+                        Scene gameScene = new Scene(mar.getRoot(), 800, 600);
+                        game.initStyle(StageStyle.UNDECORATED);
+                        game.setScene(gameScene);
+                        game.setOnCloseRequest((WindowEvent t) -> {
+                            Platform.exit();
+                            System.exit(0);
+                        });
+                        game.show();
+                        this.stage.close();
+                    }
+
+                    
+                    
                     break;
                 
                 case 2:
@@ -143,6 +173,7 @@ public class Principal {
                     Scene instrucScene = new Scene(ins.getRoot(), 800, 600);
                     instructions.setScene(instrucScene);
                     instructions.show();
+                    this.stage.close();
                     break;
                 
                 case 3:
@@ -153,6 +184,7 @@ public class Principal {
                     scores.setScene(scoreScene);
                     Principal.this.setStageStyles(scores, "Puntajes Máximos");
                     scores.show();
+                    this.stage.close();
                     break;
                     
                 case 4:
@@ -163,11 +195,9 @@ public class Principal {
                     about.setScene(aboutScene);
                     Principal.this.setStageStyles(about, "Acerca de TyperShark II");
                     about.show();
-                    break;
-                default:
+                    this.stage.close();
                     break;
             }
-            stage.close();
 
         }
     }

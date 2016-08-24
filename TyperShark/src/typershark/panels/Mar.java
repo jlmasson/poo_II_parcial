@@ -8,6 +8,8 @@ package typershark.panels;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
@@ -19,7 +21,6 @@ import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -32,6 +33,7 @@ import javafx.scene.media.AudioClip;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 import typershark.animals.AnimalMarino;
 import typershark.animals.Piranha;
@@ -76,11 +78,7 @@ public class Mar{
     
     private Integer countDownPoder = ConstantesPuntos.PUNTOS_PODER;
     
-    
-    private TextField campoTexto;
-    private Button botonNickname;
-    
-    public Mar() {
+    public Mar(Jugador jugador) {
 
         palabrasJuego = new ArrayList<>();
    
@@ -88,47 +86,7 @@ public class Mar{
             palabrasJuego = Principal.cargarPalabras();
         }catch(FileNotFoundException ex){}
 
-        this.iniciarMar();
-
-        /**
-        animales = new LinkedList<>();
-        animales.add(animal1);
-        animales.add(animal2);
-        animales.add(animal3);
-        
-        
-        panelAn = animal1.getRoot();
-        this.root.getChildren().addAll(panelAn, animal2.getRoot(), animal3.getRoot(), buceador.getImagenView());//codigo  nuevo
-        
-        buceador.getImagenView().setLayoutX(40);
-        buceador.getImagenView().setLayoutY(100);
-        root.addEventHandler(KeyEvent.KEY_PRESSED, new KeyHandler(root) );
-        
-        
-        panelAn.setLayoutX(700);//codigo  nuevo
-        panelAn.setLayoutY(50);//codigo  nuevo
-        animal2.getRoot().setLayoutX(700);
-        animal2.getRoot().setLayoutY(200);
-        animal3.getRoot().setLayoutX(700);
-        animal3.getRoot().setLayoutY(350);
-        
-        
-        hilos = new LinkedList<>();
-        
-        
-        Thread t = new Thread(animal1);
-        t.start();
-        Thread t2 = new Thread(animal2);
-        t2.start();
-        Thread t3 = new Thread(animal3);
-        t3.start();
-        
-        
-        hilos.add(t);
-        hilos.add(t2);
-        hilos.add(t3);
-        
-        **/
+        this.iniciarMar(jugador);
         
     }
 
@@ -183,7 +141,7 @@ public class Mar{
             if (Mar.this.jugador.getNumVidas() > 0) {
                 if (event.getCode() == KeyCode.ENTER && jugador.getPuntos() >= ConstantesPuntos.PUNTOS_PODER && !KeyHandler.this.marcado) {
                     countEnter++;
-                    Principal.playSound("power.mp3", false);
+                    Mar.this.playSound("power.mp3");
                     System.out.println(Mar.this.jugador.getPuntos());
                     Mar.this.finalizarPrograma();
                     Integer puntosDisminuir = ConstantesPuntos.PUNTOS_PODER;
@@ -216,10 +174,9 @@ public class Mar{
                     }
 
                     if(marcado && elegido.isAlive() && elegido.getRoot().getLayoutX() >= 0 /* && elegido.getRoot().getLayoutX() > 0*/){
-                        //Mar.this.reproducirSonido("Correcto");
                         ObservableList<Node> lista = elegido.getFlow().getChildren();
                         if (count < lista.size()) {
-                            Principal.playSound("correct.mp3", false);
+                            Mar.this.playSound("correct.mp3");
                             Text c = (Text) lista.get(count);
                             if (event.getText().equals(c.getText())) {
                                 c.setFill(Color.WHITE);
@@ -228,7 +185,7 @@ public class Mar{
 
                             }
                             else {
-                                Principal.playSound("wrong.mp3", false);
+                                Mar.this.playSound("wrong.mp3");
                                 elegido.aumentarVelocidad(ConstantesDesplazamientos.AUMENTO_VELOCIDAD);
                             }
                         } if (count == lista.size()) {
@@ -258,7 +215,7 @@ public class Mar{
 
                             }
                             else{
-                                Principal.playSound("boom.mp3", false);
+                                Mar.this.playSound("boom.mp3");
                                 File file = new File("src/images/components/explosion.gif");
                                 Image image = new Image(file.toURI().toString());
                                 elegido.getImagen().setImage(image);
@@ -302,22 +259,6 @@ public class Mar{
                     }**/
                 }
             }
-            else {
-                Mar.this.setGameOver();
-            }
-            
-            //String tecla = event.getText();
-          
-            /**
-            String tecla = event.getText();
-            Label buscado
-            prueba.requestFocus();
-            prueba.setText(prueba.getText() + tecla);
-            root.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-    focusState(newValue);
-        });
-        
-        **/
         }
     }
     
@@ -392,16 +333,11 @@ public class Mar{
             }
         }
     
-    private void reproducirSonido(String tipo) {
+    private void playSound(String archivo) {
+        File file = new File("src/sounds/" + archivo);
+        AudioClip clip = new AudioClip(file.toURI().toString());
         
-        
-        switch (tipo) {
-            case "Correcto":
-            AudioClip audio = new AudioClip(getClass().getResource("../../../src/keyboard_key.mp3").toString());
-                System.out.println(audio.getSource());
-                audio.play();
-                break;
-        }
+        clip.play();
     }
     
     public void finalizarPrograma() {
@@ -503,9 +439,9 @@ public class Mar{
         t3.start();**/
     }
     
-    private void iniciarMar(){
+    private void iniciarMar(Jugador jugador){
         this.root = new BorderPane();
-        this.jugador = new Jugador("Nombre Pruebita");
+        this.jugador = jugador;
         this.root.getStylesheets().add("styles/styles.css");
         this.root.getStyleClass().add("mar");
         
@@ -580,30 +516,38 @@ public class Mar{
         this.eliminarAnimales();
         this.root.getChildren().remove(this.buceador.getImagenBuceador());
         Text gameOver = new Text("GAME OVER");
-        Text mensajeGameOver = new Text("Este mensaje saldra al terminar el juego");
-        this.root.getChildren().addAll(gameOver, mensajeGameOver);
-        gameOver.setLayoutX(400);
-        gameOver.setLayoutY(150);
+        Text jugTexto = new Text(this.jugador.getNickname());
+        Text puntTexto = new Text("Has conseguido " + Integer.toString(this.jugador.getPuntos()) + " puntos, en " + Integer.toString(this.numNivel) + " nivel(es).");
+
+        gameOver.setTextAlignment(TextAlignment.CENTER);
+        jugTexto.setTextAlignment(TextAlignment.CENTER);
+        puntTexto.setTextAlignment(TextAlignment.CENTER);
         
+        gameOver.setFill(Color.RED);
+        jugTexto.setFill(Color.YELLOW);
+        puntTexto.setFill(Color.WHITE);
+        
+        gameOver.getStyleClass().add("gameOver");
+        jugTexto.getStyleClass().add("nickname");
+        puntTexto.getStyleClass().add("puntosObt");
+
         VBox panelNickname = new VBox();
-        campoTexto = new TextField();
-        campoTexto.setMinWidth(120);
-        campoTexto.setMinHeight(35);
-        campoTexto.setFont(new Font("Times New Roman", 30));
-        campoTexto.setDisable(false);
-        botonNickname = new Button("Ooooooooooook");
+        panelNickname.getChildren().addAll(gameOver, jugTexto, puntTexto);
+        panelNickname.setAlignment(Pos.CENTER);
         
-        panelNickname.setSpacing(20);
-        panelNickname.getChildren().addAll(campoTexto, botonNickname);
-        this.root.getChildren().add(panelNickname);
+        this.root.setCenter(panelNickname);
         
-        panelNickname.setLayoutX(400);
-        panelNickname.setLayoutY(200);
-        
-        
-        
-        
-        this.root.addEventFilter(KeyEvent.KEY_PRESSED, new KeyHandler(this.root));
+        LinkedList<Jugador> jugadores = Jugador.cargarJugadorXPuntos();
+        jugadores.add(this.jugador);
+        jugadores.sort(Jugador::compareTo);
+        if (jugadores.getFirst().equals(this.jugador)) {
+            Text maxPuntuacion = new Text("Felicidades!!" + "\nHAS CONSEGUIDO" + "\nUN NUEVO RÉCORD");
+            maxPuntuacion.setFill(Color.RED);
+            maxPuntuacion.setTextAlignment(TextAlignment.CENTER);
+            maxPuntuacion.getStyleClass().add("gameOver");
+            panelNickname.getChildren().addAll(maxPuntuacion);
+        }
+        this.escribirArchivo(jugadores);
         
     }
     
@@ -626,10 +570,12 @@ public class Mar{
     }
     
     public void eliminarAnimales(){
-        for(AnimalMarino animal: animales){
+        animales.stream().map((animal) -> {
             animal.setAlive(false);
+            return animal;
+        }).forEach((animal) -> {
             this.root.getChildren().remove(animal.getRoot());
-        }
+        });
         this.animales.clear();
     }
     
@@ -637,14 +583,22 @@ public class Mar{
         return this.numNivel;
     }
     
-    public String obtenerNickname(){
-
-        
-        String nickname = campoTexto.getText();
-        
-        
-        return "";
+    private void escribirArchivo(LinkedList<Jugador> jugadores) {
+        FileWriter writer;
+        try {
+            File file = new File("src/puntajes/puntajes.txt");
+            if (file.isFile()) {
+                file.delete();
+            }   
+            writer = new FileWriter(file);
+            for (Jugador j: jugadores) {
+                writer.write(j.getNickname()+"|"+ Integer.toString(j.getPuntos())+ "\n");
+                writer.flush();
+            }     
+            writer.close();
+        } catch (IOException ex) {
+            
+        } 
     }
-    
     
 }
