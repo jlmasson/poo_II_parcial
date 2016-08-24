@@ -86,5 +86,5 @@ public class Buceador implements Runnable{
         } catch (InterruptedException ex) {
         }
     
-    }
-}
+    } //Cierre del metodo.
+} //Cierre de la clase.
