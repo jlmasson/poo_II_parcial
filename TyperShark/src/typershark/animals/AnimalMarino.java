@@ -122,8 +122,10 @@ public abstract class AnimalMarino implements Runnable {
             if (pane.getLayoutX() <= 0 && vivo) {
                 synchronized(this) {
                 this.setAlive(false);
-                this.quitarVidas(mar.getJugador());
+                    
+                
                 Platform.runLater(() -> {
+                    this.quitarVidas(AnimalMarino.this.mar.getJugador());
                     AnimalMarino.this.mar.matarAnimal(AnimalMarino.this);
                     if (AnimalMarino.this.mar.getAnimales().isEmpty()) {
                         AnimalMarino.this.mar.setupAnimals();

@@ -61,7 +61,7 @@ public class Piranha extends AnimalMarino {
      * @param jugador
      */
     public void quitarVidas(Jugador jugador) {
-        if (this.getRoot().getLayoutX() == 0 && !this.isAlive()) {
+        if (this.getRoot().getLayoutX() <= 0 && !super.isAlive()) {
             jugador.setAtaquesDePiranhas(jugador.getAtaquesDePiranhas() + 1);
 //            if (jugador.getAtaquesDePiranhas() % 3 == 0 && jugador.getAtaquesDePiranhas() > 0) {
 //                jugador.setAtaquesDePiranhas(0);

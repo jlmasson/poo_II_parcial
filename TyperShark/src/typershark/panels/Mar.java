@@ -13,8 +13,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.animation.Animation.Status;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -132,6 +136,7 @@ public class Mar{
         int indexActual = -1;
         AnimalMarino elegido = null;
         boolean marcado = false;
+        Timeline timeline;
         
         public KeyHandler(Node root) {
             this.root = root;
@@ -144,22 +149,12 @@ public class Mar{
                     Mar.this.playSound("power.mp3");
                     System.out.println(Mar.this.jugador.getPuntos());
                     Mar.this.finalizarPrograma();
-                    Integer puntosDisminuir = ConstantesPuntos.PUNTOS_PODER;
-                    //Integer timeSeconds = ConstantesPuntos.PUNTOS_PODER;
-                    //Mar.this.desaparecerTiburones();
                     Mar.this.removerAnimales();
-                        Timeline timeline = new Timeline();
-                        timeline.setCycleCount(Timeline.INDEFINITE);
-                        timeline.getKeyFrames().add(new KeyFrame(Duration.seconds(0.001),
-                                  new PuntosEvent(timeline, puntosDisminuir, -1)));
-                        timeline.playFromStart();
-                        //Mar.this.jugador.setPuntos(Mar.this.jugador.getPuntos() - ConstantesPuntos.PUNTOS_PODER);
-                        //Mar.this.puntos.setText(Integer.toString(Mar.this.jugador.getPuntos()));
-                        Mar.this.animales.clear();
-                        Mar.this.setupAnimals();
+                    Mar.this.jugador.setPuntos(Mar.this.jugador.getPuntos() - ConstantesPuntos.PUNTOS_PODER);
+                    Mar.this.puntos.setText(Integer.toString(Mar.this.jugador.getPuntos()));
+                    Mar.this.animales.clear();
+                    Mar.this.setupAnimals();
                 } else {
-                    //int indexActual = -1;
-
                     if(!marcado){
                         for(int i = 0 ; i < animales.size() && !marcado; i++){
                             if (animales.get(i).isAlive()) {
@@ -196,9 +191,9 @@ public class Mar{
                             Integer diferencia = puntosActuales - puntosAnteriores;
                             Mar.this.jugador.setPuntos(Mar.this.jugador.getPuntos() - diferencia);
 
-                            Timeline timeline = new Timeline();
+                            timeline = new Timeline();
                             timeline.setCycleCount(Timeline.INDEFINITE);
-                            timeline.getKeyFrames().add(new KeyFrame(Duration.seconds(0.001),
+                            timeline.getKeyFrames().add(new KeyFrame(Duration.seconds(0.010),
                                       new AumentarPuntosEvent(timeline, diferencia)));
                             timeline.playFromStart();
 
@@ -395,48 +390,9 @@ public class Mar{
                 
             }
             
-            /**
-            this.root.getChildren().add(this.animales.get(i).getRoot());
-            
-            this.animales.get(i).getRoot().setLayoutX(posXInicial);
-            this.animales.get(i).getRoot().setLayoutY(posYInicial);**/
             posYInicial += 150;
             
-            //this.hilos.add(new Thread(this.animales.get(i)));
-            
         }
-        /**
-        this.hilos.stream().forEach((t) -> {
-            t.start();
-        }); /**
-        animales.get(0).getRoot().setLayoutX(700);//codigo  nuevo
-        animales.get(0).getRoot().setLayoutY(150);//codigo  nuevo
-        animales.get(1).getRoot().setLayoutX(700);
-        animales.get(1).getRoot().setLayoutY(350);
-        animales.get(2).getRoot().setLayoutX(700);
-        animales.get(2).getRoot().setLayoutY(500);
-        Thread t = new Thread(animales.get(0));
-        t.start();
-        Thread t2 = new Thread(animales.get(1));
-        t2.start();
-        Thread t3 = new Thread(animales.get(2));
-        t3.start();**/
-        
-        /**
-        
-        animales.get(0).getRoot().setLayoutX(700);//codigo  nuevo
-        animales.get(0).getRoot().setLayoutY(150);//codigo  nuevo
-        animales.get(1).getRoot().setLayoutX(700);
-        animales.get(1).getRoot().setLayoutY(350);
-        animales.get(2).getRoot().setLayoutX(700);
-        animales.get(2).getRoot().setLayoutY(500);
-        
-        Thread t = new Thread(animales.get(0));
-        t.start();
-        Thread t2 = new Thread(animales.get(1));
-        t2.start();
-        Thread t3 = new Thread(animales.get(2));
-        t3.start();**/
     }
     
     private void iniciarMar(Jugador jugador){
