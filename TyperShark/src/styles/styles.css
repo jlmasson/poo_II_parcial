@@ -14,6 +14,10 @@
     
 }
 
+.acercaDe {
+    -fx-background-image: url("../images/background/acercaDe.png");
+}
+
 .boton {
     /*-fx-text-fill: rgb(254,255,159);
     /**-fx-text-fill: rgb(130,61,0);**/
@@ -50,11 +54,41 @@
 }
 
 .labelPrincipal {
-    /*-fx-text-fill: rgb(130,61,0);*/
     -fx-text-fill: red;
     -fx-font-family: 'Papyrus';
     -fx-font-size: 80px;
     -fx-font-weight: bolder;
+}
+
+.labelAcercaDe {
+    -fx-text-fill: red;
+    -fx-font-family: 'Papyrus';
+    -fx-font-size: 50px;
+    -fx-font-weight: bolder;
+}
+
+.labelEspol {
+    -fx-text-fill: blue;
+    -fx-font-family: 'Papyrus';
+    -fx-font-size: 35px;
+    -fx-font-weight: bolder;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.6), 3, 0.5, -2, 3);
+}
+
+.labelPoo {
+    -fx-text-fill: yellow;
+    -fx-font-family: 'Papyrus';
+    -fx-font-size: 28px;
+    -fx-font-weight: bolder;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.6), 3, 0.5, -2, 3);
+}
+
+.labelAutores {
+    -fx-text-fill: white;
+    -fx-font-family: 'Papyrus';
+    -fx-font-size: 24px;
+    -fx-font-weight: bolder;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.6), 3, 0.5, -2, 3);    
 }
 
 .jugadorDatos {

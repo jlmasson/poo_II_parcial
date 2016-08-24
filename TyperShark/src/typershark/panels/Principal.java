@@ -10,7 +10,6 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -18,10 +17,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
@@ -89,17 +90,11 @@ public class Principal {
         this.acercaDe.setEffect(dropShadow);
         this.salir.setEffect(dropShadow);
         
-        this.jugar.setOnAction(new ClickMenu(principal, 2));
-        this.instrucciones.setOnAction(new ClickMenu(principal, 3));
-        this.puntajes.setOnAction(new ClickMenu(principal, 4));
-        this.salir.setOnAction(new Exit());
-        
-        this.jugar.setFocusTraversable(false);
-        this.instrucciones.setFocusTraversable(false);
-        this.puntajes.setFocusTraversable(false);
-        this.acercaDe.setFocusTraversable(false);
-        this.salir.setFocusTraversable(false);
-        
+        this.jugar.setOnMouseClicked(new ClickMenu(principal, 1));
+        this.instrucciones.setOnMouseClicked(new ClickMenu(principal, 2));
+        this.puntajes.setOnMouseClicked(new ClickMenu(principal, 3));
+        this.acercaDe.setOnMouseClicked(new ClickMenu(principal, 4));
+        this.salir.setOnMouseClicked(new Exit());
         
         this.root.getChildren().addAll(jugar, instrucciones, puntajes, acercaDe, salir);
     }
@@ -112,7 +107,7 @@ public class Principal {
         return ds;
     }
     
-    private class ClickMenu implements EventHandler<ActionEvent> {
+    private class ClickMenu implements EventHandler<MouseEvent> {
 
         private Stage stage;
         private int numOpcion;
@@ -123,10 +118,10 @@ public class Principal {
         }
 
         @Override
-        public void handle(ActionEvent event) {
+        public void handle(MouseEvent event) {
             Principal.playSound("button_sound.mp3", false);
             switch (this.numOpcion) {
-                case 2:
+                case 1:
                     Stage third;
                     third = new Stage();
                     Button previo = new Button("< Volver al Menú Principal");
@@ -144,7 +139,7 @@ public class Principal {
                     third.show();
                     break;
                 
-                case 3:
+                case 2:
                     // Modificar esto a futuro para presentación final
                     
                     
@@ -152,7 +147,7 @@ public class Principal {
                     second = new Stage();
                     //HBox root = new HBox();
                     previo = new Button("< Volver al Menú Principal");
-                    previo.setOnAction(new ClickHandler(stage, second));
+                    previo.setOnMouseClicked(new ClickHandler(stage, second));
                     Instrucciones ins = new Instrucciones();
                     ins.getRoot().setTop(previo);
                     Scene scen1 = new Scene(ins.getRoot(), 800, 600);
@@ -160,7 +155,7 @@ public class Principal {
                     second.show();
                     break;
                 
-                case 4:
+                case 3:
                     VBox title = new VBox();
                     title.setAlignment(Pos.CENTER);
                     Label titlePane = new Label("Puntajes Máximos");
@@ -172,8 +167,7 @@ public class Principal {
                     //HBox root = new HBox();
                     previo = new Button("< Volver al Menú Principal");
                     previo.getStyleClass().add("botonRegresar");
-                    previo.setFocusTraversable(false);
-                    previo.setOnAction(new ClickHandler(stage, fourth));
+                    previo.setOnMouseClicked(new ClickHandler(stage, fourth));
                     Puntajes punt = new Puntajes();
                     punt.getRoot().setBottom(previo);
                     Scene scene2 = new Scene(punt.getRoot(), 800, 600);
@@ -181,6 +175,22 @@ public class Principal {
                     Principal.this.setStageStyles(fourth, "Puntajes Máximos");
                     punt.getRoot().setTop(title);
                     fourth.show();
+                    break;
+                    
+                case 4:
+                    Stage about = new Stage();
+                    previo = new Button("< Volver al Menú Principal");
+                    previo.getStyleClass().add("botonRegresar");
+                    previo.setOnMouseClicked(new ClickHandler(stage, about));
+                    ds = Principal.this.setupShadow();
+                    previo.setEffect(ds);
+                    AcercaDe acerca = new AcercaDe();
+                    acerca.getRoot().setBottom(previo);
+                    Scene aboutScene = new Scene(acerca.getRoot(), 800, 650);
+                    about.setScene(aboutScene);
+                    Principal.this.setStageStyles(about, "Acerca de TyperShark II");
+                    //acerca.getRoot().setTop(title);
+                    about.show();
                     break;
                 default:
                     break;
@@ -190,10 +200,10 @@ public class Principal {
         }
     }
     
-    private class Exit implements EventHandler<ActionEvent> {
+    private class Exit implements EventHandler<MouseEvent> {
 
         @Override
-        public void handle(ActionEvent event) {
+        public void handle(MouseEvent event) {
             try {
                 Principal.playSound("button_sound.mp3", false);
                 Thread.sleep(50);

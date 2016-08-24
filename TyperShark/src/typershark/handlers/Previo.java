@@ -26,7 +26,7 @@ public class Previo {
         HBox root = new HBox();
 
         Button botonPrueba = new Button("Boton Previo");
-        botonPrueba.setOnAction(new ClickHandler(anterior, second));
+        botonPrueba.setOnMouseClicked(new ClickHandler(anterior, second));
 
         root.getChildren().add(botonPrueba);
 

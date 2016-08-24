@@ -120,7 +120,7 @@ public class TyperShark_Anterior extends Application {
                 HBox root = new HBox();
 
                 Button botonPrueba = new Button("Boton Previo");
-                botonPrueba.setOnAction(new ClickHandler(stage, second));
+                botonPrueba.setOnMouseClicked(new ClickHandler(stage, second));
                 //botonPrueba.setOnAction(new ClickHandler());
 
                 root.getChildren().add(botonPrueba);
@@ -157,7 +157,7 @@ public class TyperShark_Anterior extends Application {
             HBox root = new HBox();
 
             Button botonPrueba = new Button("Boton Previo");
-            botonPrueba.setOnAction(new ClickHandler(stage, second));
+            botonPrueba.setOnMouseClicked(new ClickHandler(stage, second));
             //botonPrueba.setOnAction(new ClickHandler());
 
             root.getChildren().add(botonPrueba);
