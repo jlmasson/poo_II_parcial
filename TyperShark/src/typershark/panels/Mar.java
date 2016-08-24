@@ -19,6 +19,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -614,6 +615,18 @@ public class Mar{
         return this.numNivel;
     }
     
+    
+    
+    
+    
+    public String obtenerNickname(){
+        TextField campoDeTexto = new TextField();
+        
+        String nickname = campoDeTexto.getText();
+        
+        
+        return "";
+    }
     
     
 }

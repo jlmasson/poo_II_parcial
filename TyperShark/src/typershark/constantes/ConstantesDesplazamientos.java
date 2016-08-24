@@ -13,9 +13,9 @@ public class ConstantesDesplazamientos {
     
     public static final int DISMINUCION_ALTURA_BUCEADOR = 15;
     
-    public static final int VELOCIDAD_INICIAL = 8000;
-    public static final int AUMENTO_VELOCIDAD = 30;
-    public static final double MULTIPLICADOR_TIBURON = 2;
-    public static final double MULTIPLICADOR_PIRANIA = 1;
+    public static final long VELOCIDAD_INICIAL = 300;
+    public static final int AUMENTO_VELOCIDAD = 70;
+    public static final long MULTIPLICADOR_TIBURON = 2;
+    public static final long MULTIPLICADOR_PIRANIA = 1;
     
 }

@@ -60,7 +60,7 @@ public abstract class AnimalMarino implements Runnable {
                 //synchronized(this);
                 synchronized(this) {
                     Platform.runLater(() -> {
-                        pane.setLayoutX(pane.getLayoutX() - (8 + (mar.getNumNivel())*2));
+                        pane.setLayoutX(pane.getLayoutX() - (10 + 3*mar.getNumNivel()));
                     });
                 Thread.sleep(this.velocidad);
                 } 

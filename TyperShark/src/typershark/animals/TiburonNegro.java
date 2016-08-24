@@ -21,10 +21,9 @@ public class TiburonNegro extends AnimalMarino {
     
     public TiburonNegro(Mar mar, ArrayList<String> palabrasJuego) {
         super(mar, "images/components/tiburoncin2.png", palabrasJuego,
-                (long) (ConstantesDesplazamientos.VELOCIDAD_INICIAL*ConstantesDesplazamientos.MULTIPLICADOR_TIBURON));
+                ConstantesDesplazamientos.VELOCIDAD_INICIAL*ConstantesDesplazamientos.MULTIPLICADOR_TIBURON);
         
         this.palabras = new LinkedList<>();
-        Random r = new Random();
         int numPalabras = (int) (Math.random()*2  +2);
         for(int i = 0; i<numPalabras; i++){
             int aleatorio = (int) (Math.random()*palabrasJuego.size());

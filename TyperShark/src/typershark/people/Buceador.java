@@ -42,7 +42,7 @@ public class Buceador implements Runnable{
                 //synchronized(this);
                 synchronized(this) {
                     Platform.runLater(() -> {
-                        this.imagenBuceador.setLayoutY(this.imagenBuceador.getLayoutY() + 3);
+                        this.imagenBuceador.setLayoutY(this.imagenBuceador.getLayoutY() + 2);
                         if(this.imagenBuceador.getLayoutY() >= 400){
                             Buceador.this.mar.setSiguienteNivel();
                         }

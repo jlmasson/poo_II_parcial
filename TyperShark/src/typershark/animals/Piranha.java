@@ -21,8 +21,8 @@ public class Piranha extends AnimalMarino {
     private char letra;
     
     public Piranha(Mar mar, ArrayList<String> palabrasJuego) {
-        super(mar, "images/components/piranha.png",palabrasJuego,
-                (long) (ConstantesDesplazamientos.VELOCIDAD_INICIAL*ConstantesDesplazamientos.MULTIPLICADOR_PIRANIA));
+        super(mar, "images/components/piranhaFINAL.png",palabrasJuego,
+                ConstantesDesplazamientos.VELOCIDAD_INICIAL*ConstantesDesplazamientos.MULTIPLICADOR_PIRANIA);
 
         int aleatorio = (int) (Math.random()*palabrasJuego.size());
         letra = palabrasJuego.get(aleatorio).charAt(0);
@@ -42,13 +42,15 @@ public class Piranha extends AnimalMarino {
     @Override
     public void quitarVidas(Jugador jugador) {
         if (this.getRoot().getLayoutX() == 0 && !this.isAlive()) {
-            if (jugador.getAtaquesDePiranhas() % 3 == 0 && jugador.getAtaquesDePiranhas() > 0) {
-                jugador.setAtaquesDePiranhas(0);
-                jugador.setNumVidas(jugador.getNumVidas() - 1);
-            }
-            else {
-                jugador.setAtaquesDePiranhas(jugador.getAtaquesDePiranhas() + 1);
-            }
+            jugador.setAtaquesDePiranhas(jugador.getAtaquesDePiranhas() + 1);
+//            if (jugador.getAtaquesDePiranhas() % 3 == 0 && jugador.getAtaquesDePiranhas() > 0) {
+//                jugador.setAtaquesDePiranhas(0);
+//                jugador.setNumVidas(jugador.getNumVidas() - 1);
+//            }
+              if(jugador.getAtaquesDePiranhas() == 3 && jugador.getNumVidas() > 0){
+                  jugador.setNumVidas(jugador.getNumVidas() - 1);
+                  jugador.setAtaquesDePiranhas(0);
+              }
         }
     }
     
