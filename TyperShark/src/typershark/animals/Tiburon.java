@@ -21,7 +21,7 @@ public class Tiburon extends AnimalMarino {
     
     
     public Tiburon(Mar mar, ArrayList<String> palabrasJuego) {
-        super(mar, "images/components/tiburonBlanco400x400.png", palabrasJuego,
+        super(mar, "images/components/tiburonBlancoFINAL.png", palabrasJuego,
                 ConstantesDesplazamientos.VELOCIDAD_INICIAL*ConstantesDesplazamientos.MULTIPLICADOR_TIBURON);
 
         int aleatorio = (int) (Math.random()*palabrasJuego.size());
@@ -39,7 +39,7 @@ public class Tiburon extends AnimalMarino {
     public void quitarVidas(Jugador jugador) {
         if (this.getRoot().getLayoutX() <= 0 && !this.isAlive()) {
             if(jugador.getNumVidas() > 0){
-            jugador.setNumVidas(jugador.getNumVidas() - 1);
+                jugador.setNumVidas(jugador.getNumVidas() - 1);
             }
         }
     }

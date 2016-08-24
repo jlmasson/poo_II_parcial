@@ -20,7 +20,7 @@ public class TiburonNegro extends AnimalMarino {
     private LinkedList<String> palabras;
     
     public TiburonNegro(Mar mar, ArrayList<String> palabrasJuego) {
-        super(mar, "images/components/tiburoncin2.png", palabrasJuego,
+        super(mar, "images/components/tiburonNegroFINAL.png", palabrasJuego,
                 ConstantesDesplazamientos.VELOCIDAD_INICIAL*ConstantesDesplazamientos.MULTIPLICADOR_TIBURON);
         
         this.palabras = new LinkedList<>();
@@ -84,7 +84,9 @@ public class TiburonNegro extends AnimalMarino {
     @Override
     public void quitarVidas(Jugador jugador) {
         if (this.getRoot().getLayoutX() <= 0 && !this.isAlive()) {
-            jugador.setNumVidas(jugador.getNumVidas() - 1);
+            if(jugador.getNumVidas() > 0){
+                jugador.setNumVidas(jugador.getNumVidas() - 1);
+            }
         }
     }
 }
