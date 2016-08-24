@@ -1,5 +1,5 @@
 /*
-* @(#)Piranha.java 4.0 28/8/2016
+* @(#)Piranha.java 4.0 24/8/2016
 *
 * Copyright (c) 2016 Galo Castillo, Jose Luis Masson & Danilo Torres.
 * Escuela Superior Politécnica del Litoral. Guayaquil, Ecuador.
@@ -20,7 +20,7 @@ import typershark.people.Jugador;
  * Esta clase define objetos de tipo Piranha que es subclase de la
  * superclase AnimalMarino.
  * @author: Galo Castillo, Jose Luis Masson, Danilo Torres
- * @version: 4.0 28/8/2016
+ * @version: 4.0 24/8/2016
  */
 public class Piranha extends AnimalMarino {
     

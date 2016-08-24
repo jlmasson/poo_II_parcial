@@ -54,14 +54,15 @@ public class Puntajes {
         this.setupPuntajes();
         this.setupTable();
         
-    }
+    }//Cierre del metodo.
 
     /**
      * Método que permite obtener la raiz principal de Puntajes.
+     * @return Retorna una nueva raiz.
      * */
     public BorderPane getRoot() {
         return root;
-    }
+    }//Cierre del metodo.
 
     /**
      * Método que permite cambiar la raiz principal de Puntajes.
@@ -69,7 +70,7 @@ public class Puntajes {
      * */
     public void setRoot(BorderPane root) {
         this.root = root;
-    }
+    }//Cierre del metodo.
     
     /**
      * Método que permite cargar de manera ordenada los puntajes.
@@ -77,10 +78,10 @@ public class Puntajes {
     private void setupPuntajes() {
         this.puntajes = this.cargarPuntajesJugadores();
         this.puntajes.sort(Jugador::compareTo);
-    }
+    }//Cierre del metodo.
     
     /**
-     * Método que permite obtener la raiz principal del mar.
+     * Método que modifica y edita la tabla.
      * */
     private void setupTable() {
         TableColumn<Jugador, String> nameColumn = new TableColumn<>("Jugador");
@@ -103,8 +104,11 @@ public class Puntajes {
         
         this.root.setCenter(pane);
         this.tabla.getStyleClass().add("table-view");
-    }
+    }//Cierre del metodo.
     
+    /**
+     * Método que edita el titulo del panel de Puntajes.
+     * */
     private void setupTitlePane() {        
         VBox title;
         title = new VBox();
@@ -118,16 +122,24 @@ public class Puntajes {
         titlePane.setTextAlignment(TextAlignment.CENTER);
         title.getChildren().add(titlePane);
         this.root.setTop(title);
-    }
+    }//Cierre del metodo.
     
+    /**
+     * Método que permite modficar el estilo del panel.
+     * @return Retorna un DropShadow
+     * */
     private DropShadow setupShadow() {
         DropShadow ds = new DropShadow();
         ds.setOffsetY(5.0f);
         ds.setOffsetX(-5.0f);
         ds.setColor(Color.color(0,0,0));
         return ds;
-    }
+    }//Cierre del metodo.
     
+    /**
+     * Método que carga los puntajes de los jugadores.
+     * @return La lista visible y modificada.
+     * */
     private ObservableList<Jugador> cargarPuntajesJugadores() {
         ObservableList<Jugador> puntos = FXCollections.observableArrayList();
         File archivo = new File("src/puntajes/puntajes.txt");
@@ -146,6 +158,6 @@ public class Puntajes {
             }
         }
         return puntos;
-    }
+    }//Cierre del metodo.
     
-}
+}//Cierre de clase

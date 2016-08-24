@@ -1,5 +1,5 @@
 /*
-* @(#)Buceador.java 4.0 28/8/2016
+* @(#)Buceador.java 4.0 24/8/2016
 *
 * Copyright (c) 2016 Galo Castillo, Jose Luis Masson & Danilo Torres.
 * Escuela Superior Politécnica del Litoral. Guayaquil, Ecuador.
@@ -16,7 +16,7 @@ import typershark.panels.Mar;
 /**
  * Esta clase define objetos de tipo Buceador.
  * @author: Galo Castillo, Jose Luis Masson, Danilo Torres
- * @version: 4.0 28/8/2016
+ * @version: 4.0 24/8/2016
  */
 public class Buceador implements Runnable{
     

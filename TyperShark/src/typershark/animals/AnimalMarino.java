@@ -1,5 +1,5 @@
 /*
-* @(#)AnimalMarino.java 4.0 28/8/2016
+* @(#)AnimalMarino.java 4.0 24/8/2016
 *
 * Copyright (c) 2016 Galo Castillo, Jose Luis Masson & Danilo Torres.
 * Escuela Superior Politécnica del Litoral. Guayaquil, Ecuador.
@@ -25,7 +25,7 @@ import typershark.people.Jugador;
  * Esta clase es abstracta para permitir el modelamiento
  * de los animales  en el juego.
  * @author: Galo Castillo, Jose Luis Masson, Danilo Torres
- * @version: 4.0 22/6/2016
+ * @version: 4.0 24/8/2016
  */
 public abstract class AnimalMarino implements Runnable {
 
