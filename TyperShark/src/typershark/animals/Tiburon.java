@@ -9,7 +9,6 @@
 package typershark.animals;
 
 import java.util.ArrayList;
-import typershark.constantes.Constantes;
 import typershark.constantes.ConstantesDesplazamientos;
 import typershark.constantes.ConstantesPuntos;
 import typershark.panels.Mar;
@@ -33,6 +32,7 @@ public class Tiburon extends AnimalMarino {
      * capaz de elimianrlo..
      * @param mar El parámetro mar corresponde al panel organizador del mar. 
      * que contiene cargadas previamente.
+     * @param palabrasJuego
      */
     public Tiburon(Mar mar, ArrayList<String> palabrasJuego) {
         super(mar, "images/components/tiburonBlancoFINAL.png", palabrasJuego,

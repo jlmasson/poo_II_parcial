@@ -10,7 +10,6 @@ package typershark.animals;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.Random;
 import typershark.constantes.ConstantesDesplazamientos;
 import typershark.panels.Mar;
 import typershark.people.Jugador;
@@ -54,6 +53,7 @@ public class TiburonNegro extends AnimalMarino {
         
     } //Cierre del metodo
     
+    @Override
     public void matarAnimal() {
         super.matarAnimal();
     } // Cierre del metodo.

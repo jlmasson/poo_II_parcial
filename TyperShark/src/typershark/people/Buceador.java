@@ -61,7 +61,7 @@ public class Buceador implements Runnable{
      * Método que permite obtener el movimiento independiente del buceador con respecto
      * a las demás componentes.
      * realizados por el buceador.
-     * /
+     * */
     @Override
     public void run() {
 
