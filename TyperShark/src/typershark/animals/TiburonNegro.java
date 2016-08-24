@@ -50,7 +50,12 @@ public class TiburonNegro extends AnimalMarino {
 
     @Override
     public void aumentarPuntos(Jugador jugador) {
-        
+        if (!this.palabras.isEmpty()) {
+            jugador.setPuntos(jugador.getPuntos() + 25);
+        }
+        else {
+            jugador.setPuntos(jugador.getPuntos() + 75);
+        }
     } //Cierre del metodo
     
     @Override

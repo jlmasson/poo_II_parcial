@@ -16,12 +16,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.animation.Animation.Status;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -127,10 +123,11 @@ public class Mar{
 
     /**
      * Método que permite obtener la raiz principal del mar.
+     * @return root Pane donde está ubicado el mar
      * */
     public BorderPane getRoot() {
         return root;
-    }
+    } //Cierre del metodo
 
     /**
      * Método que permite cambiar la raiz principal del mar.
@@ -138,29 +135,31 @@ public class Mar{
      * */
     public void setRoot(BorderPane root) {
         this.root = root;
-    }
+    } //Cierre del metodo
 
     /**
      * Método que permite obtener el jugador del mar.
-     * */
+     * @return jugador Retorna el jugador del juego
+     *   */
     public Jugador getJugador() {
         return jugador;
-    }
+    } //Cierre del metodo
 
     /**
      * Método que permite cambiar al jugador del mar.
-     * */
+     * @param jugador El parámetro jugador es el nuevo jugador a utilizar */
     public void setJugador(Jugador jugador) {
         this.jugador = jugador;
-    }
+    } //Cierre del metodo
 
     /**
      * Método que permite obtener la lista de animales presentes
      * en el mar.
-     * */
+     * @return  animales La lista de animales en el juego
+     */
     public LinkedList<AnimalMarino> getAnimales() {
         return animales;
-    }
+    } //Cierre del metodo
 
     /**
      * Método que permite cambiar la lista de animales presentes
@@ -170,42 +169,66 @@ public class Mar{
      * */
     public void setAnimales(LinkedList<AnimalMarino> animales) {
         this.animales = animales;
-    }
+    } //Cierre del metodo
 
     /**
      * Método que permite obtener el nodo del numero de vidas del jugador.
-     * */
+     * @return numVidas Retorna el texto en pantalla que muestra las vidas
+     */
     public Text getNumVidas() {
         return numVidas;
-    }
+    } //Cierre del metodo
 
     /**
      * Método que permite cambiar el nodo del numero de vidas del jugador.
-     * */
+     * @param numVidas El parámetro numVidas es el numero de vidas
+     * mostrado en pantalla
+     *  */
     public void setNumVidas(Text numVidas) {
         this.numVidas = numVidas;
-    }
+    } //Cierre del metodo
 
 
     
     private class KeyHandler implements EventHandler<KeyEvent> {
-        Node root;
-        int countEnter = 0;
-        int count = 0;
-        int countPoder = 0;
-        int indexActual = -1;
-        AnimalMarino elegido = null;
-        boolean marcado = false;
-        Timeline timeline;
+        /** Raiz principal del panel*/
+        private Node root;
+        
+        /** Número de usos de poder especial*/
+        private int countEnter = 0;
+        
+        /** Índice que permite recorrer la palabra marcada*/
+        private int count = 0;
+        
+        /** Numero para bajar los puntos del jugador*/
+        private int countPoder = 0;
+        
+        /** Numero que permite hacer de bandera para elegir los animales*/
+        private int indexActual = -1;
+        
+        /** Animal elegido cuando se teclea su primera letra*/
+        private AnimalMarino elegido = null;
+        
+        /** Marca que permite identificar cuando un animal está escogido*/
+        private boolean marcado = false;
+        
+        /** Línea de tiempo para animación de puntajes*/
+        private Timeline timeline;
         
         public KeyHandler(Node root) {
             this.root = root;
-        }
+        } 
+        
+        /**
+         * Método que permite manejar la entrada del teclado en el juego
+         */
         @Override
         public void handle(KeyEvent event) {
+            
+            // Condición para lo cual el usuario siga tecleando
             if (Mar.this.jugador.getNumVidas() > 0) {
-                if (event.getCode() == KeyCode.ENTER && jugador.getPuntos() >= ConstantesPuntos.PUNTOS_PODER && !KeyHandler.this.marcado) {
-                    countEnter++;
+                if (event.getCode() == KeyCode.ENTER && jugador.getPuntos() >= ConstantesPuntos.PUNTOS_PODER && !KeyHandler.this.isMarcado()) {
+                    setCountEnter(getCountEnter() + 1);
                     Mar.this.playSound("power.mp3");
                     System.out.println(Mar.this.jugador.getPuntos());
                     Mar.this.finalizarPrograma();
@@ -215,117 +238,205 @@ public class Mar{
                     Mar.this.animales.clear();
                     Mar.this.setupAnimals();
                 } else {
-                    if(!marcado){
-                        for(int i = 0 ; i < animales.size() && !marcado; i++){
+                    
+                    // Condición para elegir el animal a marcar
+                    if(!isMarcado()){
+                        for(int i = 0 ; i < animales.size() && !isMarcado(); i++){
                             if (animales.get(i).isAlive()) {
                                 if(Character.toString(animales.get(i).getpPalabraEnPantalla().getText().charAt(0)).equals(event.getText())){
-                                    indexActual = i;
-                                    elegido = animales.get(indexActual);
-                                    marcado = true;
+                                    setIndexActual(i);
+                                    setElegido(animales.get(getIndexActual()));
+                                    setMarcado(true);
                                 }
                             }
 
                         }
                     }
-
-                    if(marcado && elegido.isAlive() && elegido.getRoot().getLayoutX() >= 0 /* && elegido.getRoot().getLayoutX() > 0*/){
-                        ObservableList<Node> lista = elegido.getFlow().getChildren();
-                        if (count < lista.size()) {
+                    
+                    // Condición para matar al animal antes de que mate al buceador
+                    if(isMarcado() && getElegido().isAlive() && getElegido().getRoot().getLayoutX() >= 0 /* && elegido.getRoot().getLayoutX() > 0*/){
+                        ObservableList<Node> lista = getElegido().getFlow().getChildren();
+                        if (getCount() < lista.size()) {
                             Mar.this.playSound("correct.mp3");
-                            Text c = (Text) lista.get(count);
+                            Text c = (Text) lista.get(getCount());
                             if (event.getText().equals(c.getText())) {
                                 c.setFill(Color.WHITE);
-                                lista.set(count, c);
-                                count++;
+                                lista.set(getCount(), c);
+                                setCount(getCount() + 1);
 
                             }
                             else {
                                 Mar.this.playSound("wrong.mp3");
-                                elegido.aumentarVelocidad(ConstantesDesplazamientos.AUMENTO_VELOCIDAD);
+                                getElegido().aumentarVelocidad(ConstantesDesplazamientos.AUMENTO_VELOCIDAD);
                             }
-                        } if (count == lista.size()) {
+                            // Condición para matar al tiburon
+                        } if (getCount() == lista.size()) {
                             
                             Integer puntosAnteriores = Mar.this.jugador.getPuntos();
-                            elegido.aumentarPuntos(jugador);
+                            getElegido().aumentarPuntos(jugador);
                             Integer puntosActuales = Mar.this.jugador.getPuntos();
                             Integer diferencia = puntosActuales - puntosAnteriores;
                             Mar.this.jugador.setPuntos(Mar.this.jugador.getPuntos() - diferencia);
 
-                            timeline = new Timeline();
-                            timeline.setCycleCount(Timeline.INDEFINITE);
-                            timeline.getKeyFrames().add(new KeyFrame(Duration.seconds(0.010),
-                                      new AumentarPuntosEvent(timeline, diferencia)));
-                            timeline.playFromStart();
+                            setTimeline(new Timeline());
+                            getTimeline().setCycleCount(Timeline.INDEFINITE);
+                            getTimeline().getKeyFrames().add(new KeyFrame(Duration.seconds(0.010),
+                                      new AumentarPuntosEvent(getTimeline(), diferencia)));
+                            getTimeline().playFromStart();
 
                             Mar.this.puntos.setText(Integer.toString(jugador.getPuntos()));
-                            count = 0;
-                            if(elegido instanceof TiburonNegro &&
-                                    ((TiburonNegro)elegido).getPalabras().size() > 1){
+                            setCount(0);
+                            if(getElegido() instanceof TiburonNegro &&
+                                    ((TiburonNegro)getElegido()).getPalabras().size() > 1){
 
-                                    elegido.getRoot().getChildren().remove(elegido.getPanelMedio());
-                                    ((TiburonNegro)elegido).getPalabras().remove(0);
-                                    String siguientePalabra = ((TiburonNegro)elegido).getPalabras().get(0);
-                                    ((TiburonNegro)elegido).setTextoEnPantalla(siguientePalabra);
+                                    getElegido().getRoot().getChildren().remove(getElegido().getPanelMedio());
+                                    ((TiburonNegro)getElegido()).getPalabras().remove(0);
+                                    String siguientePalabra = ((TiburonNegro)getElegido()).getPalabras().get(0);
+                                    ((TiburonNegro)getElegido()).setTextoEnPantalla(siguientePalabra);
 
                             }
                             else{
                                 Mar.this.playSound("boom.mp3");
                                 File file = new File("src/images/components/explosion.gif");
                                 Image image = new Image(file.toURI().toString());
-                                elegido.getImagen().setImage(image);
+                                getElegido().getImagen().setImage(image);
                                 try {
                                     Thread.sleep(100);
                                 } catch (InterruptedException ex) {
                                    
                                 }
-                                elegido.setAlive(false);
+                                getElegido().setAlive(false);
                                 
-                                Mar.this.matarAnimal(elegido);
+                                Mar.this.matarAnimal(getElegido());
 
                             }
-                            indexActual = -1;
-                            marcado = false;
+                            setIndexActual(-1);
+                            setMarcado(false);
                             if(animales.isEmpty()){
                                 Mar.this.setupAnimals();
                             }
                         }
                     }
-                    if (marcado && !elegido.isAlive()) {
-                        count = 0;
-                        marcado = false;
+                    if (isMarcado() && !elegido.isAlive()) {
+                        setCount(0);
+                        setMarcado(false);
                     }
                 }
             }
-        }
-    }
-    
-    private class PuntosEvent implements EventHandler {
-        private final Timeline timeline;
-        private Integer puntos;
-        private final Integer multiplicador;
-        private final int auxiliarJugador;
-        private final int auxiliar;
-        
-        public PuntosEvent(Timeline timeline, Integer puntos, Integer multiplicador) {
-            this.timeline = timeline;
-            this.puntos = puntos;
-            this.multiplicador = multiplicador;
-            this.auxiliarJugador = Mar.this.jugador.getPuntos();
-            this.auxiliar = puntos;
-        }
+        } //Cierre del metodo
 
-        @Override
-        public void handle(Event event) {
-            this.puntos--;
-            Mar.this.jugador.setPuntos(Mar.this.jugador.getPuntos() + (multiplicador)*1);
-            Mar.this.puntos.setText(Integer.toString(Mar.this.jugador.getPuntos()));
-            if (this.puntos == 0 && Mar.this.jugador.getPuntos() == this.auxiliarJugador + (multiplicador*this.auxiliar)) {
-                this.timeline.stop();
-            }
-        }
-        
+        /**
+         * @return the root
+         */
+        public Node getRoot() {
+            return root;
+        } //Cierre del metodo
+
+        /**
+         * @param root the root to set
+         */
+        public void setRoot(Node root) {
+            this.root = root;
+        } //Cierre del metodo
+
+        /**
+         * @return the countEnter
+         */
+        public int getCountEnter() {
+            return countEnter;
+        } //Cierre del metodo
+
+        /**
+         * @param countEnter the countEnter to set
+         */
+        public void setCountEnter(int countEnter) {
+            this.countEnter = countEnter;
+        } //Cierre del metodo
+
+        /**
+         * @return the count
+         */
+        public int getCount() {
+            return count;
+        } //Cierre del metodo
+
+        /**
+         * @param count the count to set
+         */
+        public void setCount(int count) {
+            this.count = count;
+        } //Cierre del metodo
+
+        /**
+         * @return the countPoder
+         */
+        public int getCountPoder() {
+            return countPoder;
+        } //Cierre del metodo
+
+        /**
+         * @param countPoder the countPoder to set
+         */
+        public void setCountPoder(int countPoder) {
+            this.countPoder = countPoder;
+        } //Cierre del metodo
+
+        /**
+         * @return the indexActual
+         */
+        public int getIndexActual() {
+            return indexActual;
+        } //Cierre del metodo
+
+        /**
+         * @param indexActual the indexActual to set
+         */
+        public void setIndexActual(int indexActual) {
+            this.indexActual = indexActual;
+        } //Cierre del metodo
+
+        /**
+         * @return the elegido
+         */
+        public AnimalMarino getElegido() {
+            return elegido;
+        } //Cierre del metodo
+
+        /**
+         * @param elegido the elegido to set
+         */
+        public void setElegido(AnimalMarino elegido) {
+            this.elegido = elegido;
+        } //Cierre del metodo
+
+        /**
+         * @return the marcado
+         */
+        public boolean isMarcado() {
+            return marcado;
+        } //Cierre del metodo
+
+        /**
+         * @param marcado the marcado to set
+         */
+        public void setMarcado(boolean marcado) {
+            this.marcado = marcado;
+        } //Cierre del metodo
+
+        /**
+         * @return the timeline
+         */
+        public Timeline getTimeline() {
+            return timeline;
+        } //Cierre del metodo
+
+        /**
+         * @param timeline the timeline to set
+         */
+        public void setTimeline(Timeline timeline) {
+            this.timeline = timeline;
+        } //Cierre del metodo
     }
-    
     
     private class AumentarPuntosEvent implements EventHandler {
 
@@ -346,29 +457,7 @@ public class Mar{
                     timeline.stop();
                 }
             }
-    }
-    
-    private class DisminuirPuntosEvent implements EventHandler {
-
-            private final Timeline timeline;
-
-            public DisminuirPuntosEvent(Timeline timeline) {
-                this.timeline = timeline;
-            }
-
-            @Override
-            public void handle(Event event) {
-                Mar.this.countDownPoder--;
-                Mar.this.jugador.setPuntos(Mar.this.jugador.getPuntos() - 1);
-                // update timerLabel
-                Mar.this.puntos.setText(
-                        Integer.toString(Mar.this.jugador.getPuntos()));
-                if (Mar.this.countDownPoder <= 0) {
-                    timeline.stop();
-                    Mar.this.countDownPoder = ConstantesPuntos.PUNTOS_PODER;
-                }
-            }
-        }
+    } 
     
     /**
      * Método que permite reproducir audio.
@@ -380,20 +469,20 @@ public class Mar{
         AudioClip clip = new AudioClip(file.toURI().toString());
         
         clip.play();
-    }
+    } //Cierre del metodo
     
     public void finalizarPrograma() {
         this.animales.stream().forEach((a) -> {
             a.setAlive(false);
         });
-    }
+    } //Cierre del metodo
 
     
     public void removerAnimales() {
         animales.stream().forEach((p) -> {
             this.root.getChildren().remove(p.getRoot());
         });
-    }
+    } //Cierre del metodo
     
     public void setupAnimals() {
         this.animales = new LinkedList<>();
@@ -432,8 +521,11 @@ public class Mar{
             posYInicial += 150;
             
         }
-    }
+    } //Cierre del metodo
     
+    /**
+     * Método que inicializa el mar (Inicia el Juego)
+     */
     private void iniciarMar(Jugador jugador){
         this.root = new BorderPane();
         this.jugador = jugador;
@@ -450,7 +542,7 @@ public class Mar{
         this.numVidas.setFill(Color.WHITE);
         this.numVidas.getStyleClass().add("jugadorDatos");
         this.nivel = new Text(Integer.toString(this.numNivel));
-        this.nivel.setFont(new Font("Times New Roman", 20));
+        this.nivel.getStyleClass().add("jugadorDatos");
         this.imagenNivel = new ImageView(new Image("images/components/estrellaNivel.png"));
         StackPane pilaNivel = new StackPane();
         pilaNivel.getChildren().addAll(imagenNivel, nivel);
@@ -498,8 +590,11 @@ public class Mar{
         Thread tBuceador = new Thread(this.buceador);
         tBuceador.start();
         
-    }
+    } //Cierre del metodo
     
+    /**
+     * Método que muestra el finl del juego
+     */
     public void setGameOver() {
         this.eliminarAnimales();
         this.root.getChildren().remove(this.buceador.getImagenBuceador());
@@ -537,14 +632,21 @@ public class Mar{
         }
         this.escribirArchivo(jugadores);
         
-    }
+    } //Cierre del metodo
     
+    /**
+     * Método que muestra el finl del juego
+     * @param animal El parámetro animal es el que se va a matar (muere hilo)
+     */
     public void matarAnimal(AnimalMarino animal) {
         this.root.getChildren().remove(animal.getRoot());
         if (!this.animales.isEmpty())
             this.animales.remove(animal);
-    }
+    } //Cierre del metodo
     
+    /**
+     * Método que cambia el nivel del Juego
+     */
     public void setSiguienteNivel(){
         
         this.jugador.setNumVidas(this.jugador.getNumVidas() + 1);
@@ -555,7 +657,11 @@ public class Mar{
         this.eliminarAnimales();
         this.setupAnimals();
         
-    }
+    } //Cierre del metodo
+    
+    /**
+     * Método que elimina los animales presentes en el par
+     */
     
     public void eliminarAnimales(){
         animales.stream().map((animal) -> {
@@ -565,12 +671,20 @@ public class Mar{
             this.root.getChildren().remove(animal.getRoot());
         });
         this.animales.clear();
-    }
+    } //Cierre del metodo
     
+    
+    /**
+     * Método que obtiene el número del nivel del juego
+     * @return numNivel El nivel del juego
+     */
     public int getNumNivel(){
         return this.numNivel;
-    }
+    } //Cierre del metodo
     
+    /**
+     * Método que escribe el archivo de los puntajes
+     */
     private void escribirArchivo(LinkedList<Jugador> jugadores) {
         FileWriter writer;
         try {
@@ -587,6 +701,6 @@ public class Mar{
         } catch (IOException ex) {
             
         } 
-    }
+    } //Cierre del metodo
     
-}
+} //Cierre de la clase

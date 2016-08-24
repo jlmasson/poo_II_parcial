@@ -32,9 +32,7 @@ public abstract class AnimalMarino implements Runnable {
     
     private StackPane pane;
     
-    private Pane panelMedio;{
-    
-    }
+    private Pane panelMedio;
     
     /** Nnodo que contiene la imagen del componente */
     private ImageView imagen;
@@ -221,7 +219,7 @@ public abstract class AnimalMarino implements Runnable {
         for (Character c : palabra.toLowerCase().toCharArray()) {
             Text e = new Text(c.toString());
             e.setFont(new Font(30));
-            e.setFill(Color.BLUE);
+            e.setFill(Color.YELLOW);
             text.getChildren().add(e);
         }
         panelMedio = new Pane();
