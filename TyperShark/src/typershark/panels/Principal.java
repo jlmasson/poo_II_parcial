@@ -22,7 +22,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
-import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
@@ -67,7 +66,6 @@ public class Principal {
         this.title.setText("TyperShark II");
         this.title.getStyleClass().add("labelPrincipal");
         this.title.setEffect(dropShadow);
-        
         this.root.getChildren().add(title);
     }
     
@@ -122,74 +120,48 @@ public class Principal {
             Principal.playSound("button_sound.mp3", false);
             switch (this.numOpcion) {
                 case 1:
-                    Stage third;
-                    third = new Stage();
-                    Button previo = new Button("< Volver al Menú Principal");
+                    Stage game;
+                    game = new Stage();
                     Mar mar = new Mar();
-                    previo.setOnMouseClicked(new ClickHandlerMar(this.stage, third, mar));
-                    previo.getStyleClass().add("botonRegresar");
-                    mar.getRoot().setBottom(previo);
-                    Scene scene = new Scene(mar.getRoot(), 800, 600);
-                    third.initStyle(StageStyle.UNDECORATED);
-                    third.setScene(scene);
-                    third.setOnCloseRequest((WindowEvent t) -> {
+                    mar.getRoot().setBottom(Principal.this.setupBotonPrevio(this.stage, game, mar));
+                    Scene gameScene = new Scene(mar.getRoot(), 800, 600);
+                    game.initStyle(StageStyle.UNDECORATED);
+                    game.setScene(gameScene);
+                    game.setOnCloseRequest((WindowEvent t) -> {
                         Platform.exit();
                         System.exit(0);
             });
-                    third.show();
+                    game.show();
                     break;
                 
                 case 2:
-                    // Modificar esto a futuro para presentación final
-                    
-                    
-                    Stage second;
-                    second = new Stage();
-                    //HBox root = new HBox();
-                    previo = new Button("< Volver al Menú Principal");
-                    previo.setOnMouseClicked(new ClickHandler(stage, second));
+                    //Colocar Instrucciones
+                    Stage instructions;
+                    instructions = new Stage();
                     Instrucciones ins = new Instrucciones();
-                    ins.getRoot().setTop(previo);
-                    Scene scen1 = new Scene(ins.getRoot(), 800, 600);
-                    second.setScene(scen1);
-                    second.show();
+                    ins.getRoot().setBottom(Principal.this.setupBotonPrevio(this.stage, instructions));
+                    Scene instrucScene = new Scene(ins.getRoot(), 800, 600);
+                    instructions.setScene(instrucScene);
+                    instructions.show();
                     break;
                 
                 case 3:
-                    VBox title = new VBox();
-                    title.setAlignment(Pos.CENTER);
-                    Label titlePane = new Label("Puntajes Máximos");
-                    titlePane.getStyleClass().add("labelPrincipal");
-                    DropShadow ds = Principal.this.setupShadow();
-                    titlePane.setEffect(ds);
-                    title.getChildren().add(titlePane);
-                    Stage fourth = new Stage();
-                    //HBox root = new HBox();
-                    previo = new Button("< Volver al Menú Principal");
-                    previo.getStyleClass().add("botonRegresar");
-                    previo.setOnMouseClicked(new ClickHandler(stage, fourth));
+                    Stage scores = new Stage();
                     Puntajes punt = new Puntajes();
-                    punt.getRoot().setBottom(previo);
-                    Scene scene2 = new Scene(punt.getRoot(), 800, 600);
-                    fourth.setScene(scene2);
-                    Principal.this.setStageStyles(fourth, "Puntajes Máximos");
-                    punt.getRoot().setTop(title);
-                    fourth.show();
+                    punt.getRoot().setBottom(Principal.this.setupBotonPrevio(this.stage, scores));
+                    Scene scoreScene = new Scene(punt.getRoot(), 800, 600);
+                    scores.setScene(scoreScene);
+                    Principal.this.setStageStyles(scores, "Puntajes Máximos");
+                    scores.show();
                     break;
                     
                 case 4:
                     Stage about = new Stage();
-                    previo = new Button("< Volver al Menú Principal");
-                    previo.getStyleClass().add("botonRegresar");
-                    previo.setOnMouseClicked(new ClickHandler(stage, about));
-                    ds = Principal.this.setupShadow();
-                    previo.setEffect(ds);
                     AcercaDe acerca = new AcercaDe();
-                    acerca.getRoot().setBottom(previo);
+                    acerca.getRoot().setBottom(Principal.this.setupBotonPrevio(this.stage, about));
                     Scene aboutScene = new Scene(acerca.getRoot(), 800, 650);
                     about.setScene(aboutScene);
                     Principal.this.setStageStyles(about, "Acerca de TyperShark II");
-                    //acerca.getRoot().setTop(title);
                     about.show();
                     break;
                 default:
@@ -243,5 +215,25 @@ public class Principal {
             clip.setCycleCount(MediaPlayer.INDEFINITE);
         }
         clip.play();
+    }
+    
+    private Button setupBotonPrevio(Stage principal, Stage opcionElegir) {
+        Button previo;
+        previo = new Button("< Volver al Menú Principal");
+        previo.getStyleClass().add("botonRegresar");
+        previo.setOnMouseClicked(new ClickHandler(principal, opcionElegir));
+        DropShadow ds = Principal.this.setupShadow();
+        previo.setEffect(ds);
+        return previo;
+    }
+    
+    private Button setupBotonPrevio(Stage principal, Stage opcionElegir, Mar mar) {
+        Button previo;
+        previo = new Button("< Volver al Menú Principal");
+        previo.getStyleClass().add("botonRegresar");
+        previo.setOnMouseClicked(new ClickHandlerMar(principal, opcionElegir, mar));
+        DropShadow ds = Principal.this.setupShadow();
+        previo.setEffect(ds);
+        return previo;
     }
 }

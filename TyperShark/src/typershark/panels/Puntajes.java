@@ -11,14 +11,16 @@ import java.util.Scanner;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.TextAlignment;
 import typershark.people.Jugador;
 
 /**
@@ -27,7 +29,6 @@ import typershark.people.Jugador;
  */
 public class Puntajes {
     private BorderPane root;
-    private Button previo;
     private ObservableList<Jugador> puntajes;
     private TableView<Jugador> tabla;
     
@@ -35,6 +36,7 @@ public class Puntajes {
         this.root = new BorderPane();
         this.root.getStylesheets().add("styles/styles.css");
         this.root.getStyleClass().add("instrucciones");
+        this.setupTitlePane();
         this.setupPuntajes();
         this.setupTable();
         
@@ -67,8 +69,6 @@ public class Puntajes {
         Pane pane = new Pane();
         
         this.tabla = new TableView<>();
-        //this.tabla.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-        //this.tabla.setColumnResizePolicy(false);
         this.tabla.setItems(this.puntajes);
         this.tabla.setLayoutX(100);
         this.tabla.getColumns().addAll(nameColumn, pointsColumn);
@@ -76,14 +76,33 @@ public class Puntajes {
         
         this.root.setCenter(pane);
         this.tabla.getStyleClass().add("table-view");
-        /**
-        Pane pane = new Pane();
-        pane.getChildren().add(this.tabla);
-        this.root.setCenter(pane);*/
+    }
+    
+    private void setupTitlePane() {        
+        VBox title;
+        title = new VBox();
+        title.setAlignment(Pos.CENTER);
+        Label titlePane;
+        titlePane = new Label("Puntajes Máximos");
+        titlePane.getStyleClass().add("labelPuntajesMaximos");
+        DropShadow ds;
+        ds = this.setupShadow();
+        titlePane.setEffect(ds);
+        titlePane.setTextAlignment(TextAlignment.CENTER);
+        title.getChildren().add(titlePane);
+        this.root.setTop(title);
+    }
+    
+    private DropShadow setupShadow() {
+        DropShadow ds = new DropShadow();
+        ds.setOffsetY(5.0f);
+        ds.setOffsetX(-5.0f);
+        ds.setColor(Color.color(0,0,0));
+        return ds;
     }
     
     private ObservableList<Jugador> cargarPuntajesJugadores() {
-        ObservableList<Jugador> puntajes = FXCollections.observableArrayList();
+        ObservableList<Jugador> puntos = FXCollections.observableArrayList();
         File archivo = new File("src/puntajes/puntajes.txt");
         if (archivo.isFile()) {
             try {
@@ -93,12 +112,13 @@ public class Puntajes {
                 while(sc.hasNext()) {
                     String linea = sc.nextLine();
                     String[] campos = linea.split("\\|");
-                    puntajes.add(new Jugador(campos[0], Integer.parseInt(campos[1])));
+                    puntos.add(new Jugador(campos[0], Integer.parseInt(campos[1])));
                 }
             } catch (FileNotFoundException ex) {
                 System.out.println("Archivo no encontrado.");
             }
         }
-        return puntajes;
+        return puntos;
     }
+    
 }

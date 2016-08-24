@@ -26,7 +26,7 @@ public class ClickHandler implements EventHandler<MouseEvent>{
     @Override
     public void handle(MouseEvent event) {
         Principal.playSound("button_sound.mp3", false);
-        this.actual.hide();
+        this.actual.close();
         this.principal.show();
     }
     

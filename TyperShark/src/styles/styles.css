@@ -14,6 +14,13 @@
     
 }
 
+.labelPuntajesMaximos {
+    -fx-text-fill: red;
+    -fx-font-family: 'Papyrus';
+    -fx-font-size: 70px;
+    -fx-font-weight: bolder;
+}
+
 .acercaDe {
     -fx-background-image: url("../images/background/acercaDe.png");
 }
