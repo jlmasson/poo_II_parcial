@@ -1,8 +1,11 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+* @(#)Tiburon.java 4.0 28/8/2016
+*
+* Copyright (c) 2016 Galo Castillo, Jose Luis Masson & Danilo Torres.
+* Escuela Superior Politécnica del Litoral. Guayaquil, Ecuador.
+* Todos los Derechos Reservados.
+*
+*/
 package typershark.animals;
 
 import java.util.ArrayList;
@@ -13,12 +16,26 @@ import typershark.panels.Mar;
 import typershark.people.Jugador;
 
 /**
- *
- * @author Danilo Torres
+ * Esta clase define objetos de tipo TiburonNegro que es subclase de la
+ * superclase AnimalMarino.
+ * @author: Galo Castillo, Jose Luis Masson, Danilo Torres
+ * @version: 4.0 28/8/2016
  */
 public class TiburonNegro extends AnimalMarino {
+    
+    /** Lista de palabras que el animal contiene para ser tipeadas */
     private LinkedList<String> palabras;
     
+    
+    /**
+     * Constructor para el objeto de tipo TiburonNegro que es una subclase de la
+     * superclase AnimalMarino.
+     * Genera un Tiburon relacionado con un mar al cual pertenece y el jugador
+     * capaz de elimianrlo..
+     * @param mar El parámetro mar corresponde al panel organizador del mar. 
+     * @param palabrasJuego El parametro palabrasJuego corresponde a la lista
+     * que contiene cargadas previamente.
+     */
     public TiburonNegro(Mar mar, ArrayList<String> palabrasJuego) {
         super(mar, "images/components/tiburonNegroFINAL.png", palabrasJuego,
                 ConstantesDesplazamientos.VELOCIDAD_INICIAL*ConstantesDesplazamientos.MULTIPLICADOR_TIBURON);
@@ -30,17 +47,16 @@ public class TiburonNegro extends AnimalMarino {
             palabras.add(palabrasJuego.get(aleatorio));
         }
         super.setTextoEnPantalla(palabras.get(0));
-        
-    }
+    } // Cierre del constructor.
 
     @Override
     public void aumentarPuntos(Jugador jugador) {
         
-    }
+    } //Cierre del metodo
     
     public void matarAnimal() {
         super.matarAnimal();
-    }
+    } // Cierre del metodo.
     
     
     
@@ -70,17 +86,19 @@ public class TiburonNegro extends AnimalMarino {
     }
     **/
     
-    
-    
+    /**
+     * Método que permite obtener la lista de palabras que posee el Tiburon.
+     * @return La lista de palabras del Tiburon.
+     */
     public LinkedList<String> getPalabras(){
         return this.palabras;
-    }
+    } //Cierre del metodo
 
-
-    public void agregarTextos() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
+    /**
+     *Metodo que disminuye las vidas del jugador a un número mínimo de cero,
+     * un vez que el animal haya llegado hasta el buceador.
+     * @param jugador
+     */
     @Override
     public void quitarVidas(Jugador jugador) {
         if (this.getRoot().getLayoutX() <= 0 && !this.isAlive()) {
@@ -88,5 +106,5 @@ public class TiburonNegro extends AnimalMarino {
                 jugador.setNumVidas(jugador.getNumVidas() - 1);
             }
         }
-    }
-}
+    } //Cierre del metodo
+} // Cierre de la clase
