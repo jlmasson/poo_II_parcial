@@ -10,13 +10,16 @@ package typershark.panels;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Optional;
 import java.util.Scanner;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.BorderPane;
@@ -84,6 +87,32 @@ public class Puntajes {
      * Método que modifica y edita la tabla.
      * */
     private void setupTable() {
+        TextInputDialog dialog = new TextInputDialog();
+                    
+        dialog.setTitle("Mejores Puntajes");
+        dialog.setHeaderText("Nivel");
+        dialog.setContentText("Ingresa el nivel que deseas ver:");
+
+        Optional<String> result = dialog.showAndWait();
+
+        while ((result.isPresent() && result.get().trim().isEmpty()) || Integer.parseInt(result.get()) < 1) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Ingreso no válido");
+            alert.setHeaderText("Nivel no válido");
+            alert.setContentText("Ingrese un nivel mayor a 0");
+            alert.showAndWait();
+            result = dialog.showAndWait();
+        }
+        
+        ObservableList<Jugador> l = FXCollections.observableArrayList();
+
+        if (result.isPresent()){
+            for (Jugador j : this.puntajes) {
+                if (j.getNivelMax() == Integer.parseInt(result.get())) {
+                    l.add(j);
+                }
+            }
+        }        
         TableColumn<Jugador, String> nameColumn = new TableColumn<>("Jugador");
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("nickname"));
         nameColumn.setMinWidth(300);
@@ -97,13 +126,14 @@ public class Puntajes {
         Pane pane = new Pane();
         
         this.tabla = new TableView<>();
-        this.tabla.setItems(this.puntajes);
+        this.tabla.setItems(l);
         this.tabla.setLayoutX(100);
         this.tabla.getColumns().addAll(nameColumn, pointsColumn);
         pane.getChildren().add(this.tabla);
         
         this.root.setCenter(pane);
         this.tabla.getStyleClass().add("table-view");
+        
     }//Cierre del metodo.
     
     /**
@@ -151,7 +181,7 @@ public class Puntajes {
                 while(sc.hasNext()) {
                     String linea = sc.nextLine();
                     String[] campos = linea.split("\\|");
-                    puntos.add(new Jugador(campos[0], Integer.parseInt(campos[1])));
+                    puntos.add(new Jugador(campos[0], Integer.parseInt(campos[1]), Integer.parseInt(campos[2])));
                 }
             } catch (FileNotFoundException ex) {
                 System.out.println("Archivo no encontrado.");

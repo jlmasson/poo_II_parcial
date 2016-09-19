@@ -14,6 +14,7 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Random;
 import javafx.animation.KeyFrame;
@@ -35,17 +36,18 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.AudioClip;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 import typershark.animals.AnimalMarino;
 import typershark.animals.Piranha;
+import typershark.animals.Pulpo;
 import typershark.animals.Tiburon;
 import typershark.animals.TiburonNegro;
 import typershark.constantes.Constantes;
 import typershark.constantes.ConstantesDesplazamientos;
 import typershark.constantes.ConstantesPuntos;
+import typershark.handlers.ClickHandlerSave;
 import typershark.people.Buceador;
 import typershark.people.Jugador;
 
@@ -100,6 +102,12 @@ public class Mar{
     /** Puntos necesarios para poder utilizar el poder especial*/
     private Integer countDownPoder = ConstantesPuntos.PUNTOS_PODER;
     
+    /** Imagen del boton de guardado*/
+    private ImageView imagenSave;
+    
+    /** Diccionario con los datos guardados de los jugadores*/
+    private HashMap<String, HashMap<String, Integer>> partidas;
+    
     
     /**
      * Constructor para el objeto de tipo Mar.
@@ -108,14 +116,17 @@ public class Mar{
      * animales marinos vivos.
      * @param jugador El parámetro jugador es utilizado para manejar la informacion
      * del jugador durante la partida
+     * @param partidas
      */
-    public Mar(Jugador jugador) {
+    public Mar(Jugador jugador, HashMap<String, HashMap<String, Integer>> partidas) {
 
         palabrasJuego = new ArrayList<>();
    
         try{
             palabrasJuego = Principal.cargarPalabras();
         }catch(FileNotFoundException ex){}
+        
+        this.partidas = partidas;
 
         this.iniciarMar(jugador);
         
@@ -491,7 +502,7 @@ public class Mar{
         int posYInicial = 150;
         Random r = new Random();
         for(int i = 0; i < 3; i++){
-            int aleatorio = r.nextInt(3) + 1;
+            int aleatorio = r.nextInt(4) + 1;
             AnimalMarino animal;
             switch(aleatorio){
                 case 1:
@@ -510,6 +521,13 @@ public class Mar{
                     break;
                 case 3:
                     animal = new Piranha(this, palabrasJuego);
+                    animal.setLocation(posXInicial, posYInicial);
+                    this.animales.add(animal);
+                    this.root.getChildren().add(animal.getRoot());
+                    new Thread(animal).start();
+                    break;
+                case 4:
+                    animal = new Pulpo(this, palabrasJuego);
                     animal.setLocation(posXInicial, posYInicial);
                     this.animales.add(animal);
                     this.root.getChildren().add(animal.getRoot());
@@ -577,6 +595,22 @@ public class Mar{
         
         pilaNivel.setLayoutX(350);
         pilaNivel.setLayoutY(5);
+        
+        
+        
+        //MEJORAMIENTO
+        this.imagenSave = new ImageView(new Image("images/components/disquete.png"));
+        Pane paneInf = new Pane();
+        paneInf.getChildren().add(this.imagenSave);
+        this.imagenSave.setLayoutY(450);
+        this.imagenSave.setLayoutX(-20);
+        this.root.setRight(paneInf);
+        this.imagenSave.setOnMouseClicked(new ClickHandlerSave(this.jugador, this, this.partidas));
+        System.out.println(this.numNivel);
+        
+        
+        
+        
         //Buceador
         this.buceador = new Buceador(this);
         this.root.getChildren().add(this.buceador.getImagenBuceador());
@@ -621,6 +655,7 @@ public class Mar{
         this.root.setCenter(panelNickname);
         
         LinkedList<Jugador> jugadores = Jugador.cargarJugadorXPuntos();
+        this.jugador.setNivelMax(this.numNivel);
         jugadores.add(this.jugador);
         jugadores.sort(Jugador::compareTo);
         if (jugadores.getFirst().equals(this.jugador)) {
@@ -656,6 +691,7 @@ public class Mar{
         buceador.getImagenBuceador().setLayoutY(Constantes.POS_Y_INICIAL_BUCEADOR);
         this.eliminarAnimales();
         this.setupAnimals();
+        
         
     } //Cierre del metodo
     
@@ -694,13 +730,52 @@ public class Mar{
             }   
             writer = new FileWriter(file);
             for (Jugador j: jugadores) {
-                writer.write(j.getNickname()+"|"+ Integer.toString(j.getPuntos())+ "\n");
+                writer.write(j.getNickname()+"|"+ Integer.toString(j.getPuntos())+"|"+ Integer.toString(j.getNivelMax()) + "\n");
                 writer.flush();
             }     
             writer.close();
         } catch (IOException ex) {
             
         } 
+    } //Cierre del metodo
+    
+    /**
+     * Método que carga una partida guardada
+     * @param vidas
+     * @param puntos
+     * @param nivel
+     */
+    public void cargarPartida(int vidas, int puntos, int nivel){
+        
+        this.jugador.setNumVidas(vidas);
+        this.numVidas.setText(Integer.toString(vidas));
+        this.numNivel = nivel;
+        this.nivel.setText(Integer.toString(nivel));
+        this.jugador.setPuntos(puntos);
+        this.puntos.setText(Integer.toString(puntos));
+        buceador.getImagenBuceador().setLayoutY(Constantes.POS_Y_INICIAL_BUCEADOR);
+        this.eliminarAnimales();
+        
+        this.setupAnimals();
+        
+    } //Cierre del metodo
+    
+    /**
+     * Método que carga una partida guardada
+     */
+    public void cargarPartida(){
+        
+        this.jugador.setNumVidas(partidas.get(this.jugador.getNickname()).get("numVidas"));
+        this.numVidas.setText(Integer.toString(partidas.get(this.jugador.getNickname()).get("numVidas")));
+        this.numNivel = partidas.get(this.jugador.getNickname()).get("numNivel");
+        this.nivel.setText(Integer.toString(this.numNivel));
+        this.jugador.setPuntos(partidas.get(this.jugador.getNickname()).get("puntos"));
+        this.puntos.setText(Integer.toString(partidas.get(this.jugador.getNickname()).get("puntos")));
+        buceador.getImagenBuceador().setLayoutY(Constantes.POS_Y_INICIAL_BUCEADOR);
+        this.eliminarAnimales();
+        
+        this.setupAnimals();
+        
     } //Cierre del metodo
     
 } //Cierre de la clase

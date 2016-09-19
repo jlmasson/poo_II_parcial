@@ -8,6 +8,8 @@ package typershark.panels;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Optional;
 import java.util.Scanner;
 import javafx.application.Platform;
@@ -26,6 +28,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
@@ -39,6 +42,7 @@ import typershark.people.Jugador;
  */
 public class Principal {
     private Button jugar;
+    private Button cargar;
     private Button instrucciones;
     private Button puntajes;
     private Button acercaDe;
@@ -46,9 +50,11 @@ public class Principal {
     private Label title;
     private VBox root;
     private ArrayList<String> palabrasJuego;
+    private HashMap<String, HashMap<String, Integer>> partidas;
     
     public Principal(Stage principal) {
         Principal.playSound("game_menu.mp3", true);
+        partidas = cargarPartidas();
         this.root = new VBox();
         this.root.setAlignment(Pos.CENTER);
         DropShadow ds = this.setupShadow();
@@ -76,30 +82,34 @@ public class Principal {
     
     private void setupButtons(Stage principal, DropShadow dropShadow) {
         this.jugar = new Button("Comenzar Partida");
+        this.cargar = new Button("Cargar Partida");
         this.instrucciones = new Button("Leer instrucciones");
         this.puntajes = new Button("Mostrar mejores puntajes");
         this.acercaDe = new Button("Acerca de");
         this.salir = new Button("Salir");
         
         this.jugar.getStyleClass().add("boton");
+        this.cargar.getStyleClass().add("boton");
         this.instrucciones.getStyleClass().add("boton");
         this.puntajes.getStyleClass().add("boton");
         this.acercaDe.getStyleClass().add("boton");
         this.salir.getStyleClass().add("boton");
         
         this.jugar.setEffect(dropShadow);
+        this.cargar.setEffect(dropShadow);
         this.instrucciones.setEffect(dropShadow);
         this.puntajes.setEffect(dropShadow);
         this.acercaDe.setEffect(dropShadow);
         this.salir.setEffect(dropShadow);
         
         this.jugar.setOnMouseClicked(new ClickMenu(principal, 1));
+        this.cargar.setOnMouseClicked(new ClickMenu(principal, 5));
         this.instrucciones.setOnMouseClicked(new ClickMenu(principal, 2));
         this.puntajes.setOnMouseClicked(new ClickMenu(principal, 3));
         this.acercaDe.setOnMouseClicked(new ClickMenu(principal, 4));
         this.salir.setOnMouseClicked(new Exit());
         
-        this.root.getChildren().addAll(jugar, instrucciones, puntajes, acercaDe, salir);
+        this.root.getChildren().addAll(jugar, cargar, instrucciones, puntajes, acercaDe, salir);
     }
     
     private DropShadow setupShadow() {
@@ -147,7 +157,7 @@ public class Principal {
                         jugador = new Jugador(result.get());
                         Stage game;
                         game = new Stage();
-                        Mar mar = new Mar(jugador);
+                        Mar mar = new Mar(jugador,partidas);
                         mar.getRoot().setBottom(Principal.this.setupBotonPrevio(this.stage, game, mar));
                         Scene gameScene = new Scene(mar.getRoot(), 800, 600);
                         game.initStyle(StageStyle.UNDECORATED);
@@ -165,15 +175,25 @@ public class Principal {
                     break;
                 
                 case 2:
-                    //Colocar Instrucciones
                     Stage instructions;
                     instructions = new Stage();
                     Instrucciones ins = new Instrucciones();
                     ins.getRoot().setBottom(Principal.this.setupBotonPrevio(this.stage, instructions));
-                    Scene instrucScene = new Scene(ins.getRoot(), 800, 600);
-                    instructions.setScene(instrucScene);
+                    Label l = new Label("El buceador acumula puntos a medida que desciende y por cada animal marino que desaparece.\n" +
+                    "Inicialmente dispone de 3 vidas, pero puede ganar una vida extra cada vez que llegue al fondo\n" +
+                    "del mar. Se puede acumular mas puntaje tipeando la mayor cantidad de palabras posible. Con\n" +
+                    "suficiente puntaje acumulado, no solo gana una vida, también puede utilizar 400 PUNTOS\n" +
+                    "para eliminar a todos los animales marinos en la cercanía, presionando unicamente la tecla\n" +
+                    "ENTER.\n" +
+                    "El juego termina cuando el buceador pierde sus tres vidas. A medida que acumula puntaje el jugador\n" +
+                    "va avanzando a un siguiente nivel, en el cual los animales marinos aumentan su rapidez."); 
+                    l.setFont(new Font("Papyrus", 18));
+                    l.setTextFill(Color.WHITE);
+                    ins.getRoot().setCenter(l);
+                    Scene scen1 = new Scene(ins.getRoot(), 800, 600);
+                    instructions.setScene(scen1);
                     instructions.show();
-                    this.stage.close();
+                    this.stage.close();                    
                     break;
                 
                 case 3:
@@ -197,6 +217,59 @@ public class Principal {
                     about.show();
                     this.stage.close();
                     break;
+                case 5:
+                    TextInputDialog car = new TextInputDialog();
+                    
+                    car.setTitle("Bienvenido a TyperShark 2.0");
+                    car.setHeaderText("Nickname");
+                    car.setContentText("Ingrese el nickname con el que está guardada la partida:");
+
+                    Optional<String> nombre = car.showAndWait();
+                    
+                    while (nombre.isPresent() && nombre.get().trim().isEmpty()) {
+                        Alert alert = new Alert(AlertType.ERROR);
+                        alert.setTitle("Ingreso no válido");
+                        alert.setHeaderText("Nickname no válido");
+                        alert.setContentText("No se permiten nicknames vacíos");
+                        alert.showAndWait();
+                        nombre = car.showAndWait();
+                    }
+                    
+         
+                    
+                    if (nombre.isPresent()){
+                        if (partidas.containsKey(nombre.get().trim())) {
+                            int vidas = partidas.get(nombre.get().trim()).get("numVidas");
+                            int puntos = partidas.get(nombre.get().trim()).get("puntos");
+                            int nivel = partidas.get(nombre.get().trim()).get("numNivel");
+                        }
+                        else {
+                            Alert alert = new Alert(AlertType.ERROR);
+                            alert.setTitle("Ingreso no válido");
+                            alert.setHeaderText("Nickname no válido");
+                            alert.setContentText("El nickname no esta guardado o "
+                                                + "datos de guardado corruptos");
+                            alert.showAndWait();
+                            break;
+                        }
+                        Jugador jugador;
+                        jugador = new Jugador(nombre.get().trim());
+                        Stage game;
+                        game = new Stage();
+                        Mar mar = new Mar(jugador, partidas);
+                        mar.cargarPartida();
+                        
+                        mar.getRoot().setBottom(Principal.this.setupBotonPrevio(this.stage, game, mar));
+                        Scene gameScene = new Scene(mar.getRoot(), 800, 600);
+                        game.initStyle(StageStyle.UNDECORATED);
+                        game.setScene(gameScene);
+                        game.setOnCloseRequest((WindowEvent t) -> {
+                            Platform.exit();
+                            System.exit(0);
+                        });
+                        game.show();
+                        this.stage.close();
+                    }
             }
 
         }
@@ -266,4 +339,59 @@ public class Principal {
         previo.setEffect(ds);
         return previo;
     }
-}
+    /**
+    private LinkedList<String> cargarArchivo(String jugador) {
+        File archivo = new File("src/puntajes/guardado.txt");
+        LinkedList<String> l = new LinkedList<>();
+        if (archivo.isFile()) {
+            try {
+                Scanner sc = new Scanner(archivo);
+                sc.useDelimiter("\n");
+
+                while(sc.hasNext()) {
+                    String linea = sc.nextLine();
+                    String[] campos = linea.split(",");
+                    if (campos[0].equals(jugador)) {
+                        for (String i : campos)
+                            l.add(i);
+                        break;
+                    }
+                }
+            } catch (FileNotFoundException ex) {
+                System.out.println("Archivo no encontrado.");
+            }
+        }  
+        return l;
+    }
+    * **/
+    
+    /**
+     * Método que lee el archivo guardado.txt.
+     * @return partidas HashMap con los datos del jugador.
+     */
+    public static HashMap<String, HashMap<String, Integer>> cargarPartidas(){
+        HashMap<String, HashMap<String, Integer>> partidas = new HashMap<>();
+        File archivo = new File("src/puntajes/guardado.txt");
+        
+        if (archivo.isFile()) {
+            try {
+                Scanner sc = new Scanner(archivo);
+                sc.useDelimiter("\n");
+
+                while(sc.hasNext()) {
+                    String linea = sc.nextLine();
+                    String[] campos = linea.split("\\|");
+                    String nickname = campos[0];
+                    partidas.put(nickname, new HashMap<>());
+                    
+                    partidas.get(nickname).put("numVidas", Integer.parseInt(campos[1]));
+                    partidas.get(nickname).put("puntos", Integer.parseInt(campos[2]));
+                    partidas.get(nickname).put("numNivel", Integer.parseInt(campos[3]));
+                }
+            } catch (FileNotFoundException ex) {
+                System.out.println("Archivo no encontrado.");
+            }
+        }
+        return partidas;
+    }//Cierre del metodo
+}//Cierre de la clase

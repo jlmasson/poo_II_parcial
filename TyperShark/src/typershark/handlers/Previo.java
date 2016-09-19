@@ -14,7 +14,7 @@ import javafx.stage.Stage;
 
 /**
  *
- * @author Jose Masson
+ * @author Galo Castillo, Danilo Torres
  */
 public class Previo {
     private Stage anterior;

@@ -29,6 +29,10 @@ public class Jugador implements Comparable<Jugador>{
     /** Acumulador de ataques de piranhas. Se pierde una vida por cada trees, 
      * .*/
     private int ataquesDePiranhas;
+    /** Nivel maximo que alcanzo el jugador, 
+     * .*/
+    private int nivelMax;
+    
     
     /**
      * Constructor para el objeto de tipo Jugador.
@@ -53,6 +57,20 @@ public class Jugador implements Comparable<Jugador>{
     public Jugador(String nickname, int puntos) {
         this.nickname = nickname;
         this.puntos = puntos;
+    } // Cierre del constructor
+    
+    /**
+     * Constructor para el objeto de tipo Jugador.
+     * Crea un nuevo jugador con puntos, numero de vidas iniciales y nivel maximo.
+     * @param nickname El parámetro nickname utilizado a lo largo del juego
+     * para ser utilizado como identificador de este en el juego.
+     * @param puntos Numero de puntos iniciales del jugador.
+     * @param puntos Nivel con el que se registrara su puntaje maximo.
+     */
+    public Jugador(String nickname, int puntos, int nivelMax) {
+        this.nickname = nickname;
+        this.puntos = puntos;
+        this.nivelMax = nivelMax;
     } // Cierre del constructor
     
     /**
@@ -109,6 +127,18 @@ public class Jugador implements Comparable<Jugador>{
         this.ataquesDePiranhas = ataquesDePiranhas;
     }//Cierre del metodo.
 
+    /**
+     * Método que permite obtener el nivel maximo que logro el jugador.
+     * */
+    public int getNivelMax() {
+        return nivelMax;
+    }//Cierre del metodo
+   
+    public void setNivelMax(int nivelMax) {
+        this.nivelMax = nivelMax;
+    }//Cierre del metodo
+    
+
     @Override
     public boolean equals(Object o) {
         Jugador j = (Jugador) o;
@@ -131,6 +161,38 @@ public class Jugador implements Comparable<Jugador>{
     /**
      * Método estático que permite cargar jugadores segun sus pntoso.
      * */
+    /**
+    public static LinkedList<Jugador> cargarJugadorXPuntos() {
+        LinkedList<Jugador> jugadores = new LinkedList<>();
+        File archivo = new File("src/puntajes/puntajes.txt");
+        if (archivo.isFile()) {
+            try {
+                Scanner sc = new Scanner(archivo);
+                sc.useDelimiter("\n");
+
+                while(sc.hasNext()) {
+                    String linea = sc.nextLine();
+                    String[] campos = linea.split("\\|");
+                    jugadores.add(new Jugador(campos[0], Integer.parseInt(campos[1])));
+                }
+            } catch (FileNotFoundException ex) {
+                System.out.println("Archivo no encontrado.");
+            }
+        }
+        return jugadores;
+    }//Cierre del metodo.
+    
+    **/
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
     public static LinkedList<Jugador> cargarJugadorXPuntos() {
         LinkedList<Jugador> jugadores = new LinkedList<>();
         File archivo = new File("src/puntajes/puntajes.txt");

@@ -14,7 +14,7 @@ import typershark.panels.Principal;
 
 /**
  *
- * @author Jose Masson
+ * @Galo Castillo, Danilo Torres
  */
 public class ClickHandlerMar implements EventHandler<MouseEvent>{
     private Stage principal;

@@ -12,7 +12,7 @@ import typershark.panels.Principal;
 
 /**
  *
- * @author Jose Masson
+ * @author Galo Castillo, Danilo Torres
  */
 public class ClickHandler implements EventHandler<MouseEvent>{
     private Stage principal;

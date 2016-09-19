@@ -15,7 +15,7 @@ import typershark.panels.Principal;
 
 /**
  *
- * @author Jose Masson
+ * @author Galo Castillo, Danilo Torres & José Massón
  */
 public class TyperShark extends Application {
 
